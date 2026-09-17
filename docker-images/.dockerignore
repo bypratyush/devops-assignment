@@ -1,0 +1,7 @@
+# Everything here is excluded from the BUILD CONTEXT that is sent to the daemon.
+# A large context slows every build and can accidentally bake secrets into an image.
+.git
+*.md
+screenshots/
+output.md
+*.png

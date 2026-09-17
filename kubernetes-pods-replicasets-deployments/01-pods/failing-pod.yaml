@@ -1,0 +1,10 @@
+# Deliberately broken: the image tag does not exist.
+# Used to demonstrate ImagePullBackOff and how to diagnose it.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: broken-pod
+spec:
+  containers:
+    - name: nope
+      image: nginx:this-tag-does-not-exist

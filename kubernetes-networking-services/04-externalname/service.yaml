@@ -1,0 +1,12 @@
+# ExternalName is the odd one out: no ClusterIP, no selector, no endpoints,
+# no proxying. It is purely a CNAME record served by CoreDNS.
+#
+# The upstream assignment pointed at a personal domain; this uses example.com,
+# an IANA-reserved domain that always resolves, so the demo is reproducible.
+apiVersion: v1
+kind: Service
+metadata:
+  name: external-database-service
+spec:
+  type: ExternalName
+  externalName: example.com

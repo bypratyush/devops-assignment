@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: config-demo
+  labels:
+    app: config-demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: config-demo
+  template:
+    metadata:
+      labels:
+        app: config-demo
+    spec:
+      containers:
+        - name: app
+          image: nginxdemos/nginx-hello:plain-text
+          ports:
+            - containerPort: 8080
+          env:
+            # one key at a time, from a ConfigMap
+            - name: APP_ENV
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: APP_ENV
+            # one key at a time, from a Secret
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: app-secret
+                  key: DB_PASSWORD
+          envFrom:
+            # every key in the ConfigMap, as env vars
+            - configMapRef:
+                name: app-config
+          volumeMounts:
+            # the ConfigMap mounted as FILES
+            - name: config-volume
+              mountPath: /etc/app-config
+              readOnly: true
+            - name: secret-volume
+              mountPath: /etc/app-secret
+              readOnly: true
+          resources:
+            requests: { cpu: "50m", memory: "64Mi" }
+            limits:   { cpu: "100m", memory: "128Mi" }
+      volumes:
+        - name: config-volume
+          configMap:
+            name: app-config
+        - name: secret-volume
+          secret:
+            secretName: app-secret

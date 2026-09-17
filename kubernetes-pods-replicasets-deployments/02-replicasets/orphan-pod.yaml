@@ -1,0 +1,12 @@
+# A bare pod that happens to carry the SAME label the ReplicaSet selects on.
+# The ReplicaSet will ADOPT it - and then kill one pod to get back to 3.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: orphan-pod
+  labels:
+    app: web-rs
+spec:
+  containers:
+    - name: nginx
+      image: nginx:1.25-alpine

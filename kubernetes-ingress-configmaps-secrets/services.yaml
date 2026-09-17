@@ -1,0 +1,47 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: config-demo-svc
+spec:
+  selector:
+    app: config-demo
+  ports:
+    - port: 80
+      targetPort: 8080
+---
+# a second app, so the Ingress has two backends to route between
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: second-app
+  labels:
+    app: second-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: second-app
+  template:
+    metadata:
+      labels:
+        app: second-app
+    spec:
+      containers:
+        - name: app
+          image: nginxdemos/nginx-hello:plain-text
+          ports:
+            - containerPort: 8080
+          resources:
+            requests: { cpu: "50m", memory: "64Mi" }
+            limits:   { cpu: "100m", memory: "128Mi" }
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: second-app-svc
+spec:
+  selector:
+    app: second-app
+  ports:
+    - port: 80
+      targetPort: 8080

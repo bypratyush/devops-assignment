@@ -1,0 +1,28 @@
+# MetalLB gives a bare-metal / kind cluster the missing piece: something that
+# actually ALLOCATES external IPs for type: LoadBalancer services.
+#
+# On EKS/GKE/AKS the cloud controller manager does this and provisions a real
+# cloud load balancer. kind has no cloud provider, so without MetalLB every
+# LoadBalancer service sits at EXTERNAL-IP <pending> forever.
+#
+# The pool below is carved out of kind's own Docker network (192.168.96.0/20).
+# The nodes themselves use .2/.3/.4, so .200-.250 is free.
+apiVersion: metallb.io/v1beta1
+kind: IPAddressPool
+metadata:
+  name: kind-pool
+  namespace: metallb-system
+spec:
+  addresses:
+    - 192.168.96.200-192.168.96.250
+---
+# L2Advertisement makes one node answer ARP for the assigned IP,
+# so traffic on the Docker network reaches it.
+apiVersion: metallb.io/v1beta1
+kind: L2Advertisement
+metadata:
+  name: kind-l2
+  namespace: metallb-system
+spec:
+  ipAddressPools:
+    - kind-pool

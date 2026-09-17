@@ -1,0 +1,12 @@
+# THE NAIVE WAY - ship the whole build toolchain to production.
+# Everything needed to COMPILE the app ends up in the final image, even though
+# none of it is needed to RUN it.
+FROM golang:1.22
+
+WORKDIR /src
+COPY app/ ./
+
+RUN go build -o /bin/hellosvc .
+
+EXPOSE 8080
+CMD ["/bin/hellosvc"]

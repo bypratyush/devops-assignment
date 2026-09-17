@@ -1,0 +1,13 @@
+# A middle ground: alpine keeps a shell and package manager for debugging,
+# at the cost of a few megabytes. Often the right practical trade-off.
+FROM golang:1.22 AS builder
+WORKDIR /src
+COPY app/ ./
+RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-s -w" -o /bin/hellosvc .
+
+FROM alpine:3.19
+RUN adduser -D -u 10001 appuser
+COPY --from=builder /bin/hellosvc /usr/local/bin/hellosvc
+USER appuser
+EXPOSE 8080
+ENTRYPOINT ["/usr/local/bin/hellosvc"]

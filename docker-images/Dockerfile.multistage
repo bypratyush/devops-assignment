@@ -1,0 +1,24 @@
+# THE MULTI-STAGE WAY - build in one image, ship only the binary.
+#
+# Stage 1 has the full Go toolchain. Stage 2 starts from scratch and receives
+# nothing but the compiled binary. The toolchain never reaches production.
+
+# ---------- stage 1: build ----------
+FROM golang:1.22 AS builder
+
+WORKDIR /src
+COPY app/ ./
+
+# CGO_ENABLED=0 produces a statically linked binary with no libc dependency,
+# which is what lets the final stage be 'scratch' (an empty image).
+RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-s -w" -o /bin/hellosvc .
+#                                      ^^^^^^^^^^^^^^ strip symbol table and
+#                                      DWARF debug info: smaller binary
+
+# ---------- stage 2: runtime ----------
+FROM scratch
+
+COPY --from=builder /bin/hellosvc /hellosvc
+
+EXPOSE 8080
+ENTRYPOINT ["/hellosvc"]

@@ -1,0 +1,28 @@
+# strategy: Recreate - kill ALL old pods, THEN start new ones.
+# Guarantees no two versions run at once, at the cost of downtime.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-recreate
+  labels:
+    app: app-recreate
+spec:
+  replicas: 3
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: app-recreate
+  template:
+    metadata:
+      labels:
+        app: app-recreate
+    spec:
+      containers:
+        - name: app
+          image: nginx:1.25-alpine
+          ports:
+            - containerPort: 80
+          resources:
+            requests: { cpu: "50m", memory: "64Mi" }
+            limits:   { cpu: "100m", memory: "128Mi" }

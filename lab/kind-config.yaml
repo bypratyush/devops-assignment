@@ -1,0 +1,30 @@
+# 3-node kind cluster used for all the Kubernetes tasks in this repo.
+#
+# extraPortMappings are what make NodePort and Ingress reachable from macOS.
+# Without them a kind NodePort is only reachable from inside the Docker network,
+# because Docker Desktop runs containers in a VM whose IPs the host cannot route to.
+#
+#   kind create cluster --name devops-hw --config lab/kind-config.yaml
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+name: devops-hw
+nodes:
+  - role: control-plane
+    kubeadmConfigPatches:
+      - |
+        kind: InitConfiguration
+        nodeRegistration:
+          kubeletExtraArgs:
+            node-labels: "ingress-ready=true"
+    extraPortMappings:
+      - containerPort: 30080   # NodePort demo  (session 11)
+        hostPort: 30080
+        protocol: TCP
+      - containerPort: 80      # ingress-nginx  (session 12)
+        hostPort: 80
+        protocol: TCP
+      - containerPort: 443
+        hostPort: 443
+        protocol: TCP
+  - role: worker
+  - role: worker

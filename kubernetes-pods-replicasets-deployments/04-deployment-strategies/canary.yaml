@@ -1,0 +1,70 @@
+# Canary - one Service selects BOTH the stable and canary pods, so traffic
+# splits in proportion to the REPLICA COUNT.
+#   stable=9, canary=1  ->  roughly 90/10
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-stable
+  labels:
+    app: canary-app
+    track: stable
+spec:
+  replicas: 9
+  selector:
+    matchLabels:
+      app: canary-app
+      track: stable
+  template:
+    metadata:
+      labels:
+        app: canary-app      # <-- the Service selects on THIS label only
+        track: stable
+    spec:
+      containers:
+        - name: app
+          image: nginxdemos/nginx-hello:plain-text
+          ports:
+            - containerPort: 8080
+          resources:
+            requests: { cpu: "20m", memory: "32Mi" }
+            limits:   { cpu: "50m",  memory: "64Mi" }
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-canary
+  labels:
+    app: canary-app
+    track: canary
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: canary-app
+      track: canary
+  template:
+    metadata:
+      labels:
+        app: canary-app      # <-- same label, so the same Service picks it up
+        track: canary
+    spec:
+      containers:
+        - name: app
+          image: nginxdemos/nginx-hello:plain-text
+          ports:
+            - containerPort: 8080
+          resources:
+            requests: { cpu: "20m", memory: "32Mi" }
+            limits:   { cpu: "50m",  memory: "64Mi" }
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: canary-service
+spec:
+  type: ClusterIP
+  selector:
+    app: canary-app          # deliberately does NOT mention 'track'
+  ports:
+    - port: 80
+      targetPort: 8080

@@ -1,0 +1,79 @@
+# Blue/Green - two COMPLETE environments side by side. A Service selector
+# switch flips 100% of traffic from one to the other, instantly.
+#
+# The version label is what the Service selects on.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-blue
+  labels:
+    app: bg-app
+    version: blue
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: bg-app
+      version: blue
+  template:
+    metadata:
+      labels:
+        app: bg-app
+        version: blue
+    spec:
+      containers:
+        - name: app
+          image: nginxdemos/nginx-hello:plain-text
+          ports:
+            - containerPort: 8080
+          env:
+            - name: VERSION
+              value: "BLUE"
+          resources:
+            requests: { cpu: "50m", memory: "64Mi" }
+            limits:   { cpu: "100m", memory: "128Mi" }
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-green
+  labels:
+    app: bg-app
+    version: green
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: bg-app
+      version: green
+  template:
+    metadata:
+      labels:
+        app: bg-app
+        version: green
+    spec:
+      containers:
+        - name: app
+          image: nginxdemos/nginx-hello:plain-text
+          ports:
+            - containerPort: 8080
+          env:
+            - name: VERSION
+              value: "GREEN"
+          resources:
+            requests: { cpu: "50m", memory: "64Mi" }
+            limits:   { cpu: "100m", memory: "128Mi" }
+---
+# The switch. Change version: blue -> green and 100% of traffic moves.
+apiVersion: v1
+kind: Service
+metadata:
+  name: bg-service
+spec:
+  type: ClusterIP
+  selector:
+    app: bg-app
+    version: blue      # <-- THE SWITCH
+  ports:
+    - port: 80
+      targetPort: 8080

@@ -1,0 +1,29 @@
+# Same DaemonSet, but it TOLERATES the control-plane taint, so it also runs
+# on the control-plane node. This is how real cluster-wide agents (CNI, log
+# shippers) achieve genuine 100% node coverage.
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: node-agent-all
+  labels:
+    app: node-agent-all
+spec:
+  selector:
+    matchLabels:
+      app: node-agent-all
+  template:
+    metadata:
+      labels:
+        app: node-agent-all
+    spec:
+      tolerations:
+        - key: node-role.kubernetes.io/control-plane
+          operator: Exists
+          effect: NoSchedule
+      containers:
+        - name: agent
+          image: busybox:1.36
+          command: ["sh", "-c", "while true; do sleep 30; done"]
+          resources:
+            requests: { cpu: "10m", memory: "16Mi" }
+            limits:   { cpu: "50m", memory: "64Mi" }
