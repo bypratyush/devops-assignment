@@ -1,0 +1,32 @@
+# notes-chart - PRODUCTION overrides. Deep-merged on top of values.yaml, so
+# only keys that differ are listed.
+
+replicaCount: 3
+
+image:
+  tag: "1.27-alpine"
+
+app:
+  environment: production
+  logLevel: warn
+  banner: "PRODUCTION"
+
+notes:
+  - "Release notes-chart 0.1.0 to production"
+  - "Check the PodDisruptionBudget before draining nodes"
+  - "On-call: Pratyush"
+
+ingress:
+  host: notes.local
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 64Mi
+  limits:
+    cpu: 250m
+    memory: 128Mi
+
+podDisruptionBudget:
+  enabled: true
+  minAvailable: 2

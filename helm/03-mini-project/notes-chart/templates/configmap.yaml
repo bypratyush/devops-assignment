@@ -1,0 +1,46 @@
+# 1) Plain settings, injected into the container as environment variables.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "notes.fullname" . }}-config
+  labels:
+    {{- include "notes.labels" . | nindent 4 }}
+data:
+  APP_NAME: {{ .Values.app.name | quote }}
+  ENVIRONMENT: {{ .Values.app.environment | quote }}
+  LOG_LEVEL: {{ .Values.app.logLevel | default "info" | quote }}
+---
+# 2) The page and the nginx server block, mounted as files.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "notes.fullname" . }}-web
+  labels:
+    {{- include "notes.labels" . | nindent 4 }}
+data:
+  index.html: |
+    === {{ .Values.app.name }} [{{ .Values.app.environment | upper }}] ===
+    {{ .Values.app.banner }}
+    {{- if .Values.notes }}
+    {{- range $i, $note := .Values.notes }}
+    {{ add1 $i }}. {{ $note }}
+    {{- end }}
+    {{- else }}
+    (no notes yet)
+    {{- end }}
+    -- release {{ .Release.Name }}, chart {{ .Chart.Name }}-{{ .Chart.Version }}
+  default.conf: |
+    server {
+      listen {{ .Values.service.targetPort }};
+      location / {
+        root  /usr/share/nginx/html;
+        index index.html;
+        default_type text/plain;
+        add_header X-Served-By $hostname;
+        add_header X-Environment {{ .Values.app.environment }};
+      }
+      location = /healthz {
+        access_log off;
+        return 200 "ok\n";
+      }
+    }

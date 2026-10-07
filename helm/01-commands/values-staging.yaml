@@ -1,0 +1,10 @@
+# Override file for the `helm upgrade -f` demo. Only the keys that differ
+# from pratyush-web/values.yaml go here - Helm deep-merges it on top.
+replicaCount: 2
+
+image:
+  tag: "1.27-alpine"
+
+web:
+  message: "Staging build - now on nginx 1.27"
+  environment: staging

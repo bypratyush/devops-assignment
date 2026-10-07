@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema#",
+  "title": "notes-chart values",
+  "type": "object",
+  "required": ["replicaCount", "image", "app", "service"],
+  "properties": {
+    "replicaCount": { "type": "integer", "minimum": 1, "maximum": 10 },
+    "image": {
+      "type": "object",
+      "required": ["repository", "tag"],
+      "properties": {
+        "repository": { "type": "string", "minLength": 1 },
+        "tag": { "type": "string", "minLength": 1 },
+        "pullPolicy": { "enum": ["Always", "IfNotPresent", "Never"] }
+      }
+    },
+    "app": {
+      "type": "object",
+      "required": ["name", "environment"],
+      "properties": {
+        "name": { "type": "string" },
+        "environment": { "enum": ["development", "staging", "production"] },
+        "logLevel": { "enum": ["debug", "info", "warn", "error"] }
+      }
+    },
+    "notes": { "type": "array", "items": { "type": "string" } },
+    "service": {
+      "type": "object",
+      "properties": {
+        "type": { "enum": ["ClusterIP", "NodePort", "LoadBalancer"] },
+        "port": { "type": "integer" },
+        "targetPort": { "type": "integer" },
+        "nodePort": { "type": ["integer", "null"], "minimum": 30000, "maximum": 32767 }
+      }
+    }
+  }
+}

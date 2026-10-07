@@ -1,0 +1,6 @@
+# Revision 2 - a good upgrade: new nginx and a new page.
+image:
+  tag: "1.27-alpine"
+page:
+  version: v2
+  message: "New homepage, now on nginx 1.27"

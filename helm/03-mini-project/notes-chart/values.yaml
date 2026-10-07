@@ -1,0 +1,45 @@
+# notes-chart - DEFAULT values. These are the development settings; production
+# overrides only what differs, in values-prod.yaml.
+
+replicaCount: 1
+
+image:
+  repository: nginx
+  tag: "1.25-alpine"
+  pullPolicy: IfNotPresent
+
+# Rendered into a ConfigMap and injected into the pod as environment variables.
+app:
+  name: notes-app
+  environment: development        # development | staging | production (see values.schema.json)
+  logLevel: debug
+  banner: "DEV - data here is fake and gets reset"
+
+# The notes shown on the page - a list, rendered with `range` in the template.
+notes:
+  - "Finish the Session 15 Helm homework"
+  - "Read up on values precedence"
+
+service:
+  type: ClusterIP                 # NodePort works too; then set nodePort below
+  port: 80
+  targetPort: 8080                # nginx is configured (configmap.yaml) to listen here
+  nodePort: null                  # only used when type is NodePort - must be unique per cluster
+
+ingress:
+  enabled: true
+  className: nginx
+  host: notes-dev.local
+
+resources:
+  requests:
+    cpu: 25m
+    memory: 16Mi
+  limits:
+    cpu: 100m
+    memory: 64Mi
+
+# A PodDisruptionBudget makes no sense with 1 replica, so it is off by default.
+podDisruptionBudget:
+  enabled: false
+  minAvailable: 1

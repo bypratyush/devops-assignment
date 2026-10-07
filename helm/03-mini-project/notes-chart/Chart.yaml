@@ -1,0 +1,14 @@
+apiVersion: v2
+name: notes-chart
+description: Notes web app (nginx serving a page rendered from values) - Session 15 Helm mini project
+type: application
+# Chart version - bump on any change to templates or default values.
+version: 0.1.0
+# Version of the "app" itself. Shown in helm list / history.
+appVersion: "1.0.0"
+keywords:
+  - notes
+  - nginx
+  - homework
+maintainers:
+  - name: Pratyush Mohanty

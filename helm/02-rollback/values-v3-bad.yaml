@@ -1,0 +1,9 @@
+# Revision 3 - the BAD upgrade. Same image and page as v2, but someone
+# "standardised" every app on port 8080. nginx inside the image still listens
+# on 80, so the readiness probe (port name http -> 8080) can never pass.
+image:
+  tag: "1.27-alpine"
+page:
+  version: v2
+  message: "New homepage, now on nginx 1.27"
+containerPort: 8080

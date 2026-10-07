@@ -1,0 +1,8 @@
+apiVersion: v2
+name: rollback-web
+description: Small nginx site used to walk through install -> upgrade -> bad upgrade -> rollback
+type: application
+version: 0.1.0
+appVersion: "1.25-alpine"
+maintainers:
+  - name: Pratyush Mohanty

@@ -1,0 +1,35 @@
+# Defaults = what revision 1 (the first install) runs.
+replicaCount: 3
+
+image:
+  repository: nginx
+  tag: "1.25-alpine"
+  pullPolicy: IfNotPresent
+
+# Port the container exposes. Probes and the Service use the port NAME (http),
+# so whatever number is here is what the probes will hit.
+containerPort: 80
+
+service:
+  port: 80
+
+# Rendered into the ConfigMap that nginx serves as its index page.
+page:
+  version: v1
+  message: "First release of the site"
+
+probes:
+  initialDelaySeconds: 2
+  periodSeconds: 3
+  failureThreshold: 3
+
+# Grace period before nginx is told to stop (0 disables the wait).
+preStopSleepSeconds: 5
+
+resources:
+  requests:
+    cpu: 20m
+    memory: 16Mi
+  limits:
+    cpu: 100m
+    memory: 64Mi

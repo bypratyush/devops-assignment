@@ -1,0 +1,17 @@
+Notes app "{{ .Release.Name }}" - revision {{ .Release.Revision }} in namespace {{ .Release.Namespace }}
+
+  environment : {{ .Values.app.environment }}
+  replicas    : {{ .Values.replicaCount }}
+  image       : {{ include "notes.image" . }}
+  notes       : {{ len .Values.notes }}
+{{- if .Values.podDisruptionBudget.enabled }}
+  PDB         : minAvailable {{ .Values.podDisruptionBudget.minAvailable }}
+{{- end }}
+
+Open it:
+{{- if .Values.ingress.enabled }}
+  curl -H "Host: {{ .Values.ingress.host }}" http://localhost/      (through ingress-nginx)
+{{- else if eq .Values.service.type "NodePort" }}
+  curl http://<node-ip>:{{ .Values.service.nodePort | default "<auto>" }}/
+{{- end }}
+  kubectl -n {{ .Release.Namespace }} port-forward svc/{{ include "notes.fullname" . }} 8080:{{ .Values.service.port }}

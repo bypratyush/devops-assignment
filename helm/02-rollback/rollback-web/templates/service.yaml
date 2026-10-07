@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "rollback-web.fullname" . }}
+  labels:
+    {{- include "rollback-web.labels" . | nindent 4 }}
+spec:
+  type: ClusterIP
+  selector:
+    {{- include "rollback-web.selectorLabels" . | nindent 4 }}
+  ports:
+    - name: http
+      port: {{ .Values.service.port }}
+      # A port NAME, resolved per pod - old pods keep answering on 80 even
+      # while a bad revision's pods declare 8080.
+      targetPort: http

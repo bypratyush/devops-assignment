@@ -1,0 +1,14 @@
+{{- /* Added by me: the page nginx serves. Values flow in from values.yaml / -f / --set. */}}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "pratyush-web.fullname" . }}-page
+  labels:
+    {{- include "pratyush-web.labels" . | nindent 4 }}
+data:
+  index.html: |
+    message     : {{ .Values.web.message }}
+    environment : {{ .Values.web.environment }}
+    owner       : {{ .Values.web.owner }}
+    release     : {{ .Release.Name }} (revision {{ .Release.Revision }}) in namespace {{ .Release.Namespace }}
+    chart       : {{ include "pratyush-web.chart" . }}
