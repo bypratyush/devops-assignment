@@ -1,0 +1,22 @@
+# Copy to terraform.tfvars and edit. Never put credentials in this file.
+
+aws_region     = "ap-south-1"
+use_localstack = true # false = deploy to the real AWS account in your shell
+
+project_name = "s19-web"
+environment  = "dev"
+owner        = "Your Name"
+roll_no      = "YOURROLLNO"
+
+vpc_cidr            = "10.20.0.0/16"
+public_subnet_cidr  = "10.20.1.0/24"
+private_subnet_cidr = "10.20.2.0/24"
+
+# Your public IP as /32 (curl -s https://checkip.amazonaws.com)
+ssh_allowed_cidr = "203.0.113.10/32"
+
+instance_type = "t3.micro"
+# ami_id      = "ami-xxxxxxxxxxxxxxxxx" # optional: pin an AMI instead of the SSM lookup
+# key_name    = "my-keypair"            # optional: existing key pair for SSH
+
+bucket_name = "yourname-yourrollno-s19-artifacts"

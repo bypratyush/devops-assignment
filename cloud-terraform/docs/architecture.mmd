@@ -1,0 +1,33 @@
+flowchart LR
+    users(["Users on the internet"])
+    tf["Terraform<br/>(laptop)"]
+
+    subgraph region["Region ap-south-1"]
+        direction LR
+        igw["Internet Gateway<br/>s19-web-igw"]
+
+        subgraph vpc["VPC s19-web-vpc - 10.20.0.0/16"]
+            direction LR
+            rt["Public route table<br/>10.20.0.0/16 -> local<br/>0.0.0.0/0 -> IGW"]
+
+            subgraph pub["Public subnet 10.20.1.0/24 - ap-south-1a"]
+                subgraph sg["SG: 80 from anywhere, 22 from ssh_allowed_cidr"]
+                    ec2["EC2 t3.micro<br/>Amazon Linux 2023 + nginx<br/>IMDSv2, encrypted gp3"]
+                end
+            end
+
+            subgraph priv["Private subnet 10.20.2.0/24 - ap-south-1a"]
+                spare["main route table: local only<br/>no NAT (room for a DB later)"]
+            end
+        end
+
+        iam["IAM role + instance profile<br/>List/Get/Put on this bucket only"]
+        s3[("S3 artifacts bucket<br/>versioned, SSE-S3,<br/>public access blocked")]
+    end
+
+    users -- "HTTP :80" --> igw
+    tf -. "terraform apply<br/>(LocalStack or AWS)" .-> region
+    igw --> rt
+    rt -- "association" --> pub
+    iam -. "attached to" .-> ec2
+    ec2 -- "logs, artifacts" --> s3

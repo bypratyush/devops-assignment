@@ -1,0 +1,16 @@
+#!/bin/bash
+# First-boot script for the web instance (rendered by templatefile()).
+set -euxo pipefail
+
+dnf install -y nginx
+
+cat > /usr/share/nginx/html/index.html <<HTML
+<h1>${project}</h1>
+<p>Provisioned by Terraform for ${owner} (${roll_no}).</p>
+<p>Instance: $(hostname)</p>
+HTML
+
+systemctl enable --now nginx
+
+# The instance role allows writes to this bucket only (see iam.tf).
+aws s3 cp /var/log/cloud-init-output.log "s3://${bucket}/logs/$(hostname)/cloud-init-output.log"
