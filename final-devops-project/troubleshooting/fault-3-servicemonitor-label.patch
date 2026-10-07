@@ -1,0 +1,9 @@
+# Fault 3 - commit "Label ServiceMonitor for the prometheus release"
+--- a/final-devops-project/helm/lostfound/values-prod.yaml
++++ b/final-devops-project/helm/lostfound/values-prod.yaml
+@@
+ monitoring:
+   serviceMonitor:
+     enabled: true
++    labels:
++      release: prometheus

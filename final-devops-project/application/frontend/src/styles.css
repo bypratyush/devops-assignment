@@ -1,0 +1,78 @@
+:root {
+  --bg: #f4f5f7;
+  --card: #ffffff;
+  --ink: #1d232b;
+  --muted: #66707c;
+  --line: #dde1e6;
+  --lost: #c2410c;
+  --found: #15803d;
+  --claimed: #1d4ed8;
+  --closed: #6b7280;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  color: var(--ink);
+  background: var(--bg);
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; }
+.page { max-width: 1080px; margin: 0 auto; padding: 24px 16px 40px; }
+
+header { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; flex-wrap: wrap; }
+h1 { margin: 0 0 4px; font-size: 1.7rem; }
+.sub { margin: 0; color: var(--muted); }
+.env { display: flex; gap: 6px; flex-wrap: wrap; }
+.env span { background: var(--ink); color: #fff; font-size: 0.75rem; padding: 3px 8px; border-radius: 4px; font-family: ui-monospace, monospace; }
+
+.notice { margin-top: 16px; padding: 10px 14px; border-left: 4px solid var(--claimed); background: #e8eefc; border-radius: 4px; }
+.error { margin-top: 16px; padding: 10px 14px; border-left: 4px solid #b91c1c; background: #fdecec; border-radius: 4px; }
+
+.stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 20px 0; }
+.stat { background: var(--card); border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; display: flex; flex-direction: column; border-top: 4px solid; }
+.stat.lost { border-top-color: var(--lost); }
+.stat.found { border-top-color: var(--found); }
+.stat.claimed { border-top-color: var(--claimed); }
+.stat.closed { border-top-color: var(--closed); }
+.stat-value { font-size: 1.6rem; font-weight: 700; }
+.stat-label { color: var(--muted); font-size: 0.85rem; }
+
+main { display: grid; grid-template-columns: 340px 1fr; gap: 20px; align-items: start; }
+.card, .list { background: var(--card); border: 1px solid var(--line); border-radius: 8px; padding: 16px; }
+form { display: flex; flex-direction: column; gap: 10px; }
+form h2 { margin: 0 0 4px; font-size: 1.1rem; }
+input, select, textarea { font: inherit; padding: 8px 10px; border: 1px solid var(--line); border-radius: 6px; background: #fff; width: 100%; }
+button { font: inherit; padding: 7px 12px; border-radius: 6px; border: 1px solid var(--ink); background: var(--ink); color: #fff; cursor: pointer; }
+button.danger { background: #fff; color: #b91c1c; border-color: #e5b4b4; }
+.actions button:not(.danger) { background: #fff; color: var(--ink); border-color: var(--line); }
+
+.kind-toggle { display: flex; gap: 8px; }
+.kind-toggle label { flex: 1; text-align: center; padding: 7px; border: 1px solid var(--line); border-radius: 6px; cursor: pointer; font-size: 0.9rem; }
+.kind-toggle label.on { border-color: var(--ink); font-weight: 600; }
+.kind-toggle input { display: none; }
+
+.filters { display: grid; grid-template-columns: 1fr 150px 130px; gap: 8px; margin-bottom: 12px; }
+ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.item { border: 1px solid var(--line); border-left: 4px solid; border-radius: 6px; padding: 10px 12px; }
+.item.lost { border-left-color: var(--lost); }
+.item.found { border-left-color: var(--found); }
+.item.closed { opacity: 0.65; }
+.item-head { display: flex; align-items: center; gap: 8px; }
+.item-head h3 { margin: 0; font-size: 1rem; flex: 1; }
+.badge, .status { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.04em; padding: 2px 7px; border-radius: 4px; color: #fff; }
+.badge.lost { background: var(--lost); }
+.badge.found { background: var(--found); }
+.status.open { background: #9ca3af; }
+.status.claimed { background: var(--claimed); }
+.status.closed { background: var(--closed); }
+.desc { margin: 6px 0 4px; }
+.meta { margin: 2px 0; color: var(--muted); font-size: 0.88rem; }
+.meta.small { font-size: 0.78rem; }
+.actions { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
+.actions button { font-size: 0.8rem; padding: 4px 9px; }
+.empty { color: var(--muted); }
+footer { margin-top: 28px; color: var(--muted); font-size: 0.8rem; text-align: center; }
+
+@media (max-width: 760px) {
+  main { grid-template-columns: 1fr; }
+  .stats { grid-template-columns: repeat(2, 1fr); }
+  .filters { grid-template-columns: 1fr; }
+}

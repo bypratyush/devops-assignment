@@ -1,0 +1,28 @@
+server {
+    listen 8080;
+    server_name _;
+    root /usr/share/nginx/html;
+
+    # /api goes to the FastAPI backend. In Kubernetes the Ingress sends /api
+    # straight to the backend Service, so this only matters for compose.
+    location /api/ {
+        proxy_pass ${BACKEND_URL};
+        proxy_set_header Host $host;
+        proxy_set_header X-Request-ID $request_id;
+    }
+
+    location = /nginx-health {
+        access_log off;
+        return 200 "ok\n";
+    }
+
+    # single page app: unknown paths fall back to index.html
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+
+    location /assets/ {
+        expires 7d;
+        add_header Cache-Control "public, immutable";
+    }
+}

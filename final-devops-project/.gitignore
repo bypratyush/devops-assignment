@@ -1,0 +1,18 @@
+# python
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+.ruff_cache/
+.coverage
+coverage.xml
+# node
+node_modules/
+application/frontend/dist/
+# secrets and local config
+.env
+*.tfstate
+*.tfstate.*
+.terraform/
+# act runs of the pipeline (artifacts, event file, full logs)
+.act/

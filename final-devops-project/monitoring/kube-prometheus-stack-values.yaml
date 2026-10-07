@@ -1,0 +1,55 @@
+# kube-prometheus-stack, trimmed for a 3-node kind cluster on a laptop.
+#   helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+#   helm upgrade --install monitoring prometheus-community/kube-prometheus-stack \
+#     -n monitoring --create-namespace -f kube-prometheus-stack-values.yaml
+# The release name matters: ServiceMonitors/PrometheusRules are picked up when
+# they carry the label release=monitoring (see helm/lostfound/values.yaml).
+
+alertmanager:
+  enabled: false          # alert rules still evaluate and show in Prometheus /alerts
+
+nodeExporter:
+  enabled: false          # kind nodes are containers; cAdvisor via kubelet covers pod CPU/memory
+
+# control-plane components on kind listen on 127.0.0.1 only, so these targets
+# would just sit DOWN and add noise
+kubeEtcd:
+  enabled: false
+kubeScheduler:
+  enabled: false
+kubeControllerManager:
+  enabled: false
+kubeProxy:
+  enabled: false
+
+prometheus:
+  prometheusSpec:
+    retention: 2d
+    scrapeInterval: 15s
+    evaluationInterval: 15s
+    resources:
+      requests: { cpu: 100m, memory: 400Mi }
+      limits: { memory: 1Gi }
+
+grafana:
+  adminPassword: lostfound-grafana   # local demo only
+  # read-only anonymous access so dashboards can be screenshotted headlessly
+  grafana.ini:
+    auth.anonymous:
+      enabled: true
+      org_role: Viewer
+  sidecar:
+    dashboards:
+      enabled: true
+      label: grafana_dashboard
+      searchNamespace: ALL
+  resources:
+    requests: { cpu: 50m, memory: 128Mi }
+
+kube-state-metrics:
+  resources:
+    requests: { cpu: 20m, memory: 64Mi }
+
+prometheusOperator:
+  resources:
+    requests: { cpu: 50m, memory: 64Mi }

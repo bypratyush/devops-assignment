@@ -1,0 +1,54 @@
+# Local stack: frontend (nginx) + backend (FastAPI) + PostgreSQL.
+#   cd final-devops-project/docker
+#   cp .env.example .env
+#   docker compose up --build
+# then open http://localhost:3000
+name: lostfound
+
+services:
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: lostfound
+      POSTGRES_USER: lostfound
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?set DB_PASSWORD in .env}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U lostfound -d lostfound"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  backend:
+    build:
+      context: ../application/backend
+      dockerfile: ../../docker/backend.Dockerfile
+      args:
+        APP_VERSION: compose
+    environment:
+      APP_ENV: compose
+      DB_HOST: db
+      DB_NAME: lostfound
+      DB_USER: lostfound
+      DB_PASSWORD: ${DB_PASSWORD}
+      CAMPUS_NOTICE: "Running locally with docker compose"
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8000:8000"
+
+  frontend:
+    build:
+      context: ../application/frontend
+      dockerfile: ../../docker/frontend.Dockerfile
+    environment:
+      BACKEND_URL: http://backend:8000
+    depends_on:
+      - backend
+    ports:
+      - "3000:8080"
+
+volumes:
+  pgdata:

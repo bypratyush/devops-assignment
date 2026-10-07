@@ -1,0 +1,17 @@
+# Provider plugins downloaded by `terraform init` (hundreds of MB, rebuilt on init)
+.terraform/
+
+# State can contain resource attributes and secrets - never commit it
+*.tfstate
+*.tfstate.*
+
+# Saved plans (binary, may contain sensitive values)
+tfplan
+*.tfplan
+
+# Crash logs
+crash.log
+crash.*.log
+
+# terraform.tfvars is kept on purpose (the values of the recorded run) and
+# holds no secrets. Keep credentials in env vars or ~/.aws, never in tfvars.

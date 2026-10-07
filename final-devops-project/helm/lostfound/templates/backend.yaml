@@ -1,0 +1,87 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "lostfound.fullname" . }}-backend
+  labels:
+    {{- include "lostfound.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.backend.autoscaling.enabled }}
+  replicas: {{ .Values.backend.replicas }}
+  {{- end }}
+  revisionHistoryLimit: 5
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
+  selector:
+    matchLabels:
+      {{- include "lostfound.selector" (list . "backend") | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "lostfound.selector" (list . "backend") | nindent 8 }}
+      annotations:
+        # roll the pods when config or the password changes - env vars are only read at start
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+        checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
+    spec:
+      securityContext:
+        {{- include "lostfound.podSecurity" . | nindent 8 }}
+      containers:
+        - name: backend
+          image: {{ include "lostfound.image" (list . .Values.backend.image) }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.backend.port }}
+          env:
+            - name: APP_VERSION
+              value: {{ .Values.image.tag | quote }}
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "lostfound.dbSecretName" . }}
+                  key: DB_PASSWORD
+          envFrom:
+            - configMapRef:
+                name: {{ include "lostfound.fullname" . }}-config
+          # migrations run in the entrypoint (guarded by a Postgres advisory lock),
+          # so allow time for the DB on a cold start before liveness kicks in
+          startupProbe:
+            httpGet: { path: /health, port: http }
+            periodSeconds: 3
+            failureThreshold: 30
+          livenessProbe:
+            httpGet: { path: /health, port: http }
+            periodSeconds: 10
+            failureThreshold: 3
+          readinessProbe:
+            httpGet: { path: /ready, port: http }
+            periodSeconds: 5
+            failureThreshold: 2
+          resources:
+            {{- toYaml .Values.backend.resources | nindent 12 }}
+          securityContext:
+            {{- include "lostfound.containerSecurity" . | nindent 12 }}
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+      volumes:
+        - name: tmp
+          emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "lostfound.fullname" . }}-backend
+  labels:
+    {{- include "lostfound.labels" . | nindent 4 }}
+    app.kubernetes.io/component: backend
+spec:
+  type: ClusterIP
+  selector:
+    {{- include "lostfound.selector" (list . "backend") | nindent 4 }}
+  ports:
+    - name: http
+      port: 8000
+      targetPort: http

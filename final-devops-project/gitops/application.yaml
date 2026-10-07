@@ -1,0 +1,32 @@
+# Argo CD Application for the real setup: GitHub is the source of truth.
+# CI (deploy-gitops job) commits the new image tag to values-prod.yaml on main,
+# and Argo CD pulls it - the cluster is never pushed to from CI.
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: lostfound
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/bypratyush/devops-assignment.git
+    targetRevision: main
+    path: final-devops-project/helm/lostfound
+    helm:
+      valueFiles:
+        - values-prod.yaml
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: lostfound
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+    # same labels as kubernetes/namespace.yaml, so Argo CD owns the namespace too
+    managedNamespaceMetadata:
+      labels:
+        app.kubernetes.io/part-of: lostfound
+        pod-security.kubernetes.io/enforce: restricted
+        pod-security.kubernetes.io/warn: restricted

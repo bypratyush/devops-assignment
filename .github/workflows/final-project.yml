@@ -1,0 +1,385 @@
+# Session 21 - Final project pipeline for final-devops-project/ (Campus Lost & Found)
+#
+#   backend-test --+-- docker-build -- image-scan --+
+#   frontend-build-+-- sast ------------------------+
+#                  +-- sca -------------------------+-- security-gate -- push -- deploy-gitops
+#                  +-- secret-scan -----------------+
+#
+# Tests and scanners only report. security-gate looks at every job's result and
+# fails if any of them did not succeed, so nothing reaches the registry (and
+# Argo CD never sees a new tag) unless everything is green. Images are tagged
+# with the short commit SHA, never :latest.
+name: "S21 Final Project - Campus Lost & Found"
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "final-devops-project/**"
+      - ".github/workflows/final-project.yml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "final-devops-project/**"
+      - ".github/workflows/final-project.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: s21-final-${{ github.ref }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    shell: bash
+    working-directory: final-devops-project
+
+env:
+  PIP_DISABLE_PIP_VERSION_CHECK: "1"
+  PIP_ROOT_USER_ACTION: ignore
+  TRIVY_NO_PROGRESS: "true"
+  BACKEND_IMAGE: lostfound-backend
+  FRONTEND_IMAGE: lostfound-frontend
+
+jobs:
+  backend-test:
+    name: Backend - lint, test, migrations
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: final-devops-project/application/backend
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_DB: lostfound
+          POSTGRES_USER: lostfound
+          POSTGRES_PASSWORD: ci-only-password
+        # fixed host port: the job reaches it on localhost both on a GitHub
+        # runner and under act (whose job containers use the host network)
+        ports:
+          - 25432:5432
+        options: >-
+          --health-cmd "pg_isready -U lostfound -d lostfound"
+          --health-interval 5s --health-timeout 3s --health-retries 10
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+      - name: Install dependencies
+        run: pip install --quiet -r requirements-dev.txt
+      - name: ruff check + ruff format --check
+        run: |
+          ruff check --output-format=github .
+          ruff format --check .
+      - name: pytest with coverage (SQLite, set in tests/conftest.py)
+        run: |
+          mkdir -p reports
+          python -m pytest -v \
+            --junitxml=reports/junit.xml \
+            --cov=app --cov-report=term-missing \
+            --cov-report=xml:reports/coverage.xml
+      - name: Alembic upgrade head / downgrade base on real Postgres 17
+        env:
+          DB_USER: lostfound
+          DB_PASSWORD: ci-only-password
+          DB_NAME: lostfound
+          DB_HOST: localhost
+          DB_PORT: "25432"
+        run: |
+          echo "postgres at ${DB_HOST}:${DB_PORT}"
+          for i in $(seq 1 30); do
+            python -c "import psycopg,os; psycopg.connect(host=os.environ['DB_HOST'], port=os.environ['DB_PORT'], user=os.environ['DB_USER'], password=os.environ['DB_PASSWORD'], dbname=os.environ['DB_NAME']).close()" 2>/dev/null && break
+            sleep 2
+          done
+          alembic upgrade head
+          alembic current
+          python -c "import psycopg,os; c=psycopg.connect(host=os.environ['DB_HOST'], port=os.environ['DB_PORT'], user=os.environ['DB_USER'], password=os.environ['DB_PASSWORD'], dbname=os.environ['DB_NAME']); print('tables:', sorted(r[0] for r in c.execute(\"select tablename from pg_tables where schemaname='public'\")))"
+          alembic downgrade base
+          alembic current
+          python -c "import psycopg,os; c=psycopg.connect(host=os.environ['DB_HOST'], port=os.environ['DB_PORT'], user=os.environ['DB_USER'], password=os.environ['DB_PASSWORD'], dbname=os.environ['DB_NAME']); print('tables:', sorted(r[0] for r in c.execute(\"select tablename from pg_tables where schemaname='public'\")))"
+      - name: Upload test report and coverage
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v5
+        with:
+          name: backend-test-report
+          path: final-devops-project/application/backend/reports/
+          retention-days: 7
+
+  frontend-build:
+    name: Frontend - npm ci + build
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: final-devops-project/application/frontend
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "22"
+      - name: npm ci
+        run: npm ci --no-fund
+      - name: npm run build
+        run: |
+          npm run build
+          ls -l dist dist/assets
+      - uses: actions/upload-artifact@v5
+        with:
+          name: frontend-dist
+          path: final-devops-project/application/frontend/dist/
+          retention-days: 3
+
+  sast:
+    name: SAST (Bandit)
+    needs: [backend-test, frontend-build]
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: final-devops-project/application/backend
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+      - name: bandit -r app (any finding fails the job)
+        run: |
+          pip install --quiet bandit==1.9.4
+          mkdir -p reports
+          bandit -c ../../security/bandit.yaml -r app -f json -o reports/bandit.json --exit-zero
+          bandit -c ../../security/bandit.yaml -r app
+      - uses: actions/upload-artifact@v5
+        if: ${{ always() }}
+        with:
+          name: report-sast
+          path: final-devops-project/application/backend/reports/bandit.json
+
+  sca:
+    name: SCA (pip-audit + npm audit)
+    needs: [backend-test, frontend-build]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "22"
+      - name: pip-audit on the pinned backend requirements
+        working-directory: final-devops-project/application/backend
+        run: |
+          pip install --quiet pip-audit==2.10.1
+          pip-audit -r requirements.txt --desc on --progress-spinner off
+      - name: npm audit (fails on high or critical)
+        working-directory: final-devops-project/application/frontend
+        run: npm audit --audit-level=high
+
+  secret-scan:
+    name: Secret scan (gitleaks)
+    needs: [backend-test, frontend-build]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Install gitleaks (pinned, checksum verified)
+        run: |
+          ./security/install-tools.sh gitleaks
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+      - name: gitleaks over final-devops-project/ only
+        run: |
+          mkdir -p reports
+          gitleaks dir . --config security/gitleaks.toml --redact --no-banner \
+            --report-format json --report-path reports/gitleaks.json -v
+      - uses: actions/upload-artifact@v5
+        if: ${{ always() }}
+        with:
+          name: report-secrets
+          path: final-devops-project/reports/gitleaks.json
+
+  docker-build:
+    name: Docker build (tag = short SHA)
+    needs: [backend-test, frontend-build]
+    runs-on: ubuntu-latest
+    outputs:
+      tag: ${{ steps.build.outputs.tag }}
+    steps:
+      - uses: actions/checkout@v6
+      - name: docker build both images
+        id: build
+        run: |
+          tag="${GITHUB_SHA::7}"
+          docker build --provenance=false --build-arg APP_VERSION="${tag}" \
+            -f docker/backend.Dockerfile -t "${BACKEND_IMAGE}:${tag}" application/backend
+          docker build --provenance=false \
+            -f docker/frontend.Dockerfile -t "${FRONTEND_IMAGE}:${tag}" application/frontend
+          mkdir -p dist
+          docker save "${BACKEND_IMAGE}:${tag}" -o dist/backend.tar
+          docker save "${FRONTEND_IMAGE}:${tag}" -o dist/frontend.tar
+          docker image ls --filter "reference=lostfound-*:${tag}"
+          ls -lh dist/
+          echo "tag=${tag}" >> "$GITHUB_OUTPUT"
+      - uses: actions/upload-artifact@v5
+        with:
+          name: images
+          path: final-devops-project/dist/*.tar
+          retention-days: 1
+
+  image-scan:
+    name: Image scan (Trivy)
+    needs: docker-build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/download-artifact@v7
+        with:
+          name: images
+          path: final-devops-project/dist
+      - name: Install Trivy (pinned, checksum verified)
+        run: |
+          ./security/install-tools.sh trivy
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+      - name: Trivy - HIGH,CRITICAL with a fix available fails the job
+        run: |
+          mkdir -p reports
+          rc=0
+          for img in backend frontend; do
+            echo "=== ${img} image (lostfound-${img}:${{ needs.docker-build.outputs.tag }}) ==="
+            trivy image --quiet --input "dist/${img}.tar" --scanners vuln \
+              --severity HIGH,CRITICAL --ignore-unfixed --exit-code 1 \
+              --format table --output "reports/trivy-${img}.txt" || rc=1
+            cat "reports/trivy-${img}.txt"
+          done
+          exit $rc
+      - uses: actions/upload-artifact@v5
+        if: ${{ always() }}
+        with:
+          name: report-image-scan
+          path: final-devops-project/reports/
+
+  security-gate:
+    name: Security gate
+    needs: [backend-test, frontend-build, sast, sca, secret-scan, docker-build, image-scan]
+    if: ${{ always() }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Every check must be green
+        env:
+          R_TEST: ${{ needs.backend-test.result }}
+          R_FRONT: ${{ needs.frontend-build.result }}
+          R_SAST: ${{ needs.sast.result }}
+          R_SCA: ${{ needs.sca.result }}
+          R_SECRETS: ${{ needs.secret-scan.result }}
+          R_BUILD: ${{ needs.docker-build.result }}
+          R_IMAGE: ${{ needs.image-scan.result }}
+        working-directory: .
+        run: |
+          fail=0
+          row() {  # row <check> <tool> <threshold> <result>
+            if [ "$4" = "success" ]; then mark="PASS"; else mark="FAIL"; fail=1; fi
+            printf '%-14s %-24s %-38s %-8s %s\n' "$1" "$2" "$3" "$4" "$mark"
+            echo "| $1 | $2 | $3 | \`$4\` | **$mark** |" >> "$GITHUB_STEP_SUMMARY"
+          }
+          {
+            echo "### Security gate - commit \`${GITHUB_SHA::7}\`"
+            echo ""
+            echo "| Check | Tool | Fails on | Job result | Gate |"
+            echo "|---|---|---|---|---|"
+          } >> "$GITHUB_STEP_SUMMARY"
+          printf '%-14s %-24s %-38s %-8s %s\n' CHECK TOOL "FAILS ON" RESULT GATE
+          row "Unit tests"  "pytest + alembic"        "any failing test or migration"        "$R_TEST"
+          row "Frontend"    "npm ci + vite build"     "build error"                          "$R_FRONT"
+          row "SAST"        "bandit 1.9.4"            "any finding in app/"                  "$R_SAST"
+          row "SCA"         "pip-audit + npm audit"   "any Python vuln; npm high/critical"   "$R_SCA"
+          row "Secrets"     "gitleaks 8.30.1"         "any leak"                             "$R_SECRETS"
+          row "Build"       "docker build"            "build error"                          "$R_BUILD"
+          row "Image scan"  "trivy 0.74.0"            "HIGH/CRITICAL with a fix"             "$R_IMAGE"
+          if [ "$fail" = 1 ]; then
+            echo "" >> "$GITHUB_STEP_SUMMARY"
+            echo "Gate **closed** - nothing is pushed." >> "$GITHUB_STEP_SUMMARY"
+            echo "::error::security gate closed"
+            exit 1
+          fi
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "Gate **open** - images may be pushed." >> "$GITHUB_STEP_SUMMARY"
+          echo "gate open"
+
+  push:
+    name: Push images
+    needs: [docker-build, security-gate]
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/download-artifact@v7
+        with:
+          name: images
+          path: final-devops-project/dist
+      - name: Log in to GHCR
+        if: ${{ !env.ACT }}
+        uses: docker/login-action@v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Push the scanned images
+        env:
+          OWNER: ${{ github.repository_owner }}
+          TAG: ${{ needs.docker-build.outputs.tag }}
+        run: |
+          # under act a local registry:2 on 127.0.0.1:5057 stands in for GHCR
+          if [ -n "${ACT:-}" ]; then registry=127.0.0.1:5057; else registry=ghcr.io; fi
+          owner=$(echo "$OWNER" | tr '[:upper:]' '[:lower:]')
+          echo "| Image | Digest |" >> "$GITHUB_STEP_SUMMARY"
+          echo "|---|---|" >> "$GITHUB_STEP_SUMMARY"
+          for img in backend frontend; do
+            docker load --input "dist/${img}.tar"
+            repo="${registry}/${owner}/lostfound-${img}"
+            docker tag "lostfound-${img}:${TAG}" "${repo}:${TAG}"
+            docker push "${repo}:${TAG}" | tee "/tmp/push-${img}.log"
+            digest=$(grep -oE 'digest: sha256:[0-9a-f]{64}' "/tmp/push-${img}.log" | cut -d' ' -f2)
+            echo "pushed ${repo}:${TAG} (${digest})"
+            echo "| \`${repo}:${TAG}\` | \`${digest}\` |" >> "$GITHUB_STEP_SUMMARY"
+          done
+
+  deploy-gitops:
+    name: Deploy (GitOps - bump image.tag for Argo CD)
+    needs: [docker-build, push]
+    # act cannot push to GitHub, so a local run skips this job:
+    #   act ... -e final-devops-project/.act/event-push.json   (contains {"act": true})
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && !github.event.act }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    env:
+      TAG: ${{ needs.docker-build.outputs.tag }}
+      VALUES: final-devops-project/helm/lostfound/values-prod.yaml
+    defaults:
+      run:
+        working-directory: .
+    steps:
+      - uses: actions/checkout@v6
+      - name: Set image.tag in values-prod.yaml
+        run: |
+          # yq is preinstalled on GitHub's ubuntu runners; sed is the fallback
+          # values-prod.yaml starts with  image:\n  tag: "<x>"  - only that key changes
+          if command -v yq >/dev/null; then
+            yq -i '.image.tag = strenv(TAG)' "$VALUES"
+          else
+            sed -i -E "/^image:/,/^[^ ]/ s/^  tag: .*/  tag: \"${TAG}\"/" "$VALUES"
+          fi
+          git diff -- "$VALUES"
+      - name: Commit and push the new tag (Argo CD syncs from Git)
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "$VALUES"
+          if git diff --cached --quiet; then echo "image.tag already ${TAG}"; exit 0; fi
+          git commit -m "deploy(final-project): lostfound image.tag -> ${TAG} [skip ci]"
+          git pull --rebase origin main
+          git push origin HEAD:main
+          echo "Argo CD will sync lostfound to ${TAG}" >> "$GITHUB_STEP_SUMMARY"

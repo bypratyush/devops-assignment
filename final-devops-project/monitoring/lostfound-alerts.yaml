@@ -1,0 +1,40 @@
+# Alert rules for the Lost & Found API. The release=monitoring label is what
+# makes the kube-prometheus-stack Prometheus load this rule group.
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: lostfound-alerts
+  namespace: monitoring
+  labels:
+    release: monitoring
+spec:
+  groups:
+    - name: lostfound
+      rules:
+        - alert: LostFoundBackendDown
+          expr: sum(up{namespace="lostfound", service="lostfound-backend"}) == 0 or absent(up{namespace="lostfound", service="lostfound-backend"})
+          for: 1m
+          labels: { severity: critical }
+          annotations:
+            summary: No backend pod is being scraped successfully
+        - alert: LostFoundDatabaseDown
+          expr: max(lostfound_db_up{namespace="lostfound"}) == 0
+          for: 30s
+          labels: { severity: critical }
+          annotations:
+            summary: Backend readiness check cannot reach PostgreSQL
+        - alert: LostFoundHighErrorRate
+          expr: |
+            sum(rate(lostfound_http_requests_total{namespace="lostfound", status=~"5.."}[2m]))
+              / clamp_min(sum(rate(lostfound_http_requests_total{namespace="lostfound"}[2m])), 1e-9) > 0.05
+          for: 1m
+          labels: { severity: warning }
+          annotations:
+            summary: More than 5% of API requests are failing with 5xx
+        - alert: LostFoundSlowRequests
+          expr: |
+            histogram_quantile(0.95, sum by (le) (rate(lostfound_http_request_duration_seconds_bucket{namespace="lostfound"}[5m]))) > 0.5
+          for: 2m
+          labels: { severity: warning }
+          annotations:
+            summary: p95 API latency above 500ms

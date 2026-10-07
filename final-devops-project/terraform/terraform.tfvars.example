@@ -1,0 +1,25 @@
+# Copy to terraform.tfvars and adjust. No secrets belong in here: credentials
+# come from env vars / ~/.aws / SSO, never from tfvars.
+
+aws_region     = "ap-south-1"
+use_localstack = true # false = real AWS account
+# localstack_endpoint = "http://localhost:4567"
+
+project_name = "lostfound"
+environment  = "prod"
+owner        = "Your Name"
+roll_no      = "YOURROLLNO"
+
+vpc_cidr             = "10.20.0.0/16"
+availability_zones   = ["ap-south-1a", "ap-south-1b"]
+public_subnet_cidrs  = ["10.20.1.0/24", "10.20.2.0/24"]
+private_subnet_cidrs = ["10.20.11.0/24", "10.20.12.0/24"]
+
+# true only on real AWS (LocalStack Community has no EKS API). Costs money.
+enable_eks          = false
+eks_version         = "1.35"
+node_instance_types = ["t3.medium"]
+node_scaling        = { min = 1, desired = 2, max = 3 }
+
+backup_bucket_name     = "yourname-yourrollno-lostfound-db-backups"
+backup_noncurrent_days = 30

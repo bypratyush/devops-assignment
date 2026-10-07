@@ -1,0 +1,17 @@
+# gitleaks config for final-devops-project/ only (the secret-scan job runs
+# `gitleaks dir .` from that folder). The full default rule set (about 200
+# rules) plus one project rule. Nothing is allow-listed.
+title = "final-devops-project"
+
+[extend]
+useDefault = true
+
+# A Postgres URL with an inline password, e.g. postgresql://user:hunter2@db/x.
+# The app builds its URL from DB_PASSWORD at runtime, so a literal one in a
+# file is always a leak.
+[[rules]]
+id = "lostfound-postgres-url-with-password"
+description = "Postgres connection string with an inline password"
+regex = '''postgres(?:ql)?(?:\+psycopg)?://[^:\s/]+:([^@\s{}$]{3,})@'''
+secretGroup = 1
+keywords = ["postgres"]

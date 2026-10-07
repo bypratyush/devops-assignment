@@ -1,0 +1,15 @@
+Campus Lost & Found is installed as release "{{ .Release.Name }}" in namespace "{{ .Release.Namespace }}".
+
+  environment : {{ .Values.config.appEnv }}
+  image tag   : {{ .Values.image.tag }}
+  backend     : {{ if .Values.backend.autoscaling.enabled }}HPA {{ .Values.backend.autoscaling.minReplicas }}-{{ .Values.backend.autoscaling.maxReplicas }} replicas{{ else }}{{ .Values.backend.replicas }} replica(s){{ end }}
+  frontend    : {{ .Values.frontend.replicas }} replica(s)
+{{- if .Values.ingress.enabled }}
+
+Open it through the Ingress:
+  curl -H "Host: {{ .Values.ingress.host }}" http://localhost/api/info
+  (or add "127.0.0.1 {{ .Values.ingress.host }}" to /etc/hosts and browse http://{{ .Values.ingress.host }})
+{{- end }}
+
+Watch it come up:
+  kubectl -n {{ .Release.Namespace }} get pods -w

@@ -1,0 +1,9 @@
+# Fault 2 - commit "Rename backend component to api in Service"
+--- a/final-devops-project/helm/lostfound/templates/backend.yaml
++++ b/final-devops-project/helm/lostfound/templates/backend.yaml
+@@ kind: Service
+ spec:
+   type: ClusterIP
+   selector:
+-    {{- include "lostfound.selector" (list . "backend") | nindent 4 }}
++    {{- include "lostfound.selector" (list . "api") | nindent 4 }}

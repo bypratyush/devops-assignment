@@ -1,0 +1,7 @@
+# Fault 1 - commit "Release backend and frontend 1.0.1"
+--- a/final-devops-project/helm/lostfound/values-prod.yaml
++++ b/final-devops-project/helm/lostfound/values-prod.yaml
+@@
+ image:
+-  tag: "1.0.0"
++  tag: "1.0.1"

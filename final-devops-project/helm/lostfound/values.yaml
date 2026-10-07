@@ -1,0 +1,61 @@
+# Default values. values-dev.yaml / values-prod.yaml override per environment.
+
+image:
+  registry: ghcr.io/bypratyush
+  # CI writes the commit SHA here (see .github/workflows/final-project.yml)
+  tag: "dev"
+  pullPolicy: IfNotPresent
+
+config:
+  appEnv: dev
+  logLevel: INFO
+  campusNotice: ""
+
+backend:
+  replicas: 2
+  image: lostfound-backend
+  port: 8000
+  resources:
+    requests: { cpu: 100m, memory: 128Mi }
+    limits: { cpu: 500m, memory: 256Mi }
+  autoscaling:
+    enabled: true
+    minReplicas: 2
+    maxReplicas: 6
+    targetCPUUtilizationPercentage: 60
+
+frontend:
+  replicas: 2
+  image: lostfound-frontend
+  port: 8080
+  resources:
+    requests: { cpu: 25m, memory: 32Mi }
+    limits: { cpu: 200m, memory: 64Mi }
+
+database:
+  image: postgres:17-alpine
+  name: lostfound
+  user: lostfound
+  # Only used when existingSecret is empty. Never put a real password in Git:
+  # in prod pass it with --set or point existingSecret at a pre-created Secret.
+  password: ""
+  existingSecret: ""
+  storage:
+    size: 1Gi
+    storageClassName: ""   # empty = cluster default (local-path on kind)
+  resources:
+    requests: { cpu: 100m, memory: 128Mi }
+    limits: { cpu: 500m, memory: 512Mi }
+
+ingress:
+  enabled: true
+  className: nginx
+  host: lostfound.local
+
+monitoring:
+  serviceMonitor:
+    enabled: false
+    # must match the Prometheus serviceMonitorSelector (kube-prometheus-stack uses release=<name>)
+    labels:
+      release: monitoring
+    interval: 15s

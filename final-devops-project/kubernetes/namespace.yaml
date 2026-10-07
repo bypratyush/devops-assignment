@@ -1,0 +1,10 @@
+# Bootstrap: the namespace the app runs in. Applied once, before Helm/Argo CD.
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: lostfound
+  labels:
+    app.kubernetes.io/part-of: lostfound
+    # enforce the "restricted" Pod Security Standard - the chart is written to pass it
+    pod-security.kubernetes.io/enforce: restricted
+    pod-security.kubernetes.io/warn: restricted

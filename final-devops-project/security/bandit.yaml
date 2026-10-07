@@ -1,0 +1,10 @@
+# Bandit (SAST) config for the Lost & Found backend.
+# Used by the sast job:  bandit -c ../../security/bandit.yaml -r app
+#
+# Only the application package is scanned. Tests are excluded because pytest's
+# plain `assert` statements are exactly what B101 is meant to flag in app code.
+# Nothing is skipped: every finding in app/ fails the job.
+exclude_dirs:
+  - tests
+  - alembic/versions
+skips: []

@@ -1,0 +1,25 @@
+# The image tag below is written by CI (deploy-gitops job in
+# .github/workflows/final-project.yml) and Argo CD deploys whatever is here.
+image:
+  tag: "1.0.0"
+
+config:
+  appEnv: prod
+  logLevel: INFO
+  campusNotice: "Help desk is open 9am - 5pm, Block A ground floor"
+backend:
+  replicas: 2
+  autoscaling:
+    enabled: true
+    minReplicas: 2
+    maxReplicas: 6
+frontend:
+  replicas: 2
+database:
+  # created out of band:  kubectl -n lostfound create secret generic lostfound-db --from-literal=DB_PASSWORD=...
+  existingSecret: lostfound-db
+  storage:
+    size: 2Gi
+monitoring:
+  serviceMonitor:
+    enabled: true
