@@ -1,8 +1,7 @@
 # The image tag below is written by CI (deploy-gitops job in
 # .github/workflows/final-project.yml) and Argo CD deploys whatever is here.
 image:
-  tag: "1.0.0"
-
+  tag: "4c11b6e"
 config:
   appEnv: prod
   logLevel: INFO
