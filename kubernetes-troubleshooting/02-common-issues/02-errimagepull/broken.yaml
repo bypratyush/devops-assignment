@@ -1,0 +1,28 @@
+# ErrImagePull - the image reference has a typo in the TAG.
+#
+# Registry note: docker.io was returning "429 Too Many Requests" to this
+# cluster's anonymous pulls while I worked on this (see README), which would
+# hide the real error. mirror.gcr.io is Google's pull-through mirror of the
+# Docker Hub library images, so the same nginx tags exist there and a bad tag
+# gets an honest "not found".
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: storefront
+  namespace: s14-issues
+spec:
+  replicas: 1
+  selector:
+    matchLabels: { app: storefront }
+  template:
+    metadata:
+      labels: { app: storefront, issue: errimagepull }
+    spec:
+      containers:
+        - name: web
+          image: mirror.gcr.io/library/nginx:1.27-alpne     # BUG: "alpne"
+          ports:
+            - containerPort: 80
+          resources:
+            requests: { cpu: 10m, memory: 16Mi }
+            limits:   { cpu: 100m, memory: 64Mi }

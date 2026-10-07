@@ -1,0 +1,109 @@
+# A small, deliberately varied workload to practise the troubleshooting
+# commands on: a Deployment + Service, a two-container pod, a pod that
+# restarts on its own (for logs --previous), and a pod that burns a little CPU
+# (so kubectl top has something to show).
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: s14-commands
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web
+  namespace: s14-commands
+spec:
+  replicas: 2
+  selector:
+    matchLabels: { app: web }
+  template:
+    metadata:
+      labels: { app: web, tier: frontend }
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:1.27-alpine
+          ports: [{ name: http, containerPort: 80 }]
+          resources:
+            requests: { cpu: 20m, memory: 16Mi }
+            limits:   { cpu: 100m, memory: 64Mi }
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: web
+  namespace: s14-commands
+spec:
+  selector: { app: web }
+  ports: [{ port: 80, targetPort: http }]
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: multi
+  namespace: s14-commands
+  labels: { app: multi }
+spec:
+  containers:
+    - name: app
+      image: busybox:1.36
+      command: ["sh", "-c", "i=0; while true; do i=$((i+1)); echo \"[app] handled request $i\"; sleep 2; done"]
+      resources:
+        requests: { cpu: 10m, memory: 8Mi }
+        limits:   { cpu: 50m, memory: 32Mi }
+    - name: sidecar
+      image: busybox:1.36
+      command: ["sh", "-c", "i=0; while true; do i=$((i+1)); echo \"[sidecar] shipped log batch $i\"; sleep 3; done"]
+      resources:
+        requests: { cpu: 10m, memory: 8Mi }
+        limits:   { cpu: 50m, memory: 32Mi }
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: flaky
+  namespace: s14-commands
+  labels: { app: flaky }
+spec:
+  containers:
+    - name: flaky
+      image: busybox:1.36
+      command: ["sh", "-c", "echo \"run started at $(date +%T)\"; sleep 45; echo 'lost connection to cache, exiting' >&2; exit 1"]
+      resources:
+        requests: { cpu: 10m, memory: 8Mi }
+        limits:   { cpu: 50m, memory: 32Mi }
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: cpu-burner
+  namespace: s14-commands
+  labels: { app: cpu-burner }
+spec:
+  containers:
+    - name: burner
+      image: busybox:1.36
+      command: ["sh", "-c", "while true; do :; done"]
+      resources:
+        requests: { cpu: 50m, memory: 8Mi }
+        limits:   { cpu: 150m, memory: 16Mi }      # capped, so it cannot hurt the node
+---
+# Running but never Ready: its readiness probe checks a port nothing listens on.
+# Gives `get` a READY 0/1 and `events` a steady stream of Warning events.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: not-ready
+  namespace: s14-commands
+  labels: { app: not-ready }
+spec:
+  containers:
+    - name: app
+      image: busybox:1.36
+      command: ["sh", "-c", "echo 'up, but nothing listens on 8080'; sleep 3600"]
+      readinessProbe:
+        tcpSocket: { port: 8080 }
+        periodSeconds: 5
+      resources:
+        requests: { cpu: 10m, memory: 8Mi }
+        limits:   { cpu: 50m, memory: 16Mi }

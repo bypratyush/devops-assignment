@@ -1,0 +1,22 @@
+# Fixed: the tag that actually exists in the registry.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: storefront
+  namespace: s14-issues
+spec:
+  replicas: 1
+  selector:
+    matchLabels: { app: storefront }
+  template:
+    metadata:
+      labels: { app: storefront, issue: errimagepull }
+    spec:
+      containers:
+        - name: web
+          image: mirror.gcr.io/library/nginx:1.27-alpine    # FIX: correct tag
+          ports:
+            - containerPort: 80
+          resources:
+            requests: { cpu: 10m, memory: 16Mi }
+            limits:   { cpu: 100m, memory: 64Mi }

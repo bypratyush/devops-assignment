@@ -1,0 +1,113 @@
+# DNS issues - two different ways a pod fails to resolve a Service name.
+#
+#  checkout     (ns s14-issues) calls http://payments:8080, but the payments
+#               Service lives in namespace s14-shop. Short names only resolve
+#               inside the caller's own namespace -> NXDOMAIN.
+#  report-mailer (ns s14-issues) has dnsPolicy: None with a hand-written
+#               nameserver that is not CoreDNS -> every lookup times out.
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: s14-shop
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payments
+  namespace: s14-shop
+spec:
+  replicas: 1
+  selector:
+    matchLabels: { app: payments }
+  template:
+    metadata:
+      labels: { app: payments, issue: dns }
+    spec:
+      containers:
+        - name: payments
+          image: nginxdemos/nginx-hello:plain-text
+          ports: [{ name: http, containerPort: 8080 }]
+          resources:
+            requests: { cpu: 10m, memory: 16Mi }
+            limits:   { cpu: 100m, memory: 64Mi }
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: payments
+  namespace: s14-shop
+spec:
+  selector: { app: payments }
+  ports: [{ port: 8080, targetPort: http }]
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: checkout
+  namespace: s14-issues
+spec:
+  replicas: 1
+  selector:
+    matchLabels: { app: checkout }
+  template:
+    metadata:
+      labels: { app: checkout, issue: dns }
+    spec:
+      containers:
+        - name: checkout
+          image: curlimages/curl:8.5.0
+          env:
+            - name: PAYMENTS_URL
+              value: "http://payments:8080"          # BUG: short name, wrong namespace
+          command: ["sh", "-c"]
+          args:
+            - |
+              while true; do
+                if out=$(curl -sS -m 3 "$PAYMENTS_URL/" 2>&1); then
+                  echo "$(date +%T) payments OK - $(echo "$out" | grep 'Server name')"
+                else
+                  echo "$(date +%T) payments call FAILED - $out"
+                fi
+                sleep 5
+              done
+          resources:
+            requests: { cpu: 10m, memory: 16Mi }
+            limits:   { cpu: 100m, memory: 32Mi }
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: report-mailer
+  namespace: s14-issues
+spec:
+  replicas: 1
+  selector:
+    matchLabels: { app: report-mailer }
+  template:
+    metadata:
+      labels: { app: report-mailer, issue: dns }
+    spec:
+      dnsPolicy: "None"                              # BUG: opts out of cluster DNS
+      dnsConfig:
+        nameservers: ["10.96.0.99"]                  # BUG: not the kube-dns Service IP
+        searches: ["s14-issues.svc.cluster.local", "svc.cluster.local", "cluster.local"]
+      containers:
+        - name: mailer
+          image: curlimages/curl:8.5.0
+          env:
+            - name: PAYMENTS_URL
+              value: "http://payments.s14-shop.svc.cluster.local:8080"
+          command: ["sh", "-c"]
+          args:
+            - |
+              while true; do
+                if out=$(curl -sS -m 3 "$PAYMENTS_URL/" 2>&1); then
+                  echo "$(date +%T) payments OK - $(echo "$out" | grep 'Server name')"
+                else
+                  echo "$(date +%T) payments call FAILED - $out"
+                fi
+                sleep 5
+              done
+          resources:
+            requests: { cpu: 10m, memory: 16Mi }
+            limits:   { cpu: 100m, memory: 32Mi }

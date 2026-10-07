@@ -1,0 +1,10 @@
+# The broken pod with a tag that exists (the same one the Deployment uses).
+apiVersion: v1
+kind: Pod
+metadata:
+  name: project-broken-pod
+  namespace: s14-mini
+spec:
+  containers:
+    - name: app
+      image: nginx:1.27

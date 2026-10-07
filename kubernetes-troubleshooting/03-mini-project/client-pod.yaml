@@ -1,0 +1,11 @@
+# Something inside the cluster to test the Service from (the nginx image has no curl).
+apiVersion: v1
+kind: Pod
+metadata:
+  name: curl-client
+  namespace: s14-mini
+spec:
+  containers:
+    - name: curl
+      image: curlimages/curl:8.5.0
+      command: ["sh", "-c", "sleep 3600"]

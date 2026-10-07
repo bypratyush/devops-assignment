@@ -1,0 +1,6 @@
+# Every broken/fixed manifest in 02-common-issues lives in this namespace,
+# so the whole lab can be removed with one `kubectl delete ns s14-issues`.
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: s14-issues

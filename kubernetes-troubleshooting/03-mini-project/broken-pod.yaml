@@ -1,0 +1,10 @@
+# From the session-14 mini-project: an image tag that does not exist.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: project-broken-pod
+  namespace: s14-mini
+spec:
+  containers:
+    - name: app
+      image: nginx:this-tag-does-not-exist

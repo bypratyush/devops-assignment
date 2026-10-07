@@ -1,0 +1,46 @@
+# Fixed: a CPU request the job really needs (it was measured at a few
+# millicores), and no nodeSelector for a label that does not exist here.
+# (The other valid fix for search-indexer is to label the right node,
+#  `kubectl label node <node> disktype=ssd` - not done on this shared cluster.)
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: report-builder
+  namespace: s14-issues
+spec:
+  replicas: 1
+  selector:
+    matchLabels: { app: report-builder }
+  template:
+    metadata:
+      labels: { app: report-builder, issue: pending }
+    spec:
+      containers:
+        - name: builder
+          image: busybox:1.36
+          command: ["sh", "-c", "echo building reports; sleep 3600"]
+          resources:
+            requests: { cpu: 100m, memory: 32Mi }     # FIX: realistic request
+            limits:   { cpu: 500m, memory: 64Mi }
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: search-indexer
+  namespace: s14-issues
+spec:
+  replicas: 1
+  selector:
+    matchLabels: { app: search-indexer }
+  template:
+    metadata:
+      labels: { app: search-indexer, issue: pending }
+    spec:
+      # FIX: nodeSelector removed
+      containers:
+        - name: indexer
+          image: busybox:1.36
+          command: ["sh", "-c", "echo indexing; sleep 3600"]
+          resources:
+            requests: { cpu: 10m, memory: 16Mi }
+            limits:   { cpu: 50m, memory: 32Mi }

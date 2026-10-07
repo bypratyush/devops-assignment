@@ -1,0 +1,25 @@
+# ImagePullBackOff - the image lives in a registry/repository the cluster
+# cannot pull from. Copied from a template that pointed at a private GitHub
+# Container Registry org; this cluster has no credentials for it (and for an
+# anonymous client ghcr.io cannot even say whether the repo exists).
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: orders-api
+  namespace: s14-issues
+spec:
+  replicas: 1
+  selector:
+    matchLabels: { app: orders-api }
+  template:
+    metadata:
+      labels: { app: orders-api, issue: imagepullbackoff }
+    spec:
+      containers:
+        - name: api
+          image: ghcr.io/devops-hw-private/orders-api:1.0   # BUG: private / not published, no pull secret
+          ports:
+            - containerPort: 8080
+          resources:
+            requests: { cpu: 10m, memory: 16Mi }
+            limits:   { cpu: 100m, memory: 64Mi }

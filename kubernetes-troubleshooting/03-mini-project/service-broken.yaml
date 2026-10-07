@@ -1,0 +1,14 @@
+# Section 8 of the mini-project: the selector deliberately changed to a label
+# no pod has.
+apiVersion: v1
+kind: Service
+metadata:
+  name: troubleshooting-service
+  namespace: s14-mini
+spec:
+  selector:
+    app: wrong-app            # BUG: pods are labelled app=troubleshooting-app
+  ports:
+    - port: 80
+      targetPort: 80
+  type: ClusterIP

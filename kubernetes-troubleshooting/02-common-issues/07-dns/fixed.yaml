@@ -1,0 +1,106 @@
+# Fixed: checkout uses <service>.<namespace>; report-mailer goes back to the
+# default dnsPolicy (ClusterFirst), so the kubelet writes the real kube-dns
+# Service IP into its /etc/resolv.conf.
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: s14-shop
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payments
+  namespace: s14-shop
+spec:
+  replicas: 1
+  selector:
+    matchLabels: { app: payments }
+  template:
+    metadata:
+      labels: { app: payments, issue: dns }
+    spec:
+      containers:
+        - name: payments
+          image: nginxdemos/nginx-hello:plain-text
+          ports: [{ name: http, containerPort: 8080 }]
+          resources:
+            requests: { cpu: 10m, memory: 16Mi }
+            limits:   { cpu: 100m, memory: 64Mi }
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: payments
+  namespace: s14-shop
+spec:
+  selector: { app: payments }
+  ports: [{ port: 8080, targetPort: http }]
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: checkout
+  namespace: s14-issues
+spec:
+  replicas: 1
+  selector:
+    matchLabels: { app: checkout }
+  template:
+    metadata:
+      labels: { app: checkout, issue: dns }
+    spec:
+      containers:
+        - name: checkout
+          image: curlimages/curl:8.5.0
+          env:
+            - name: PAYMENTS_URL
+              value: "http://payments.s14-shop:8080"  # FIX: <service>.<namespace>
+          command: ["sh", "-c"]
+          args:
+            - |
+              while true; do
+                if out=$(curl -sS -m 3 "$PAYMENTS_URL/" 2>&1); then
+                  echo "$(date +%T) payments OK - $(echo "$out" | grep 'Server name')"
+                else
+                  echo "$(date +%T) payments call FAILED - $out"
+                fi
+                sleep 5
+              done
+          resources:
+            requests: { cpu: 10m, memory: 16Mi }
+            limits:   { cpu: 100m, memory: 32Mi }
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: report-mailer
+  namespace: s14-issues
+spec:
+  replicas: 1
+  selector:
+    matchLabels: { app: report-mailer }
+  template:
+    metadata:
+      labels: { app: report-mailer, issue: dns }
+    spec:
+      dnsPolicy: ClusterFirst                        # FIX: the default - use CoreDNS
+      containers:
+        - name: mailer
+          image: curlimages/curl:8.5.0
+          env:
+            - name: PAYMENTS_URL
+              value: "http://payments.s14-shop.svc.cluster.local:8080"
+          command: ["sh", "-c"]
+          args:
+            - |
+              while true; do
+                if out=$(curl -sS -m 3 "$PAYMENTS_URL/" 2>&1); then
+                  echo "$(date +%T) payments OK - $(echo "$out" | grep 'Server name')"
+                else
+                  echo "$(date +%T) payments call FAILED - $out"
+                fi
+                sleep 5
+              done
+          resources:
+            requests: { cpu: 10m, memory: 16Mi }
+            limits:   { cpu: 100m, memory: 32Mi }

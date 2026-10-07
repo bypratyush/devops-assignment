@@ -1,0 +1,24 @@
+# Fixed: point at the image that is actually published and pullable.
+# (For a genuinely private image the fix would instead be an imagePullSecret -
+#  see the README - which this lab cannot show working without real creds.)
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: orders-api
+  namespace: s14-issues
+spec:
+  replicas: 1
+  selector:
+    matchLabels: { app: orders-api }
+  template:
+    metadata:
+      labels: { app: orders-api, issue: imagepullbackoff }
+    spec:
+      containers:
+        - name: api
+          image: nginxdemos/nginx-hello:plain-text          # FIX: public image that exists
+          ports:
+            - containerPort: 8080
+          resources:
+            requests: { cpu: 10m, memory: 16Mi }
+            limits:   { cpu: 100m, memory: 64Mi }
