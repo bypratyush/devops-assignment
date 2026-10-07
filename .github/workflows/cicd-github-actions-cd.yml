@@ -1,0 +1,213 @@
+# Session 16 - Continuous Delivery/Deployment for cicd-github-actions/
+#
+#   (green CI run on main) -> publish image to GHCR -> smoke-test the pushed image -> deploy (production)
+#
+# workflow_run means this only ever starts AFTER "S16 CI - grade calculator"
+# finishes, and the `if:` on the first job means it only continues when that run
+# was green and came from a push to main. The CI workflow's paths filter is what
+# stops unrelated commits from getting this far.
+name: "S16 CD - grade calculator"
+
+on:
+  workflow_run:
+    workflows: ["S16 CI - grade calculator"]
+    types: [completed]
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# Deployments queue up one at a time and are never cancelled half way through
+concurrency:
+  group: s16-cd-production
+  cancel-in-progress: false
+
+defaults:
+  run:
+    shell: bash  # explicit bash = "bash -eo pipefail", so a failing pipe fails the step
+    working-directory: cicd-github-actions
+
+jobs:
+  publish:
+    name: Build and push image
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'push')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write  # push to ghcr.io with the built-in GITHUB_TOKEN
+    outputs:
+      image: ${{ steps.meta.outputs.image }}
+      digest: ${{ steps.push.outputs.digest }}
+      sha: ${{ steps.meta.outputs.sha }}
+    steps:
+      # workflow_run executes on the default branch, so ask for exactly the commit CI tested
+      - name: Check out the commit CI tested
+        if: ${{ !env.ACT }}
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
+
+      # act only copies the local working tree when checkout has no ref; with a ref
+      # it would fetch that commit from github.com, where this work is not pushed yet
+      - name: Check out the local working tree (act only)
+        if: ${{ env.ACT }}
+        uses: actions/checkout@v6
+
+      - name: Work out image name and tags
+        id: meta
+        env:
+          HEAD_SHA: ${{ github.event.workflow_run.head_sha || github.sha }}
+          OWNER: ${{ github.repository_owner }}
+        run: |
+          if [ -n "${ACT:-}" ]; then
+            registry="localhost:5055"  # local registry:2 stands in for GHCR when run with act
+          else
+            registry="ghcr.io"
+          fi
+          owner="$(echo "$OWNER" | tr '[:upper:]' '[:lower:]')"  # registry paths must be lowercase
+          image="${registry}/${owner}/grade-calculator"
+          echo "image=${image}"         >> "$GITHUB_OUTPUT"
+          echo "sha=${HEAD_SHA}"        >> "$GITHUB_OUTPUT"
+          echo "short=${HEAD_SHA::7}"   >> "$GITHUB_OUTPUT"
+          echo "Publishing ${image}:${HEAD_SHA::7} (commit ${HEAD_SHA})"
+
+      - name: Log in to GHCR
+        if: ${{ !env.ACT }}
+        uses: docker/login-action@v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: docker build
+        run: |
+          docker build \
+            --build-arg GIT_SHA=${{ steps.meta.outputs.sha }} \
+            --build-arg SOURCE_URL=${{ github.server_url }}/${{ github.repository }} \
+            -t ${{ steps.meta.outputs.image }}:${{ steps.meta.outputs.short }} \
+            -t ${{ steps.meta.outputs.image }}:latest .
+
+      - name: docker push
+        id: push
+        run: |
+          image=${{ steps.meta.outputs.image }}
+          docker push "${image}:${{ steps.meta.outputs.short }}" | tee /tmp/push.log
+          docker push "${image}:latest"
+          # the digest the registry acknowledged - later jobs pull this, never a tag
+          digest=$(grep -oE 'digest: sha256:[0-9a-f]{64}' /tmp/push.log | tail -1 | cut -d' ' -f2)
+          [ -n "$digest" ] || { echo "::error::could not read pushed digest"; exit 1; }
+          echo "digest=${digest}" >> "$GITHUB_OUTPUT"
+          echo "pushed ${image}@${digest}"
+
+  smoke-test:
+    name: Smoke-test pushed image
+    needs: publish
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: read
+    env:
+      REF: ${{ needs.publish.outputs.image }}@${{ needs.publish.outputs.digest }}
+      ADMIN_API_KEY: ${{ secrets.ADMIN_API_KEY }}
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v6
+
+      - name: Log in to GHCR
+        if: ${{ !env.ACT }}
+        uses: docker/login-action@v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Pull by digest (not by tag)
+        env:
+          IMAGE: ${{ needs.publish.outputs.image }}
+        run: |
+          # Drop every local copy first so the image really comes from the registry.
+          # (On a GitHub runner this is a fresh VM anyway; under act all jobs share
+          # one Docker daemon, so without this the "pull" would be a no-op.)
+          docker images --format '{{.Repository}}:{{.Tag}}' | grep "^${IMAGE}:" \
+            | xargs -r docker image rm -f >/dev/null 2>&1 || true
+          docker image rm -f "$REF" >/dev/null 2>&1 || true
+          docker pull "$REF"
+
+      - name: Run and test
+        run: |
+          docker rm -f s16-cd-smoke >/dev/null 2>&1 || true
+          docker run -d --name s16-cd-smoke -e ADMIN_API_KEY "$REF"
+          ./scripts/smoke-test.sh s16-cd-smoke "${{ needs.publish.outputs.sha }}"
+
+      - name: Remove the container
+        if: ${{ always() }}
+        run: docker rm -f s16-cd-smoke
+
+  deploy:
+    name: Deploy to production
+    needs: [publish, smoke-test]
+    runs-on: ubuntu-latest
+    # A GitHub Environment: protection rules (e.g. required reviewers) are checked
+    # before this job starts, and environment secrets are only released to it.
+    environment:
+      name: production
+    permissions:
+      contents: read
+      packages: read
+    env:
+      REF: ${{ needs.publish.outputs.image }}@${{ needs.publish.outputs.digest }}
+      ADMIN_API_KEY: ${{ secrets.ADMIN_API_KEY }}
+      APP: grade-calculator-production
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v6
+
+      - name: Log in to GHCR
+        if: ${{ !env.ACT }}
+        uses: docker/login-action@v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Require the production secret
+        run: |
+          if [ -z "$ADMIN_API_KEY" ]; then
+            echo "::error::ADMIN_API_KEY is not set for the production environment"
+            exit 1
+          fi
+          echo "ADMIN_API_KEY present (${#ADMIN_API_KEY} chars)"
+
+      - name: Replace the running release
+        run: |
+          docker pull --quiet "$REF"
+          if docker inspect "$APP" >/dev/null 2>&1; then
+            previous=$(docker inspect "$APP" --format '{{.Config.Image}}')
+          else
+            previous=none
+          fi
+          echo "previous release: $previous"
+          docker rm -f "$APP" >/dev/null 2>&1 || true
+          docker run -d --name "$APP" --restart unless-stopped \
+            -p 127.0.0.1:18716:8080 -e ADMIN_API_KEY "$REF"
+          echo "new release:      $REF"
+
+      - name: Verify the deployment
+        run: ./scripts/smoke-test.sh "$APP" "${{ needs.publish.outputs.sha }}"
+
+      - name: Deployment summary
+        run: |
+          {
+            echo "### Deployed grade-calculator to production"
+            echo ""
+            echo "| Item | Value |"
+            echo "|---|---|"
+            echo "| Image | \`${{ needs.publish.outputs.image }}\` |"
+            echo "| Digest | \`${{ needs.publish.outputs.digest }}\` |"
+            echo "| Commit | \`${{ needs.publish.outputs.sha }}\` |"
+            echo "| Container | \`$APP\` - $(docker inspect "$APP" --format '{{.State.Health.Status}}') |"
+            echo "| Triggered by | ${{ github.event_name }} |"
+          } >> "$GITHUB_STEP_SUMMARY"

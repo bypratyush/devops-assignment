@@ -1,0 +1,433 @@
+time="2026-10-07T23:53:40+05:30" level=info msg="Using docker host 'unix:///var/run/docker.sock', and daemon socket 'unix:///var/run/docker.sock'"
+time="2026-10-07T23:53:40+05:30" level=info msg="Start server on http://100.128.166.254:34567"
+time="2026-10-07T23:53:40+05:30" level=info msg="deleted cache: &{ID:2 Key:setup-python-linux-arm64-24.04-ubuntu-python-3.12.15-pip-83e03b56e196981201cf7d652c994ee6813071c7f89ce913ec86c82a5960f11d Version:dc4f892d7358e35233e412252917e6c8e7bf9fdeb0aa86c0a09998b5a784f0af Size:14966326 Complete:true UsedAt:1791396774 CreatedAt:1791396515}" module=artifactcache
+[S16 CI - grade calculator/Lint] ⭐ Run Set up job
+[S16 CI - grade calculator/Lint] 🚀  Start image=ghcr.io/catthehacker/ubuntu:act-latest
+[S16 CI - grade calculator/Lint]   🐳  docker pull image=ghcr.io/catthehacker/ubuntu:act-latest platform=linux/arm64 username= forcePull=false
+[S16 CI - grade calculator/Lint]   🐳  docker create image=ghcr.io/catthehacker/ubuntu:act-latest platform=linux/arm64 entrypoint=["tail" "-f" "/dev/null"] cmd=[] network="host"
+[S16 CI - grade calculator/Lint]   🐳  docker run image=ghcr.io/catthehacker/ubuntu:act-latest platform=linux/arm64 entrypoint=["tail" "-f" "/dev/null"] cmd=[] network="host"
+[S16 CI - grade calculator/Lint]   🐳  docker exec cmd=[node --no-warnings -e console.log(process.execPath)] user= workdir=
+[S16 CI - grade calculator/Lint]   ✅  Success - Set up job
+[S16 CI - grade calculator/Lint]   ☁  git clone 'https://github.com/actions/setup-python' # ref=v6
+[S16 CI - grade calculator/Lint] ⭐ Run Main Check out code
+[S16 CI - grade calculator/Lint]   🐳  docker cp src=/Users/pratyushmohanty/Devops-assignment/. dst=/Users/pratyushmohanty/Devops-assignment
+[S16 CI - grade calculator/Lint]   ✅  Success - Main Check out code [5.2213895s]
+[S16 CI - grade calculator/Lint] ⭐ Run Main Set up Python
+[S16 CI - grade calculator/Lint]   🐳  docker cp src=/Users/pratyushmohanty/.cache/act/actions-setup-python@v6/ dst=/var/run/act/actions/actions-setup-python@v6/
+[S16 CI - grade calculator/Lint]   🐳  docker exec cmd=[/opt/acttoolcache/node/24.19.0/arm64/bin/node /var/run/act/actions/actions-setup-python@v6/dist/setup/index.js] user= workdir=
+[S16 CI - grade calculator/Lint]   ❓  ::group::Installed versions
+[S16 CI - grade calculator/Lint]   | Successfully set up CPython (3.13.16)
+[S16 CI - grade calculator/Lint]   ❓  ::endgroup::
+[S16 CI - grade calculator/Lint]   ❓ add-matcher /run/act/actions/actions-setup-python@v6/.github/python.json
+[S16 CI - grade calculator/Lint]   ✅  Success - Main Set up Python [5.513389042s]
+[S16 CI - grade calculator/Lint]   ⚙  ::set-env:: pythonLocation=/opt/hostedtoolcache/Python/3.13.16/arm64
+[S16 CI - grade calculator/Lint]   ⚙  ::set-env:: PKG_CONFIG_PATH=/opt/hostedtoolcache/Python/3.13.16/arm64/lib/pkgconfig
+[S16 CI - grade calculator/Lint]   ⚙  ::set-env:: Python_ROOT_DIR=/opt/hostedtoolcache/Python/3.13.16/arm64
+[S16 CI - grade calculator/Lint]   ⚙  ::set-env:: Python2_ROOT_DIR=/opt/hostedtoolcache/Python/3.13.16/arm64
+[S16 CI - grade calculator/Lint]   ⚙  ::set-env:: Python3_ROOT_DIR=/opt/hostedtoolcache/Python/3.13.16/arm64
+[S16 CI - grade calculator/Lint]   ⚙  ::set-env:: LD_LIBRARY_PATH=/opt/hostedtoolcache/Python/3.13.16/arm64/lib
+[S16 CI - grade calculator/Lint]   ⚙  ::set-output:: python-version=3.13.16
+[S16 CI - grade calculator/Lint]   ⚙  ::set-output:: python-path=/opt/hostedtoolcache/Python/3.13.16/arm64/bin/python
+[S16 CI - grade calculator/Lint]   ⚙  ::add-path:: /opt/hostedtoolcache/Python/3.13.16/arm64
+[S16 CI - grade calculator/Lint]   ⚙  ::add-path:: /opt/hostedtoolcache/Python/3.13.16/arm64/bin
+[S16 CI - grade calculator/Lint] ⭐ Run Main Install ruff
+[S16 CI - grade calculator/Lint]   🐳  docker exec cmd=[bash --noprofile --norc -e -o pipefail /var/run/act/workflow/2.sh] user= workdir=cicd-github-actions
+[S16 CI - grade calculator/Lint]   ✅  Success - Main Install ruff [3.4042065s]
+[S16 CI - grade calculator/Lint] ⭐ Run Main ruff check (pyflakes, pycodestyle, bugbear, bandit rules)
+[S16 CI - grade calculator/Lint]   🐳  docker exec cmd=[bash --noprofile --norc -e -o pipefail /var/run/act/workflow/3.sh] user= workdir=cicd-github-actions
+[S16 CI - grade calculator/Lint]   ✅  Success - Main ruff check (pyflakes, pycodestyle, bugbear, bandit rules) [1.124636166s]
+[S16 CI - grade calculator/Lint] ⭐ Run Main ruff format --check
+[S16 CI - grade calculator/Lint]   🐳  docker exec cmd=[bash --noprofile --norc -e -o pipefail /var/run/act/workflow/4.sh] user= workdir=cicd-github-actions
+[S16 CI - grade calculator/Lint]   | 4 files already formatted
+[S16 CI - grade calculator/Lint]   ✅  Success - Main ruff format --check [462.434125ms]
+[S16 CI - grade calculator/Lint] ⭐ Run Post Set up Python
+[S16 CI - grade calculator/Lint]   🐳  docker exec cmd=[/opt/acttoolcache/node/24.19.0/arm64/bin/node /var/run/act/actions/actions-setup-python@v6/dist/cache-save/index.js] user= workdir=
+[S16 CI - grade calculator/Lint]   ✅  Success - Post Set up Python [1.303536833s]
+[S16 CI - grade calculator/Lint] ⭐ Run Complete job
+[S16 CI - grade calculator/Lint] Cleaning up container for job Lint
+[S16 CI - grade calculator/Lint]   ✅  Success - Complete job
+[S16 CI - grade calculator/Lint] 🏁  Job succeeded
+[S16 CI - grade calculator/Test (Python 3.12)-1] ⭐ Run Set up job
+[S16 CI - grade calculator/Test (Python 3.12)-1] 🚀  Start image=ghcr.io/catthehacker/ubuntu:act-latest
+[S16 CI - grade calculator/Test (Python 3.13)-2] ⭐ Run Set up job
+[S16 CI - grade calculator/Test (Python 3.13)-2] 🚀  Start image=ghcr.io/catthehacker/ubuntu:act-latest
+[S16 CI - grade calculator/Test (Python 3.12)-1]   🐳  docker pull image=ghcr.io/catthehacker/ubuntu:act-latest platform=linux/arm64 username= forcePull=false
+[S16 CI - grade calculator/Test (Python 3.13)-2]   🐳  docker pull image=ghcr.io/catthehacker/ubuntu:act-latest platform=linux/arm64 username= forcePull=false
+[S16 CI - grade calculator/Test (Python 3.12)-1]   🐳  docker create image=ghcr.io/catthehacker/ubuntu:act-latest platform=linux/arm64 entrypoint=["tail" "-f" "/dev/null"] cmd=[] network="host"
+[S16 CI - grade calculator/Test (Python 3.13)-2]   🐳  docker create image=ghcr.io/catthehacker/ubuntu:act-latest platform=linux/arm64 entrypoint=["tail" "-f" "/dev/null"] cmd=[] network="host"
+[S16 CI - grade calculator/Test (Python 3.12)-1]   🐳  docker run image=ghcr.io/catthehacker/ubuntu:act-latest platform=linux/arm64 entrypoint=["tail" "-f" "/dev/null"] cmd=[] network="host"
+[S16 CI - grade calculator/Test (Python 3.13)-2]   🐳  docker run image=ghcr.io/catthehacker/ubuntu:act-latest platform=linux/arm64 entrypoint=["tail" "-f" "/dev/null"] cmd=[] network="host"
+[S16 CI - grade calculator/Test (Python 3.12)-1]   🐳  docker exec cmd=[node --no-warnings -e console.log(process.execPath)] user= workdir=
+[S16 CI - grade calculator/Test (Python 3.13)-2]   🐳  docker exec cmd=[node --no-warnings -e console.log(process.execPath)] user= workdir=
+[S16 CI - grade calculator/Test (Python 3.13)-2]   ✅  Success - Set up job
+[S16 CI - grade calculator/Test (Python 3.12)-1]   ✅  Success - Set up job
+[S16 CI - grade calculator/Test (Python 3.12)-1]   ☁  git clone 'https://github.com/actions/setup-python' # ref=v6
+[S16 CI - grade calculator/Test (Python 3.13)-2]   ☁  git clone 'https://github.com/actions/setup-python' # ref=v6
+[S16 CI - grade calculator/Test (Python 3.12)-1]   ☁  git clone 'https://github.com/actions/upload-artifact' # ref=v5
+[S16 CI - grade calculator/Test (Python 3.13)-2]   ☁  git clone 'https://github.com/actions/upload-artifact' # ref=v5
+[S16 CI - grade calculator/Test (Python 3.12)-1] 🧪  Matrix: map[python-version:3.12]
+[S16 CI - grade calculator/Test (Python 3.12)-1] ⭐ Run Main Check out code
+[S16 CI - grade calculator/Test (Python 3.12)-1]   🐳  docker cp src=/Users/pratyushmohanty/Devops-assignment/. dst=/Users/pratyushmohanty/Devops-assignment
+[S16 CI - grade calculator/Test (Python 3.13)-2] 🧪  Matrix: map[python-version:3.13]
+[S16 CI - grade calculator/Test (Python 3.13)-2] ⭐ Run Main Check out code
+[S16 CI - grade calculator/Test (Python 3.13)-2]   🐳  docker cp src=/Users/pratyushmohanty/Devops-assignment/. dst=/Users/pratyushmohanty/Devops-assignment
+[S16 CI - grade calculator/Test (Python 3.12)-1]   ✅  Success - Main Check out code [7.503058291s]
+[S16 CI - grade calculator/Test (Python 3.12)-1] ⭐ Run Main Set up Python 3.12
+[S16 CI - grade calculator/Test (Python 3.12)-1]   🐳  docker cp src=/Users/pratyushmohanty/.cache/act/actions-setup-python@v6/ dst=/var/run/act/actions/actions-setup-python@v6/
+[S16 CI - grade calculator/Test (Python 3.13)-2]   ✅  Success - Main Check out code [6.372689375s]
+[S16 CI - grade calculator/Test (Python 3.13)-2] ⭐ Run Main Set up Python 3.13
+[S16 CI - grade calculator/Test (Python 3.13)-2]   🐳  docker cp src=/Users/pratyushmohanty/.cache/act/actions-setup-python@v6/ dst=/var/run/act/actions/actions-setup-python@v6/
+[S16 CI - grade calculator/Test (Python 3.12)-1]   🐳  docker exec cmd=[/opt/acttoolcache/node/24.19.0/arm64/bin/node /var/run/act/actions/actions-setup-python@v6/dist/setup/index.js] user= workdir=
+[S16 CI - grade calculator/Test (Python 3.13)-2]   🐳  docker exec cmd=[/opt/acttoolcache/node/24.19.0/arm64/bin/node /var/run/act/actions/actions-setup-python@v6/dist/setup/index.js] user= workdir=
+[S16 CI - grade calculator/Test (Python 3.12)-1]   ❓  ::group::Installed versions
+[S16 CI - grade calculator/Test (Python 3.12)-1]   | Successfully set up CPython (3.12.15)
+[S16 CI - grade calculator/Test (Python 3.12)-1]   ❓  ::endgroup::
+[S16 CI - grade calculator/Test (Python 3.12)-1]   | [command]/opt/hostedtoolcache/Python/3.12.15/arm64/bin/pip cache dir
+[S16 CI - grade calculator/Test (Python 3.13)-2]   ❓  ::group::Installed versions
+[S16 CI - grade calculator/Test (Python 3.13)-2]   | Successfully set up CPython (3.13.16)
+[S16 CI - grade calculator/Test (Python 3.13)-2]   ❓  ::endgroup::
+[S16 CI - grade calculator/Test (Python 3.13)-2]   | [command]/opt/hostedtoolcache/Python/3.13.16/arm64/bin/pip cache dir
+[S16 CI - grade calculator/Test (Python 3.12)-1]   | /root/.cache/pip
+[S16 CI - grade calculator/Test (Python 3.13)-2]   | /root/.cache/pip
+[S16 CI - grade calculator/Test (Python 3.12)-1]   ⚙  ***
+[S16 CI - grade calculator/Test (Python 3.13)-2]   ⚙  ***
+[S16 CI - grade calculator/Test (Python 3.13)-2]   | Cache Size: ~4 MB (4253929 B)
+[S16 CI - grade calculator/Test (Python 3.13)-2]   | [command]/usr/bin/tar -xf /tmp/99966600-e787-44f8-b7d7-0717e85c8ed6/cache.tzst -P -C /Users/pratyushmohanty/Devops-assignment --use-compress-program unzstd
+[S16 CI - grade calculator/Test (Python 3.13)-2]   | Cache restored successfully
+[S16 CI - grade calculator/Test (Python 3.13)-2]   | Cache restored from key: setup-python-linux-arm64-24.04-ubuntu-python-3.13.16-pip-83e03b56e196981201cf7d652c994ee6813071c7f89ce913ec86c82a5960f11d
+[S16 CI - grade calculator/Test (Python 3.13)-2]   ❓ add-matcher /run/act/actions/actions-setup-python@v6/.github/python.json
+[S16 CI - grade calculator/Test (Python 3.12)-1]   | Cache Size: ~14 MB (14964785 B)
+[S16 CI - grade calculator/Test (Python 3.12)-1]   | [command]/usr/bin/tar -xf /tmp/1925f6f4-5d47-4d7b-99cf-0ddf4f37d23e/cache.tzst -P -C /Users/pratyushmohanty/Devops-assignment --use-compress-program unzstd
+[S16 CI - grade calculator/Test (Python 3.13)-2]   ✅  Success - Main Set up Python 3.13 [8.958030542s]
+[S16 CI - grade calculator/Test (Python 3.13)-2]   ⚙  ::set-env:: Python2_ROOT_DIR=/opt/hostedtoolcache/Python/3.13.16/arm64
+[S16 CI - grade calculator/Test (Python 3.13)-2]   ⚙  ::set-env:: Python3_ROOT_DIR=/opt/hostedtoolcache/Python/3.13.16/arm64
+[S16 CI - grade calculator/Test (Python 3.13)-2]   ⚙  ::set-env:: LD_LIBRARY_PATH=/opt/hostedtoolcache/Python/3.13.16/arm64/lib
+[S16 CI - grade calculator/Test (Python 3.13)-2]   ⚙  ::set-env:: pythonLocation=/opt/hostedtoolcache/Python/3.13.16/arm64
+[S16 CI - grade calculator/Test (Python 3.13)-2]   ⚙  ::set-env:: PKG_CONFIG_PATH=/opt/hostedtoolcache/Python/3.13.16/arm64/lib/pkgconfig
+[S16 CI - grade calculator/Test (Python 3.13)-2]   ⚙  ::set-env:: Python_ROOT_DIR=/opt/hostedtoolcache/Python/3.13.16/arm64
+[S16 CI - grade calculator/Test (Python 3.13)-2]   ⚙  ::set-output:: python-version=3.13.16
+[S16 CI - grade calculator/Test (Python 3.13)-2]   ⚙  ::set-output:: python-path=/opt/hostedtoolcache/Python/3.13.16/arm64/bin/python
+[S16 CI - grade calculator/Test (Python 3.13)-2]   ⚙  ::set-output:: cache-hit=false
+[S16 CI - grade calculator/Test (Python 3.13)-2]   ⚙  ::add-path:: /opt/hostedtoolcache/Python/3.13.16/arm64
+[S16 CI - grade calculator/Test (Python 3.13)-2]   ⚙  ::add-path:: /opt/hostedtoolcache/Python/3.13.16/arm64/bin
+[S16 CI - grade calculator/Test (Python 3.12)-1]   | Cache restored successfully
+[S16 CI - grade calculator/Test (Python 3.12)-1]   | Cache restored from key: setup-python-linux-arm64-24.04-ubuntu-python-3.12.15-pip-83e03b56e196981201cf7d652c994ee6813071c7f89ce913ec86c82a5960f11d
+[S16 CI - grade calculator/Test (Python 3.12)-1]   ❓ add-matcher /run/act/actions/actions-setup-python@v6/.github/python.json
+[S16 CI - grade calculator/Test (Python 3.12)-1]   ✅  Success - Main Set up Python 3.12 [13.031605042s]
+[S16 CI - grade calculator/Test (Python 3.13)-2] ⭐ Run Main Install dependencies
+[S16 CI - grade calculator/Test (Python 3.12)-1]   ⚙  ::set-env:: LD_LIBRARY_PATH=/opt/hostedtoolcache/Python/3.12.15/arm64/lib
+[S16 CI - grade calculator/Test (Python 3.12)-1]   ⚙  ::set-env:: pythonLocation=/opt/hostedtoolcache/Python/3.12.15/arm64
+[S16 CI - grade calculator/Test (Python 3.12)-1]   ⚙  ::set-env:: PKG_CONFIG_PATH=/opt/hostedtoolcache/Python/3.12.15/arm64/lib/pkgconfig
+[S16 CI - grade calculator/Test (Python 3.12)-1]   ⚙  ::set-env:: Python_ROOT_DIR=/opt/hostedtoolcache/Python/3.12.15/arm64
+[S16 CI - grade calculator/Test (Python 3.12)-1]   ⚙  ::set-env:: Python2_ROOT_DIR=/opt/hostedtoolcache/Python/3.12.15/arm64
+[S16 CI - grade calculator/Test (Python 3.12)-1]   ⚙  ::set-env:: Python3_ROOT_DIR=/opt/hostedtoolcache/Python/3.12.15/arm64
+[S16 CI - grade calculator/Test (Python 3.12)-1]   ⚙  ::set-output:: python-version=3.12.15
+[S16 CI - grade calculator/Test (Python 3.12)-1]   ⚙  ::set-output:: python-path=/opt/hostedtoolcache/Python/3.12.15/arm64/bin/python
+[S16 CI - grade calculator/Test (Python 3.12)-1]   ⚙  ::set-output:: cache-hit=false
+[S16 CI - grade calculator/Test (Python 3.12)-1]   ⚙  ::add-path:: /opt/hostedtoolcache/Python/3.12.15/arm64
+[S16 CI - grade calculator/Test (Python 3.12)-1]   ⚙  ::add-path:: /opt/hostedtoolcache/Python/3.12.15/arm64/bin
+[S16 CI - grade calculator/Test (Python 3.12)-1] ⭐ Run Main Install dependencies
+[S16 CI - grade calculator/Test (Python 3.13)-2]   🐳  docker exec cmd=[bash --noprofile --norc -e -o pipefail /var/run/act/workflow/2.sh] user= workdir=cicd-github-actions
+[S16 CI - grade calculator/Test (Python 3.12)-1]   🐳  docker exec cmd=[bash --noprofile --norc -e -o pipefail /var/run/act/workflow/2.sh] user= workdir=cicd-github-actions
+[S16 CI - grade calculator/Test (Python 3.12)-1]   ✅  Success - Main Install dependencies [6.261626292s]
+[S16 CI - grade calculator/Test (Python 3.13)-2]   ✅  Success - Main Install dependencies [7.35909575s]
+[S16 CI - grade calculator/Test (Python 3.12)-1] ⭐ Run Main Run unit tests with coverage
+[S16 CI - grade calculator/Test (Python 3.13)-2] ⭐ Run Main Run unit tests with coverage
+[S16 CI - grade calculator/Test (Python 3.12)-1]   🐳  docker exec cmd=[bash --noprofile --norc -e -o pipefail /var/run/act/workflow/3.sh] user= workdir=cicd-github-actions
+[S16 CI - grade calculator/Test (Python 3.13)-2]   🐳  docker exec cmd=[bash --noprofile --norc -e -o pipefail /var/run/act/workflow/3.sh] user= workdir=cicd-github-actions
+[S16 CI - grade calculator/Test (Python 3.13)-2]   | ============================= test session starts ==============================
+[S16 CI - grade calculator/Test (Python 3.13)-2]   | platform linux -- Python 3.13.16, pytest-9.1.1, pluggy-1.6.0
+[S16 CI - grade calculator/Test (Python 3.13)-2]   | rootdir: /Users/pratyushmohanty/Devops-assignment/cicd-github-actions
+[S16 CI - grade calculator/Test (Python 3.13)-2]   | configfile: pyproject.toml
+[S16 CI - grade calculator/Test (Python 3.13)-2]   | testpaths: tests
+[S16 CI - grade calculator/Test (Python 3.13)-2]   | plugins: cov-7.1.0
+[S16 CI - grade calculator/Test (Python 3.13)-2]   | collected 38 items
+[S16 CI - grade calculator/Test (Python 3.13)-2]   | 
+[S16 CI - grade calculator/Test (Python 3.13)-2]   | tests/test_api.py ...........                                            [ 28%]
+[S16 CI - grade calculator/Test (Python 3.12)-1]   | ============================= test session starts ==============================
+[S16 CI - grade calculator/Test (Python 3.12)-1]   | platform linux -- Python 3.12.15, pytest-9.1.1, pluggy-1.6.0
+[S16 CI - grade calculator/Test (Python 3.12)-1]   | rootdir: /Users/pratyushmohanty/Devops-assignment/cicd-github-actions
+[S16 CI - grade calculator/Test (Python 3.12)-1]   | configfile: pyproject.toml
+[S16 CI - grade calculator/Test (Python 3.12)-1]   | testpaths: tests
+[S16 CI - grade calculator/Test (Python 3.12)-1]   | plugins: cov-7.1.0
+[S16 CI - grade calculator/Test (Python 3.12)-1]   | collected 38 items
+[S16 CI - grade calculator/Test (Python 3.12)-1]   | 
+[S16 CI - grade calculator/Test (Python 3.13)-2]   | tests/test_grading.py ...........................                        [100%]
+[S16 CI - grade calculator/Test (Python 3.13)-2]   | 
+[S16 CI - grade calculator/Test (Python 3.13)-2]   | - generated xml file: /Users/pratyushmohanty/Devops-assignment/cicd-github-actions/reports/junit.xml -
+[S16 CI - grade calculator/Test (Python 3.13)-2]   | ================================ tests coverage ================================
+[S16 CI - grade calculator/Test (Python 3.13)-2]   | _______________ coverage: platform linux, python 3.13.16-final-0 _______________
+[S16 CI - grade calculator/Test (Python 3.13)-2]   | 
+[S16 CI - grade calculator/Test (Python 3.13)-2]   | Name              Stmts   Miss Branch BrPart  Cover   Missing
+[S16 CI - grade calculator/Test (Python 3.13)-2]   | -------------------------------------------------------------
+[S16 CI - grade calculator/Test (Python 3.13)-2]   | app/__init__.py      43      0      6      0   100%
+[S16 CI - grade calculator/Test (Python 3.13)-2]   | app/grading.py       36      0     16      0   100%
+[S16 CI - grade calculator/Test (Python 3.13)-2]   | -------------------------------------------------------------
+[S16 CI - grade calculator/Test (Python 3.13)-2]   | TOTAL                79      0     22      0   100%
+[S16 CI - grade calculator/Test (Python 3.13)-2]   | Coverage XML written to file reports/coverage.xml
+[S16 CI - grade calculator/Test (Python 3.13)-2]   | Required test coverage of 90% reached. Total coverage: 100.00%
+[S16 CI - grade calculator/Test (Python 3.13)-2]   | ============================== 38 passed in 0.97s ==============================
+[S16 CI - grade calculator/Test (Python 3.12)-1]   | tests/test_api.py ...........                                            [ 28%]
+[S16 CI - grade calculator/Test (Python 3.13)-2]   ✅  Success - Main Run unit tests with coverage [3.67705575s]
+[S16 CI - grade calculator/Test (Python 3.12)-1]   | tests/test_grading.py ...........................                        [100%]
+[S16 CI - grade calculator/Test (Python 3.12)-1]   | 
+[S16 CI - grade calculator/Test (Python 3.12)-1]   | - generated xml file: /Users/pratyushmohanty/Devops-assignment/cicd-github-actions/reports/junit.xml -
+[S16 CI - grade calculator/Test (Python 3.12)-1]   | ================================ tests coverage ================================
+[S16 CI - grade calculator/Test (Python 3.12)-1]   | _______________ coverage: platform linux, python 3.12.15-final-0 _______________
+[S16 CI - grade calculator/Test (Python 3.12)-1]   | 
+[S16 CI - grade calculator/Test (Python 3.12)-1]   | Name              Stmts   Miss Branch BrPart  Cover   Missing
+[S16 CI - grade calculator/Test (Python 3.12)-1]   | -------------------------------------------------------------
+[S16 CI - grade calculator/Test (Python 3.12)-1]   | app/__init__.py      43      0      6      0   100%
+[S16 CI - grade calculator/Test (Python 3.12)-1]   | app/grading.py       36      0     16      0   100%
+[S16 CI - grade calculator/Test (Python 3.12)-1]   | -------------------------------------------------------------
+[S16 CI - grade calculator/Test (Python 3.12)-1]   | TOTAL                79      0     22      0   100%
+[S16 CI - grade calculator/Test (Python 3.12)-1]   | Coverage XML written to file reports/coverage.xml
+[S16 CI - grade calculator/Test (Python 3.12)-1]   | Required test coverage of 90% reached. Total coverage: 100.00%
+[S16 CI - grade calculator/Test (Python 3.12)-1]   | ============================== 38 passed in 1.28s ==============================
+[S16 CI - grade calculator/Test (Python 3.13)-2] ⭐ Run Main Upload test report and coverage
+[S16 CI - grade calculator/Test (Python 3.13)-2]   🐳  docker cp src=/Users/pratyushmohanty/.cache/act/actions-upload-artifact@v5/ dst=/var/run/act/actions/actions-upload-artifact@v5/
+[S16 CI - grade calculator/Test (Python 3.12)-1]   ✅  Success - Main Run unit tests with coverage [3.962212417s]
+[S16 CI - grade calculator/Test (Python 3.12)-1] ⭐ Run Main Upload test report and coverage
+[S16 CI - grade calculator/Test (Python 3.12)-1]   🐳  docker cp src=/Users/pratyushmohanty/.cache/act/actions-upload-artifact@v5/ dst=/var/run/act/actions/actions-upload-artifact@v5/
+[S16 CI - grade calculator/Test (Python 3.13)-2]   🐳  docker exec cmd=[/opt/acttoolcache/node/24.19.0/arm64/bin/node /var/run/act/actions/actions-upload-artifact@v5/dist/upload/index.js] user= workdir=
+[S16 CI - grade calculator/Test (Python 3.12)-1]   🐳  docker exec cmd=[/opt/acttoolcache/node/24.19.0/arm64/bin/node /var/run/act/actions/actions-upload-artifact@v5/dist/upload/index.js] user= workdir=
+[S16 CI - grade calculator/Test (Python 3.12)-1]   | (node:97) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+[S16 CI - grade calculator/Test (Python 3.12)-1]   | (Use `node --trace-deprecation ...` to show where the warning was created)
+[S16 CI - grade calculator/Test (Python 3.13)-2]   | (node:101) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+[S16 CI - grade calculator/Test (Python 3.13)-2]   | (Use `node --trace-deprecation ...` to show where the warning was created)
+[S16 CI - grade calculator/Test (Python 3.12)-1]   | With the provided path, there will be 2 files uploaded
+[S16 CI - grade calculator/Test (Python 3.13)-2]   | With the provided path, there will be 2 files uploaded
+[S16 CI - grade calculator/Test (Python 3.12)-1]   | Artifact name is valid!
+[S16 CI - grade calculator/Test (Python 3.12)-1]   | Root directory input is valid!
+[S16 CI - grade calculator/Test (Python 3.13)-2]   | Artifact name is valid!
+[S16 CI - grade calculator/Test (Python 3.13)-2]   | Root directory input is valid!
+[S16 CI - grade calculator/Test (Python 3.13)-2]   | Beginning upload of artifact content to blob storage
+[S16 CI - grade calculator/Test (Python 3.12)-1]   | Beginning upload of artifact content to blob storage
+[S16 CI - grade calculator/Test (Python 3.13)-2]   | (node:101) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+[S16 CI - grade calculator/Test (Python 3.12)-1]   | (node:97) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+[S16 CI - grade calculator/Test (Python 3.12)-1]   | Uploaded bytes 1533
+[S16 CI - grade calculator/Test (Python 3.13)-2]   | Uploaded bytes 1543
+[S16 CI - grade calculator/Test (Python 3.12)-1]   | Finished uploading artifact content to blob storage!
+[S16 CI - grade calculator/Test (Python 3.12)-1]   | SHA256 digest of uploaded artifact zip is a1e8f71600d1d45dc88d58c97cdcb0e12c56f8e449fb9756655dda168be6be00
+[S16 CI - grade calculator/Test (Python 3.12)-1]   | Finalizing artifact upload
+[S16 CI - grade calculator/Test (Python 3.13)-2]   | Finished uploading artifact content to blob storage!
+[S16 CI - grade calculator/Test (Python 3.13)-2]   | SHA256 digest of uploaded artifact zip is 49744f470d51f3cddcb4811ebfaf555f4b77c3d2577f61082a737c340975dbd1
+[S16 CI - grade calculator/Test (Python 3.13)-2]   | Finalizing artifact upload
+[S16 CI - grade calculator/Test (Python 3.12)-1]   | Artifact test-report-py3.12.zip successfully finalized. Artifact ID 3323523448
+[S16 CI - grade calculator/Test (Python 3.12)-1]   | Artifact test-report-py3.12 has been successfully uploaded! Final size is 1533 bytes. Artifact ID is 3323523448
+[S16 CI - grade calculator/Test (Python 3.12)-1]   | Artifact download URL: https://github.com/bypratyush/devops-assignment/actions/runs/1/artifacts/3323523448
+[S16 CI - grade calculator/Test (Python 3.13)-2]   | Artifact test-report-py3.13.zip successfully finalized. Artifact ID 3340301067
+[S16 CI - grade calculator/Test (Python 3.13)-2]   | Artifact test-report-py3.13 has been successfully uploaded! Final size is 1543 bytes. Artifact ID is 3340301067
+[S16 CI - grade calculator/Test (Python 3.13)-2]   | Artifact download URL: https://github.com/bypratyush/devops-assignment/actions/runs/1/artifacts/3340301067
+[S16 CI - grade calculator/Test (Python 3.12)-1]   ✅  Success - Main Upload test report and coverage [4.604804125s]
+[S16 CI - grade calculator/Test (Python 3.13)-2]   ✅  Success - Main Upload test report and coverage [5.700152209s]
+[S16 CI - grade calculator/Test (Python 3.13)-2]   ⚙  ::set-output:: artifact-digest=49744f470d51f3cddcb4811ebfaf555f4b77c3d2577f61082a737c340975dbd1
+[S16 CI - grade calculator/Test (Python 3.13)-2]   ⚙  ::set-output:: artifact-url=https://github.com/bypratyush/devops-assignment/actions/runs/1/artifacts/3340301067
+[S16 CI - grade calculator/Test (Python 3.13)-2]   ⚙  ::set-output:: artifact-id=3340301067
+[S16 CI - grade calculator/Test (Python 3.12)-1]   ⚙  ::set-output:: artifact-url=https://github.com/bypratyush/devops-assignment/actions/runs/1/artifacts/3323523448
+[S16 CI - grade calculator/Test (Python 3.12)-1]   ⚙  ::set-output:: artifact-id=3323523448
+[S16 CI - grade calculator/Test (Python 3.12)-1]   ⚙  ::set-output:: artifact-digest=a1e8f71600d1d45dc88d58c97cdcb0e12c56f8e449fb9756655dda168be6be00
+[S16 CI - grade calculator/Test (Python 3.13)-2] ⭐ Run Post Set up Python 3.13
+[S16 CI - grade calculator/Test (Python 3.12)-1] ⭐ Run Post Set up Python 3.12
+[S16 CI - grade calculator/Test (Python 3.13)-2]   🐳  docker exec cmd=[/opt/acttoolcache/node/24.19.0/arm64/bin/node /var/run/act/actions/actions-setup-python@v6/dist/cache-save/index.js] user= workdir=
+[S16 CI - grade calculator/Test (Python 3.12)-1]   🐳  docker exec cmd=[/opt/acttoolcache/node/24.19.0/arm64/bin/node /var/run/act/actions/actions-setup-python@v6/dist/cache-save/index.js] user= workdir=
+[S16 CI - grade calculator/Test (Python 3.12)-1]   | [command]/usr/bin/tar --posix -cf cache.tzst --exclude cache.tzst -P -C /Users/pratyushmohanty/Devops-assignment --files-from manifest.txt --use-compress-program zstdmt
+[S16 CI - grade calculator/Test (Python 3.13)-2]   | [command]/usr/bin/tar --posix -cf cache.tzst --exclude cache.tzst -P -C /Users/pratyushmohanty/Devops-assignment --files-from manifest.txt --use-compress-program zstdmt
+[S16 CI - grade calculator/Test (Python 3.13)-2]   | Cache Size: ~4 MB (4253932 B)
+[S16 CI - grade calculator/Test (Python 3.13)-2]   | Cache saved successfully
+[S16 CI - grade calculator/Test (Python 3.13)-2]   | Cache saved with the key: setup-python-Linux-arm64-24.04-Ubuntu-python-3.13.16-pip-83e03b56e196981201cf7d652c994ee6813071c7f89ce913ec86c82a5960f11d
+[S16 CI - grade calculator/Test (Python 3.13)-2]   ✅  Success - Post Set up Python 3.13 [2.000186167s]
+[S16 CI - grade calculator/Test (Python 3.13)-2] ⭐ Run Complete job
+[S16 CI - grade calculator/Test (Python 3.13)-2] Cleaning up container for job Test (Python 3.13)
+[S16 CI - grade calculator/Test (Python 3.12)-1]   | Cache Size: ~14 MB (14965101 B)
+[S16 CI - grade calculator/Test (Python 3.12)-1]   | Cache saved successfully
+[S16 CI - grade calculator/Test (Python 3.12)-1]   | Cache saved with the key: setup-python-Linux-arm64-24.04-Ubuntu-python-3.12.15-pip-83e03b56e196981201cf7d652c994ee6813071c7f89ce913ec86c82a5960f11d
+[S16 CI - grade calculator/Test (Python 3.12)-1]   ✅  Success - Post Set up Python 3.12 [3.115254916s]
+[S16 CI - grade calculator/Test (Python 3.12)-1] ⭐ Run Complete job
+[S16 CI - grade calculator/Test (Python 3.12)-1] Cleaning up container for job Test (Python 3.12)
+[S16 CI - grade calculator/Test (Python 3.13)-2]   ✅  Success - Complete job
+[S16 CI - grade calculator/Test (Python 3.13)-2] 🏁  Job succeeded
+[S16 CI - grade calculator/Test (Python 3.12)-1]   ✅  Success - Complete job
+[S16 CI - grade calculator/Test (Python 3.12)-1] 🏁  Job succeeded
+[S16 CI - grade calculator/Build image         ] ⭐ Run Set up job
+[S16 CI - grade calculator/Build image         ] 🚀  Start image=ghcr.io/catthehacker/ubuntu:act-latest
+[S16 CI - grade calculator/Build image         ]   🐳  docker pull image=ghcr.io/catthehacker/ubuntu:act-latest platform=linux/arm64 username= forcePull=false
+[S16 CI - grade calculator/Build image         ]   🐳  docker create image=ghcr.io/catthehacker/ubuntu:act-latest platform=linux/arm64 entrypoint=["tail" "-f" "/dev/null"] cmd=[] network="host"
+[S16 CI - grade calculator/Build image         ]   🐳  docker run image=ghcr.io/catthehacker/ubuntu:act-latest platform=linux/arm64 entrypoint=["tail" "-f" "/dev/null"] cmd=[] network="host"
+[S16 CI - grade calculator/Build image         ]   🐳  docker exec cmd=[node --no-warnings -e console.log(process.execPath)] user= workdir=
+[S16 CI - grade calculator/Build image         ]   ✅  Success - Set up job
+[S16 CI - grade calculator/Build image         ]   ☁  git clone 'https://github.com/actions/upload-artifact' # ref=v5
+[S16 CI - grade calculator/Build image         ] ⭐ Run Main Check out code
+[S16 CI - grade calculator/Build image         ]   🐳  docker cp src=/Users/pratyushmohanty/Devops-assignment/. dst=/Users/pratyushmohanty/Devops-assignment
+[S16 CI - grade calculator/Build image         ]   ✅  Success - Main Check out code [6.502017375s]
+[S16 CI - grade calculator/Build image         ] ⭐ Run Main Work out the image tag
+[S16 CI - grade calculator/Build image         ]   🐳  docker exec cmd=[bash --noprofile --norc -e -o pipefail /var/run/act/workflow/meta.sh] user= workdir=cicd-github-actions
+[S16 CI - grade calculator/Build image         ]   | Image will be grade-calculator:888cd81
+[S16 CI - grade calculator/Build image         ]   ✅  Success - Main Work out the image tag [148.117791ms]
+[S16 CI - grade calculator/Build image         ]   ⚙  ::set-output:: tag=888cd81
+[S16 CI - grade calculator/Build image         ] ⭐ Run Main docker build
+[S16 CI - grade calculator/Build image         ]   🐳  docker exec cmd=[bash --noprofile --norc -e -o pipefail /var/run/act/workflow/2.sh] user= workdir=cicd-github-actions
+[S16 CI - grade calculator/Build image         ]   | #0 building with "default" instance using docker driver
+[S16 CI - grade calculator/Build image         ]   | 
+[S16 CI - grade calculator/Build image         ]   | #1 [internal] load build definition from Dockerfile
+[S16 CI - grade calculator/Build image         ]   | #1 transferring dockerfile:
+[S16 CI - grade calculator/Build image         ]   | #1 transferring dockerfile: 1.29kB 0.0s done
+[S16 CI - grade calculator/Build image         ]   | #1 DONE 0.2s
+[S16 CI - grade calculator/Build image         ]   | 
+[S16 CI - grade calculator/Build image         ]   | #2 [internal] load metadata for docker.io/library/python:3.13-slim
+[S16 CI - grade calculator/Build image         ]   | #2 DONE 0.0s
+[S16 CI - grade calculator/Build image         ]   | 
+[S16 CI - grade calculator/Build image         ]   | #3 [internal] load .dockerignore
+[S16 CI - grade calculator/Build image         ]   | #3 transferring context:
+[S16 CI - grade calculator/Build image         ]   | #3 transferring context: 318B done
+[S16 CI - grade calculator/Build image         ]   | #3 DONE 0.0s
+[S16 CI - grade calculator/Build image         ]   | 
+[S16 CI - grade calculator/Build image         ]   | #4 [internal] load build context
+[S16 CI - grade calculator/Build image         ]   | #4 transferring context: 4.72kB 0.0s done
+[S16 CI - grade calculator/Build image         ]   | #4 DONE 0.1s
+[S16 CI - grade calculator/Build image         ]   | 
+[S16 CI - grade calculator/Build image         ]   | #5 [1/6] FROM docker.io/library/python:3.13-slim@sha256:bf44cdfcb76cd3b41e879bc058fc37ec5872002ccfde7fcb765e218cde0cd79c
+[S16 CI - grade calculator/Build image         ]   | #5 resolve docker.io/library/python:3.13-slim@sha256:bf44cdfcb76cd3b41e879bc058fc37ec5872002ccfde7fcb765e218cde0cd79c 0.1s done
+[S16 CI - grade calculator/Build image         ]   | #5 DONE 0.1s
+[S16 CI - grade calculator/Build image         ]   | 
+[S16 CI - grade calculator/Build image         ]   | #6 [5/6] RUN groupadd --gid 10001 app  && useradd --uid 10001 --gid app --no-create-home --shell /usr/sbin/nologin app
+[S16 CI - grade calculator/Build image         ]   | #6 CACHED
+[S16 CI - grade calculator/Build image         ]   | 
+[S16 CI - grade calculator/Build image         ]   | #7 [3/6] COPY requirements.txt .
+[S16 CI - grade calculator/Build image         ]   | #7 CACHED
+[S16 CI - grade calculator/Build image         ]   | 
+[S16 CI - grade calculator/Build image         ]   | #8 [4/6] RUN pip install -r requirements.txt
+[S16 CI - grade calculator/Build image         ]   | #8 CACHED
+[S16 CI - grade calculator/Build image         ]   | 
+[S16 CI - grade calculator/Build image         ]   | #9 [2/6] WORKDIR /srv
+[S16 CI - grade calculator/Build image         ]   | #9 CACHED
+[S16 CI - grade calculator/Build image         ]   | 
+[S16 CI - grade calculator/Build image         ]   | #10 [6/6] COPY app/ app/
+[S16 CI - grade calculator/Build image         ]   | #10 CACHED
+[S16 CI - grade calculator/Build image         ]   | 
+[S16 CI - grade calculator/Build image         ]   | #11 exporting to image
+[S16 CI - grade calculator/Build image         ]   | #11 exporting layers 0.0s done
+[S16 CI - grade calculator/Build image         ]   | #11 exporting manifest sha256:a8616af865acf597f9a8fb0364b13c23b0ce2248fe53c746a3f52ef6d52b8714 done
+[S16 CI - grade calculator/Build image         ]   | #11 exporting config sha256:09249bfe2054fb0aaecca03018b8d0bcd7a7ad607583104f12acca4155e799df done
+[S16 CI - grade calculator/Build image         ]   | #11 exporting attestation manifest sha256:85557b1f89a6e139cb69870e118632a399b6aaf04472d6c36f44e6440b6937d7 0.1s done
+[S16 CI - grade calculator/Build image         ]   | #11 exporting manifest list sha256:9cdbad625f3c7f3add2e45f20d313b89affae6b5d15e84b9015e59ec09a7a3fe
+[S16 CI - grade calculator/Build image         ]   | #11 exporting manifest list sha256:9cdbad625f3c7f3add2e45f20d313b89affae6b5d15e84b9015e59ec09a7a3fe 0.1s done
+[S16 CI - grade calculator/Build image         ]   | #11 naming to docker.io/library/grade-calculator:888cd81 done
+[S16 CI - grade calculator/Build image         ]   | #11 unpacking to docker.io/library/grade-calculator:888cd81
+[S16 CI - grade calculator/Build image         ]   | #11 unpacking to docker.io/library/grade-calculator:888cd81 0.0s done
+[S16 CI - grade calculator/Build image         ]   | #11 DONE 0.4s
+[S16 CI - grade calculator/Build image         ]   | IMAGE                      ID             DISK USAGE   CONTENT SIZE   EXTRA
+[S16 CI - grade calculator/Build image         ]   | grade-calculator:888cd81   9cdbad625f3c        212MB         45.6MB        
+[S16 CI - grade calculator/Build image         ]   ✅  Success - Main docker build [3.852008334s]
+[S16 CI - grade calculator/Build image         ] ⭐ Run Main Save image as a tarball
+[S16 CI - grade calculator/Build image         ]   🐳  docker exec cmd=[bash --noprofile --norc -e -o pipefail /var/run/act/workflow/3.sh] user= workdir=cicd-github-actions
+[S16 CI - grade calculator/Build image         ]   | total 44M
+[S16 CI - grade calculator/Build image         ]   | -rw-r--r-- 1 root root 44M Oct  7 18:25 grade-calculator.tar.gz
+[S16 CI - grade calculator/Build image         ]   ✅  Success - Main Save image as a tarball [4.8425445s]
+[S16 CI - grade calculator/Build image         ] ⭐ Run Main Upload image artifact
+[S16 CI - grade calculator/Build image         ]   🐳  docker cp src=/Users/pratyushmohanty/.cache/act/actions-upload-artifact@v5/ dst=/var/run/act/actions/actions-upload-artifact@v5/
+[S16 CI - grade calculator/Build image         ]   🐳  docker exec cmd=[/opt/acttoolcache/node/24.19.0/arm64/bin/node /var/run/act/actions/actions-upload-artifact@v5/dist/upload/index.js] user= workdir=
+[S16 CI - grade calculator/Build image         ]   | (node:126) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+[S16 CI - grade calculator/Build image         ]   | (Use `node --trace-deprecation ...` to show where the warning was created)
+[S16 CI - grade calculator/Build image         ]   | With the provided path, there will be 1 file uploaded
+[S16 CI - grade calculator/Build image         ]   | Artifact name is valid!
+[S16 CI - grade calculator/Build image         ]   | Root directory input is valid!
+[S16 CI - grade calculator/Build image         ]   | Beginning upload of artifact content to blob storage
+[S16 CI - grade calculator/Build image         ]   | (node:126) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+[S16 CI - grade calculator/Build image         ]   | Uploaded bytes 8388608
+[S16 CI - grade calculator/Build image         ]   | Uploaded bytes 16777216
+[S16 CI - grade calculator/Build image         ]   | Uploaded bytes 25165824
+[S16 CI - grade calculator/Build image         ]   | Uploaded bytes 33554432
+[S16 CI - grade calculator/Build image         ]   | Uploaded bytes 41943040
+[S16 CI - grade calculator/Build image         ]   | Uploaded bytes 45111534
+[S16 CI - grade calculator/Build image         ]   | Finished uploading artifact content to blob storage!
+[S16 CI - grade calculator/Build image         ]   | SHA256 digest of uploaded artifact zip is 67293e4c8ddc9235b3130652e132a6b465f46ada91a836c21718905dab8c039a
+[S16 CI - grade calculator/Build image         ]   | Finalizing artifact upload
+[S16 CI - grade calculator/Build image         ]   | Artifact image-grade-calculator.zip successfully finalized. Artifact ID 3443597459
+[S16 CI - grade calculator/Build image         ]   | Artifact image-grade-calculator has been successfully uploaded! Final size is 45111534 bytes. Artifact ID is 3443597459
+[S16 CI - grade calculator/Build image         ]   | Artifact download URL: https://github.com/bypratyush/devops-assignment/actions/runs/1/artifacts/3443597459
+[S16 CI - grade calculator/Build image         ]   ✅  Success - Main Upload image artifact [10.370535125s]
+[S16 CI - grade calculator/Build image         ]   ⚙  ::set-output:: artifact-id=3443597459
+[S16 CI - grade calculator/Build image         ]   ⚙  ::set-output:: artifact-digest=67293e4c8ddc9235b3130652e132a6b465f46ada91a836c21718905dab8c039a
+[S16 CI - grade calculator/Build image         ]   ⚙  ::set-output:: artifact-url=https://github.com/bypratyush/devops-assignment/actions/runs/1/artifacts/3443597459
+[S16 CI - grade calculator/Build image         ] ⭐ Run Complete job
+[S16 CI - grade calculator/Build image         ] Cleaning up container for job Build image
+[S16 CI - grade calculator/Build image         ]   ✅  Success - Complete job
+[S16 CI - grade calculator/Build image         ] 🏁  Job succeeded
+[S16 CI - grade calculator/Verify image artifact] ⭐ Run Set up job
+[S16 CI - grade calculator/Verify image artifact] 🚀  Start image=ghcr.io/catthehacker/ubuntu:act-latest
+[S16 CI - grade calculator/Verify image artifact]   🐳  docker pull image=ghcr.io/catthehacker/ubuntu:act-latest platform=linux/arm64 username= forcePull=false
+[S16 CI - grade calculator/Verify image artifact]   🐳  docker create image=ghcr.io/catthehacker/ubuntu:act-latest platform=linux/arm64 entrypoint=["tail" "-f" "/dev/null"] cmd=[] network="host"
+[S16 CI - grade calculator/Verify image artifact]   🐳  docker run image=ghcr.io/catthehacker/ubuntu:act-latest platform=linux/arm64 entrypoint=["tail" "-f" "/dev/null"] cmd=[] network="host"
+[S16 CI - grade calculator/Verify image artifact]   🐳  docker exec cmd=[node --no-warnings -e console.log(process.execPath)] user= workdir=
+[S16 CI - grade calculator/Verify image artifact]   ✅  Success - Set up job
+[S16 CI - grade calculator/Verify image artifact]   ☁  git clone 'https://github.com/actions/download-artifact' # ref=v7
+[S16 CI - grade calculator/Verify image artifact] ⭐ Run Main Check out code
+[S16 CI - grade calculator/Verify image artifact]   🐳  docker cp src=/Users/pratyushmohanty/Devops-assignment/. dst=/Users/pratyushmohanty/Devops-assignment
+[S16 CI - grade calculator/Verify image artifact]   ✅  Success - Main Check out code [11.519442667s]
+[S16 CI - grade calculator/Verify image artifact] ⭐ Run Main Download the image built by the previous job
+[S16 CI - grade calculator/Verify image artifact]   🐳  docker cp src=/Users/pratyushmohanty/.cache/act/actions-download-artifact@v7/ dst=/var/run/act/actions/actions-download-artifact@v7/
+[S16 CI - grade calculator/Verify image artifact]   🐳  docker exec cmd=[/opt/acttoolcache/node/24.19.0/arm64/bin/node /var/run/act/actions/actions-download-artifact@v7/dist/index.js] user= workdir=
+[S16 CI - grade calculator/Verify image artifact]   | Downloading single artifact
+[S16 CI - grade calculator/Verify image artifact]   | Preparing to download the following artifacts:
+[S16 CI - grade calculator/Verify image artifact]   | - image-grade-calculator (ID: 3443597459, Size: 96, Expected Digest: undefined)
+[S16 CI - grade calculator/Verify image artifact]   | Redirecting to blob download url: http://100.128.166.254:34567/twirp/github.actions.results.api.v1.ArtifactService/DownloadArtifact
+[S16 CI - grade calculator/Verify image artifact]   | Starting download of artifact to: /Users/pratyushmohanty/Devops-assignment/cicd-github-actions/dist
+[S16 CI - grade calculator/Verify image artifact]   | (node:31) [DEP0005] DeprecationWarning: Buffer() is deprecated due to security and usability issues. Please use the Buffer.alloc(), Buffer.allocUnsafe(), or Buffer.from() methods instead.
+[S16 CI - grade calculator/Verify image artifact]   | (Use `node --trace-deprecation ...` to show where the warning was created)
+[S16 CI - grade calculator/Verify image artifact]   | SHA256 digest of downloaded artifact is 67293e4c8ddc9235b3130652e132a6b465f46ada91a836c21718905dab8c039a
+[S16 CI - grade calculator/Verify image artifact]   | Artifact download completed successfully.
+[S16 CI - grade calculator/Verify image artifact]   | Total of 1 artifact(s) downloaded
+[S16 CI - grade calculator/Verify image artifact]   | Download artifact has finished successfully
+[S16 CI - grade calculator/Verify image artifact]   ✅  Success - Main Download the image built by the previous job [10.291184958s]
+[S16 CI - grade calculator/Verify image artifact]   ⚙  ::set-output:: download-path=/Users/pratyushmohanty/Devops-assignment/cicd-github-actions/dist
+[S16 CI - grade calculator/Verify image artifact] ⭐ Run Main docker load
+[S16 CI - grade calculator/Verify image artifact]   🐳  docker exec cmd=[bash --noprofile --norc -e -o pipefail /var/run/act/workflow/2.sh] user= workdir=cicd-github-actions
+[S16 CI - grade calculator/Verify image artifact]   | total 44M
+[S16 CI - grade calculator/Verify image artifact]   | -rw-r--r-- 1 root root 44M Oct  7 18:26 grade-calculator.tar.gz
+[S16 CI - grade calculator/Verify image artifact]   | Loaded image: grade-calculator:888cd81
+[S16 CI - grade calculator/Verify image artifact]   ✅  Success - Main docker load [2.332532084s]
+[S16 CI - grade calculator/Verify image artifact] ⭐ Run Main Start the container
+[S16 CI - grade calculator/Verify image artifact]   🐳  docker exec cmd=[bash --noprofile --norc -e -o pipefail /var/run/act/workflow/3.sh] user= workdir=cicd-github-actions
+[S16 CI - grade calculator/Verify image artifact]   | 282e7c443ddfcfd101a9f906030de9ff134afe7ea59afc803900bdad305f3cd6
+[S16 CI - grade calculator/Verify image artifact]   ✅  Success - Main Start the container [1.9972315s]
+[S16 CI - grade calculator/Verify image artifact] ⭐ Run Main Smoke test
+[S16 CI - grade calculator/Verify image artifact]   🐳  docker exec cmd=[bash --noprofile --norc -e -o pipefail /var/run/act/workflow/4.sh] user= workdir=cicd-github-actions
+[S16 CI - grade calculator/Verify image artifact]   | --- waiting for the Docker HEALTHCHECK to report healthy
+[S16 CI - grade calculator/Verify image artifact]   | health status: healthy (after ~4s)
+[S16 CI - grade calculator/Verify image artifact]   | container s16-ci-verify is at http://172.17.0.4:8080
+[S16 CI - grade calculator/Verify image artifact]   | --- endpoints
+[S16 CI - grade calculator/Verify image artifact]   |   GET /health                                  HTTP 200  {"status":"ok"}
+[S16 CI - grade calculator/Verify image artifact]   |   GET /version                                 HTTP 200  {"commit":"888cd817ad3fcef35caa73374366c0af95030157","version":"1.2.0"}
+[S16 CI - grade calculator/Verify image artifact]   |   image was built from the expected commit
+[S16 CI - grade calculator/Verify image artifact]   |   GET /api/grade?score=91                      HTTP 200  {"grade":"O","points":10,"score":91.0}
+[S16 CI - grade calculator/Verify image artifact]   |   GET /api/grade?score=abc (bad)               HTTP 400  {"error":"score must be a number"}
+[S16 CI - grade calculator/Verify image artifact]   |   POST /api/sgpa                               HTTP 200  {"courses":[{"credits":4,"grade":"O","name":"DevOps","points":10},{"credits":3,"grade":"A","name":"DBMS","poin
+[S16 CI - grade calculator/Verify image artifact]   | --- container hardening
+[S16 CI - grade calculator/Verify image artifact]   |   process runs as uid 10001
+[S16 CI - grade calculator/Verify image artifact]   | --- secret-protected endpoint
+[S16 CI - grade calculator/Verify image artifact]   |   ADMIN_API_KEY secret is present (30 chars)
+[S16 CI - grade calculator/Verify image artifact]   |   GET /api/admin/stats (no key)                HTTP 401  {"error":"invalid or missing X-API-Key"}
+[S16 CI - grade calculator/Verify image artifact]   |   GET /api/admin/stats (with key)              HTTP 200  {"pid":7,"requests_served":{"grade":1,"sgpa":1},"uptime_seconds":4.6}
+[S16 CI - grade calculator/Verify image artifact]   | smoke test passed
+[S16 CI - grade calculator/Verify image artifact]   ✅  Success - Main Smoke test [7.891644s]
+[S16 CI - grade calculator/Verify image artifact] ⭐ Run Main Write job summary
+[S16 CI - grade calculator/Verify image artifact]   🐳  docker exec cmd=[bash --noprofile --norc -e -o pipefail /var/run/act/workflow/5.sh] user= workdir=cicd-github-actions
+[S16 CI - grade calculator/Verify image artifact]   ✅  Success - Main Write job summary [613.754917ms]
+[S16 CI - grade calculator/Verify image artifact]   ⚙  Summary - ### Grade calculator - CI image check
+
+| Item | Value |
+|---|---|
+| Image | `grade-calculator:888cd81` |
+| Commit | `888cd817ad3fcef35caa73374366c0af95030157` |
+| Size | 44M |
+| Runs as | uid 10001 |
+| Health | healthy |
+[S16 CI - grade calculator/Verify image artifact] ⭐ Run Main Remove the container
+[S16 CI - grade calculator/Verify image artifact]   🐳  docker exec cmd=[bash --noprofile --norc -e -o pipefail /var/run/act/workflow/6.sh] user= workdir=cicd-github-actions
+[S16 CI - grade calculator/Verify image artifact]   | s16-ci-verify
+[S16 CI - grade calculator/Verify image artifact]   ✅  Success - Main Remove the container [3.758257708s]
+[S16 CI - grade calculator/Verify image artifact] ⭐ Run Complete job
+[S16 CI - grade calculator/Verify image artifact] Cleaning up container for job Verify image artifact
+[S16 CI - grade calculator/Verify image artifact]   ✅  Success - Complete job
+[S16 CI - grade calculator/Verify image artifact] 🏁  Job succeeded

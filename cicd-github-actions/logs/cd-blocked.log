@@ -1,0 +1,2 @@
+time="2026-10-07T23:57:15+05:30" level=info msg="Using docker host 'unix:///var/run/docker.sock', and daemon socket 'unix:///var/run/docker.sock'"
+time="2026-10-07T23:57:16+05:30" level=info msg="Start server on http://100.128.166.254:34567"

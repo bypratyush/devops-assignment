@@ -1,0 +1,22 @@
+# Only app/ and requirements.txt are needed inside the image
+.git
+.github
+.act
+.secrets*
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+.coverage
+coverage.xml
+reports/
+logs/
+screenshots/
+tests/
+*.md
+run.sh
+Dockerfile
+.dockerignore
+scripts/
+pyproject.toml
+requirements-dev.txt

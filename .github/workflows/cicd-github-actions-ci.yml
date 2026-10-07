@@ -1,0 +1,190 @@
+# Session 16 - Continuous Integration for cicd-github-actions/ (grade calculator API)
+#
+#   lint -> test (matrix: Python 3.12, 3.13) -> build image -> verify image artifact
+#
+# Every push / PR that touches the app (or this file) runs it. Nothing here
+# deploys anything; the CD workflow picks up from a green run of this one.
+name: "S16 CI - grade calculator"
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "cicd-github-actions/**"
+      - ".github/workflows/cicd-github-actions-ci.yml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "cicd-github-actions/**"
+      - ".github/workflows/cicd-github-actions-ci.yml"
+  workflow_dispatch:
+
+# Least privilege: CI only needs to read the code
+permissions:
+  contents: read
+
+# A newer push to the same branch cancels the older, now pointless, run
+concurrency:
+  group: s16-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    shell: bash  # explicit bash = "bash -eo pipefail", so a failing pipe fails the step
+    working-directory: cicd-github-actions
+
+env:
+  IMAGE_NAME: grade-calculator
+  PIP_DISABLE_PIP_VERSION_CHECK: "1"
+  PIP_ROOT_USER_ACTION: ignore  # act runs steps as root; GitHub's runner user never warns
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v6
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+
+      - name: Install ruff
+        run: pip install --quiet ruff==0.16.10
+
+      - name: ruff check (pyflakes, pycodestyle, bugbear, bandit rules)
+        run: ruff check --output-format=github .
+
+      - name: ruff format --check
+        run: ruff format --check .
+
+  test:
+    name: Test (Python ${{ matrix.python-version }})
+    needs: lint
+    runs-on: ubuntu-latest
+    strategy:
+      # Let both legs finish so one red result does not hide the other
+      fail-fast: false
+      matrix:
+        python-version: ["3.12", "3.13"]
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v6
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+          cache-dependency-path: cicd-github-actions/requirements-dev.txt
+
+      - name: Install dependencies
+        run: pip install --quiet -r requirements-dev.txt
+
+      - name: Run unit tests with coverage
+        run: |
+          mkdir -p reports
+          python -m pytest \
+            --junitxml=reports/junit.xml \
+            --cov=app --cov-branch \
+            --cov-report=term-missing \
+            --cov-report=xml:reports/coverage.xml \
+            --cov-fail-under=90
+
+      - name: Upload test report and coverage
+        if: ${{ always() }}  # the report matters most when tests fail
+        uses: actions/upload-artifact@v5
+        with:
+          name: test-report-py${{ matrix.python-version }}
+          path: cicd-github-actions/reports/
+          retention-days: 7
+
+  build:
+    name: Build image
+    needs: test
+    runs-on: ubuntu-latest
+    outputs:
+      tag: ${{ steps.meta.outputs.tag }}
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v6
+
+      - name: Work out the image tag
+        id: meta
+        run: |
+          short_sha="${GITHUB_SHA::7}"
+          echo "tag=${short_sha}" >> "$GITHUB_OUTPUT"
+          echo "Image will be ${IMAGE_NAME}:${short_sha}"
+
+      - name: docker build
+        run: |
+          docker build \
+            --build-arg GIT_SHA=${{ github.sha }} \
+            --build-arg SOURCE_URL=${{ github.server_url }}/${{ github.repository }} \
+            -t ${IMAGE_NAME}:${{ steps.meta.outputs.tag }} .
+          docker image ls ${IMAGE_NAME}:${{ steps.meta.outputs.tag }}
+
+      - name: Save image as a tarball
+        run: |
+          mkdir -p dist
+          docker save ${IMAGE_NAME}:${{ steps.meta.outputs.tag }} | gzip > dist/${IMAGE_NAME}.tar.gz
+          ls -lh dist/
+
+      - name: Upload image artifact
+        uses: actions/upload-artifact@v5
+        with:
+          name: image-${{ env.IMAGE_NAME }}
+          path: cicd-github-actions/dist/${{ env.IMAGE_NAME }}.tar.gz
+          retention-days: 3
+
+  verify-image:
+    name: Verify image artifact
+    needs: build
+    runs-on: ubuntu-latest
+    env:
+      TAG: ${{ needs.build.outputs.tag }}
+      # Repository secret. GitHub masks its value in every log line.
+      ADMIN_API_KEY: ${{ secrets.ADMIN_API_KEY }}
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v6
+
+      - name: Download the image built by the previous job
+        uses: actions/download-artifact@v7
+        with:
+          name: image-${{ env.IMAGE_NAME }}
+          path: cicd-github-actions/dist
+
+      - name: docker load
+        run: |
+          ls -lh dist/
+          docker load --input dist/${IMAGE_NAME}.tar.gz
+
+      - name: Start the container
+        run: |
+          docker rm -f s16-ci-verify >/dev/null 2>&1 || true
+          docker run -d --name s16-ci-verify -e ADMIN_API_KEY ${IMAGE_NAME}:${TAG}
+
+      - name: Smoke test
+        run: ./scripts/smoke-test.sh s16-ci-verify "${{ github.sha }}"
+
+      - name: Write job summary
+        if: ${{ always() }}
+        run: |
+          {
+            echo "### Grade calculator - CI image check"
+            echo ""
+            echo "| Item | Value |"
+            echo "|---|---|"
+            echo "| Image | \`${IMAGE_NAME}:${TAG}\` |"
+            echo "| Commit | \`${GITHUB_SHA}\` |"
+            echo "| Size | $(docker image inspect ${IMAGE_NAME}:${TAG} --format '{{.Size}}' | numfmt --to=iec) |"
+            echo "| Runs as | uid $(docker exec s16-ci-verify id -u) |"
+            echo "| Health | $(docker inspect s16-ci-verify --format '{{.State.Health.Status}}') |"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Remove the container
+        if: ${{ always() }}
+        run: docker rm -f s16-ci-verify

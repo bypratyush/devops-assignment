@@ -1,0 +1,330 @@
+time="2026-10-07T23:59:28+05:30" level=info msg="Using docker host 'unix:///var/run/docker.sock', and daemon socket 'unix:///var/run/docker.sock'"
+time="2026-10-07T23:59:29+05:30" level=info msg="Start server on http://100.128.166.254:34567"
+[S16 CD - grade calculator/Build and push image] ⭐ Run Set up job
+[S16 CD - grade calculator/Build and push image] 🚀  Start image=ghcr.io/catthehacker/ubuntu:act-latest
+[S16 CD - grade calculator/Build and push image]   🐳  docker pull image=ghcr.io/catthehacker/ubuntu:act-latest platform=linux/arm64 username= forcePull=false
+[S16 CD - grade calculator/Build and push image]   🐳  docker create image=ghcr.io/catthehacker/ubuntu:act-latest platform=linux/arm64 entrypoint=["tail" "-f" "/dev/null"] cmd=[] network="host"
+[S16 CD - grade calculator/Build and push image]   🐳  docker run image=ghcr.io/catthehacker/ubuntu:act-latest platform=linux/arm64 entrypoint=["tail" "-f" "/dev/null"] cmd=[] network="host"
+[S16 CD - grade calculator/Build and push image]   🐳  docker exec cmd=[node --no-warnings -e console.log(process.execPath)] user= workdir=
+[S16 CD - grade calculator/Build and push image]   ✅  Success - Set up job
+[S16 CD - grade calculator/Build and push image]   ☁  git clone 'https://github.com/actions/checkout' # ref=v6
+[S16 CD - grade calculator/Build and push image]   ☁  git clone 'https://github.com/docker/login-action' # ref=v4
+[S16 CD - grade calculator/Build and push image] ⭐ Run Main Check out the local working tree (act only)
+[S16 CD - grade calculator/Build and push image]   🐳  docker cp src=/Users/pratyushmohanty/Devops-assignment/. dst=/Users/pratyushmohanty/Devops-assignment
+[S16 CD - grade calculator/Build and push image]   ✅  Success - Main Check out the local working tree (act only) [2.355913875s]
+[S16 CD - grade calculator/Build and push image] ⭐ Run Main Work out image name and tags
+[S16 CD - grade calculator/Build and push image]   🐳  docker exec cmd=[bash --noprofile --norc -e -o pipefail /var/run/act/workflow/meta.sh] user= workdir=cicd-github-actions
+[S16 CD - grade calculator/Build and push image]   | Publishing localhost:5055/bypratyush/grade-calculator:888cd81 (commit 888cd817ad3fcef35caa73374366c0af95030157)
+[S16 CD - grade calculator/Build and push image]   ✅  Success - Main Work out image name and tags [170.682791ms]
+[S16 CD - grade calculator/Build and push image]   ⚙  ::set-output:: image=localhost:5055/bypratyush/grade-calculator
+[S16 CD - grade calculator/Build and push image]   ⚙  ::set-output:: sha=888cd817ad3fcef35caa73374366c0af95030157
+[S16 CD - grade calculator/Build and push image]   ⚙  ::set-output:: short=888cd81
+[S16 CD - grade calculator/Build and push image] ⭐ Run Main docker build
+[S16 CD - grade calculator/Build and push image]   🐳  docker exec cmd=[bash --noprofile --norc -e -o pipefail /var/run/act/workflow/4.sh] user= workdir=cicd-github-actions
+[S16 CD - grade calculator/Build and push image]   | #0 building with "default" instance using docker driver
+[S16 CD - grade calculator/Build and push image]   | 
+[S16 CD - grade calculator/Build and push image]   | #1 [internal] load build definition from Dockerfile
+[S16 CD - grade calculator/Build and push image]   | #1 transferring dockerfile: 1.29kB done
+[S16 CD - grade calculator/Build and push image]   | #1 DONE 0.0s
+[S16 CD - grade calculator/Build and push image]   | 
+[S16 CD - grade calculator/Build and push image]   | #2 [internal] load metadata for docker.io/library/python:3.13-slim
+[S16 CD - grade calculator/Build and push image]   | #2 DONE 0.0s
+[S16 CD - grade calculator/Build and push image]   | 
+[S16 CD - grade calculator/Build and push image]   | #3 [internal] load .dockerignore
+[S16 CD - grade calculator/Build and push image]   | #3 transferring context: 318B done
+[S16 CD - grade calculator/Build and push image]   | #3 DONE 0.0s
+[S16 CD - grade calculator/Build and push image]   | 
+[S16 CD - grade calculator/Build and push image]   | #4 [build 1/4] FROM docker.io/library/python:3.13-slim@sha256:bf44cdfcb76cd3b41e879bc058fc37ec5872002ccfde7fcb765e218cde0cd79c
+[S16 CD - grade calculator/Build and push image]   | #4 resolve docker.io/library/python:3.13-slim@sha256:bf44cdfcb76cd3b41e879bc058fc37ec5872002ccfde7fcb765e218cde0cd79c 0.1s done
+[S16 CD - grade calculator/Build and push image]   | #4 CACHED
+[S16 CD - grade calculator/Build and push image]   | 
+[S16 CD - grade calculator/Build and push image]   | #5 [internal] load build context
+[S16 CD - grade calculator/Build and push image]   | #5 transferring context: 4.72kB done
+[S16 CD - grade calculator/Build and push image]   | #5 DONE 0.0s
+[S16 CD - grade calculator/Build and push image]   | 
+[S16 CD - grade calculator/Build and push image]   | #6 [4/6] RUN pip install -r requirements.txt
+[S16 CD - grade calculator/Build and push image]   | #6 CACHED
+[S16 CD - grade calculator/Build and push image]   | 
+[S16 CD - grade calculator/Build and push image]   | #7 [5/6] RUN groupadd --gid 10001 app  && useradd --uid 10001 --gid app --no-create-home --shell /usr/sbin/nologin app
+[S16 CD - grade calculator/Build and push image]   | #7 CACHED
+[S16 CD - grade calculator/Build and push image]   | 
+[S16 CD - grade calculator/Build and push image]   | #8 [2/6] WORKDIR /srv
+[S16 CD - grade calculator/Build and push image]   | #8 CACHED
+[S16 CD - grade calculator/Build and push image]   | 
+[S16 CD - grade calculator/Build and push image]   | #9 [3/6] COPY requirements.txt .
+[S16 CD - grade calculator/Build and push image]   | #9 CACHED
+[S16 CD - grade calculator/Build and push image]   | 
+[S16 CD - grade calculator/Build and push image]   | #10 [6/6] COPY app/ app/
+[S16 CD - grade calculator/Build and push image]   | #10 CACHED
+[S16 CD - grade calculator/Build and push image]   | 
+[S16 CD - grade calculator/Build and push image]   | #11 exporting to image
+[S16 CD - grade calculator/Build and push image]   | #11 exporting layers done
+[S16 CD - grade calculator/Build and push image]   | #11 exporting manifest sha256:a8616af865acf597f9a8fb0364b13c23b0ce2248fe53c746a3f52ef6d52b8714 done
+[S16 CD - grade calculator/Build and push image]   | #11 exporting config sha256:09249bfe2054fb0aaecca03018b8d0bcd7a7ad607583104f12acca4155e799df done
+[S16 CD - grade calculator/Build and push image]   | #11 exporting attestation manifest sha256:88276d0c72458ed1c843f8f46713933eae5c9c04f871cc686bc6603ddbd83111 0.0s done
+[S16 CD - grade calculator/Build and push image]   | #11 exporting manifest list sha256:7c6b8a95469c4c0e4ff470e2a28c2d3e6ba05da7d57baf9ec85a3b896a2413a8 0.0s done
+[S16 CD - grade calculator/Build and push image]   | #11 naming to localhost:5055/bypratyush/grade-calculator:888cd81 done
+[S16 CD - grade calculator/Build and push image]   | #11 unpacking to localhost:5055/bypratyush/grade-calculator:888cd81 0.0s done
+[S16 CD - grade calculator/Build and push image]   | #11 naming to localhost:5055/bypratyush/grade-calculator:latest done
+[S16 CD - grade calculator/Build and push image]   | #11 unpacking to localhost:5055/bypratyush/grade-calculator:latest
+[S16 CD - grade calculator/Build and push image]   | #11 unpacking to localhost:5055/bypratyush/grade-calculator:latest 0.0s done
+[S16 CD - grade calculator/Build and push image]   | #11 DONE 0.3s
+[S16 CD - grade calculator/Build and push image]   ✅  Success - Main docker build [1.231308292s]
+[S16 CD - grade calculator/Build and push image] ⭐ Run Main docker push
+[S16 CD - grade calculator/Build and push image]   🐳  docker exec cmd=[bash --noprofile --norc -e -o pipefail /var/run/act/workflow/push.sh] user= workdir=cicd-github-actions
+[S16 CD - grade calculator/Build and push image]   | The push refers to repository [localhost:5055/bypratyush/grade-calculator]
+[S16 CD - grade calculator/Build and push image]   | e41644b4b81a: Waiting
+[S16 CD - grade calculator/Build and push image]   | 49b04c8898d4: Waiting
+[S16 CD - grade calculator/Build and push image]   | 0e1667fa430b: Waiting
+[S16 CD - grade calculator/Build and push image]   | fa7136ea4be2: Waiting
+[S16 CD - grade calculator/Build and push image]   | 7c4b10e82ec6: Waiting
+[S16 CD - grade calculator/Build and push image]   | bbeda6b4abb7: Waiting
+[S16 CD - grade calculator/Build and push image]   | 74202e18a58b: Waiting
+[S16 CD - grade calculator/Build and push image]   | a2c5ac708d8b: Waiting
+[S16 CD - grade calculator/Build and push image]   | 4f4fb700ef54: Waiting
+[S16 CD - grade calculator/Build and push image]   | d21f6b2afeb7: Waiting
+[S16 CD - grade calculator/Build and push image]   | fa7136ea4be2: Waiting
+[S16 CD - grade calculator/Build and push image]   | 7c4b10e82ec6: Waiting
+[S16 CD - grade calculator/Build and push image]   | bbeda6b4abb7: Waiting
+[S16 CD - grade calculator/Build and push image]   | 74202e18a58b: Waiting
+[S16 CD - grade calculator/Build and push image]   | a2c5ac708d8b: Waiting
+[S16 CD - grade calculator/Build and push image]   | 4f4fb700ef54: Waiting
+[S16 CD - grade calculator/Build and push image]   | d21f6b2afeb7: Waiting
+[S16 CD - grade calculator/Build and push image]   | e41644b4b81a: Waiting
+[S16 CD - grade calculator/Build and push image]   | 49b04c8898d4: Waiting
+[S16 CD - grade calculator/Build and push image]   | 0e1667fa430b: Waiting
+[S16 CD - grade calculator/Build and push image]   | e41644b4b81a: Waiting
+[S16 CD - grade calculator/Build and push image]   | 49b04c8898d4: Waiting
+[S16 CD - grade calculator/Build and push image]   | 0e1667fa430b: Waiting
+[S16 CD - grade calculator/Build and push image]   | fa7136ea4be2: Waiting
+[S16 CD - grade calculator/Build and push image]   | 7c4b10e82ec6: Waiting
+[S16 CD - grade calculator/Build and push image]   | bbeda6b4abb7: Waiting
+[S16 CD - grade calculator/Build and push image]   | 74202e18a58b: Waiting
+[S16 CD - grade calculator/Build and push image]   | a2c5ac708d8b: Waiting
+[S16 CD - grade calculator/Build and push image]   | 4f4fb700ef54: Waiting
+[S16 CD - grade calculator/Build and push image]   | d21f6b2afeb7: Waiting
+[S16 CD - grade calculator/Build and push image]   | 49b04c8898d4: Waiting
+[S16 CD - grade calculator/Build and push image]   | 0e1667fa430b: Waiting
+[S16 CD - grade calculator/Build and push image]   | fa7136ea4be2: Waiting
+[S16 CD - grade calculator/Build and push image]   | 7c4b10e82ec6: Waiting
+[S16 CD - grade calculator/Build and push image]   | bbeda6b4abb7: Waiting
+[S16 CD - grade calculator/Build and push image]   | 74202e18a58b: Waiting
+[S16 CD - grade calculator/Build and push image]   | a2c5ac708d8b: Waiting
+[S16 CD - grade calculator/Build and push image]   | 4f4fb700ef54: Waiting
+[S16 CD - grade calculator/Build and push image]   | d21f6b2afeb7: Waiting
+[S16 CD - grade calculator/Build and push image]   | e41644b4b81a: Waiting
+[S16 CD - grade calculator/Build and push image]   | fa7136ea4be2: Waiting
+[S16 CD - grade calculator/Build and push image]   | 7c4b10e82ec6: Waiting
+[S16 CD - grade calculator/Build and push image]   | bbeda6b4abb7: Waiting
+[S16 CD - grade calculator/Build and push image]   | 74202e18a58b: Waiting
+[S16 CD - grade calculator/Build and push image]   | a2c5ac708d8b: Waiting
+[S16 CD - grade calculator/Build and push image]   | 4f4fb700ef54: Waiting
+[S16 CD - grade calculator/Build and push image]   | d21f6b2afeb7: Waiting
+[S16 CD - grade calculator/Build and push image]   | e41644b4b81a: Waiting
+[S16 CD - grade calculator/Build and push image]   | 49b04c8898d4: Waiting
+[S16 CD - grade calculator/Build and push image]   | 0e1667fa430b: Waiting
+[S16 CD - grade calculator/Build and push image]   | e41644b4b81a: Waiting
+[S16 CD - grade calculator/Build and push image]   | 49b04c8898d4: Waiting
+[S16 CD - grade calculator/Build and push image]   | 0e1667fa430b: Waiting
+[S16 CD - grade calculator/Build and push image]   | fa7136ea4be2: Waiting
+[S16 CD - grade calculator/Build and push image]   | 7c4b10e82ec6: Waiting
+[S16 CD - grade calculator/Build and push image]   | bbeda6b4abb7: Waiting
+[S16 CD - grade calculator/Build and push image]   | 74202e18a58b: Waiting
+[S16 CD - grade calculator/Build and push image]   | a2c5ac708d8b: Waiting
+[S16 CD - grade calculator/Build and push image]   | 4f4fb700ef54: Waiting
+[S16 CD - grade calculator/Build and push image]   | d21f6b2afeb7: Waiting
+[S16 CD - grade calculator/Build and push image]   | 0e1667fa430b: Pushed
+[S16 CD - grade calculator/Build and push image]   | fa7136ea4be2: Pushed
+[S16 CD - grade calculator/Build and push image]   | 7c4b10e82ec6: Pushed
+[S16 CD - grade calculator/Build and push image]   | 74202e18a58b: Pushed
+[S16 CD - grade calculator/Build and push image]   | a2c5ac708d8b: Pushed
+[S16 CD - grade calculator/Build and push image]   | 4f4fb700ef54: Pushed
+[S16 CD - grade calculator/Build and push image]   | d21f6b2afeb7: Pushed
+[S16 CD - grade calculator/Build and push image]   | 49b04c8898d4: Pushed
+[S16 CD - grade calculator/Build and push image]   | e41644b4b81a: Pushed
+[S16 CD - grade calculator/Build and push image]   | bbeda6b4abb7: Pushed
+[S16 CD - grade calculator/Build and push image]   | 888cd81: digest: sha256:7c6b8a95469c4c0e4ff470e2a28c2d3e6ba05da7d57baf9ec85a3b896a2413a8 size: 856
+[S16 CD - grade calculator/Build and push image]   | The push refers to repository [localhost:5055/bypratyush/grade-calculator]
+[S16 CD - grade calculator/Build and push image]   | d21f6b2afeb7: Waiting
+[S16 CD - grade calculator/Build and push image]   | 74202e18a58b: Waiting
+[S16 CD - grade calculator/Build and push image]   | 0e1667fa430b: Waiting
+[S16 CD - grade calculator/Build and push image]   | fa7136ea4be2: Waiting
+[S16 CD - grade calculator/Build and push image]   | 7c4b10e82ec6: Waiting
+[S16 CD - grade calculator/Build and push image]   | bbeda6b4abb7: Waiting
+[S16 CD - grade calculator/Build and push image]   | a2c5ac708d8b: Waiting
+[S16 CD - grade calculator/Build and push image]   | e41644b4b81a: Waiting
+[S16 CD - grade calculator/Build and push image]   | 49b04c8898d4: Waiting
+[S16 CD - grade calculator/Build and push image]   | 4f4fb700ef54: Waiting
+[S16 CD - grade calculator/Build and push image]   | e41644b4b81a: Waiting
+[S16 CD - grade calculator/Build and push image]   | 49b04c8898d4: Waiting
+[S16 CD - grade calculator/Build and push image]   | 4f4fb700ef54: Waiting
+[S16 CD - grade calculator/Build and push image]   | d21f6b2afeb7: Waiting
+[S16 CD - grade calculator/Build and push image]   | 74202e18a58b: Waiting
+[S16 CD - grade calculator/Build and push image]   | 0e1667fa430b: Waiting
+[S16 CD - grade calculator/Build and push image]   | fa7136ea4be2: Waiting
+[S16 CD - grade calculator/Build and push image]   | 7c4b10e82ec6: Waiting
+[S16 CD - grade calculator/Build and push image]   | bbeda6b4abb7: Waiting
+[S16 CD - grade calculator/Build and push image]   | a2c5ac708d8b: Waiting
+[S16 CD - grade calculator/Build and push image]   | fa7136ea4be2: Waiting
+[S16 CD - grade calculator/Build and push image]   | 7c4b10e82ec6: Waiting
+[S16 CD - grade calculator/Build and push image]   | bbeda6b4abb7: Waiting
+[S16 CD - grade calculator/Build and push image]   | a2c5ac708d8b: Waiting
+[S16 CD - grade calculator/Build and push image]   | e41644b4b81a: Waiting
+[S16 CD - grade calculator/Build and push image]   | 49b04c8898d4: Waiting
+[S16 CD - grade calculator/Build and push image]   | 4f4fb700ef54: Waiting
+[S16 CD - grade calculator/Build and push image]   | d21f6b2afeb7: Waiting
+[S16 CD - grade calculator/Build and push image]   | 74202e18a58b: Waiting
+[S16 CD - grade calculator/Build and push image]   | 0e1667fa430b: Waiting
+[S16 CD - grade calculator/Build and push image]   | fa7136ea4be2: Waiting
+[S16 CD - grade calculator/Build and push image]   | 7c4b10e82ec6: Waiting
+[S16 CD - grade calculator/Build and push image]   | bbeda6b4abb7: Waiting
+[S16 CD - grade calculator/Build and push image]   | a2c5ac708d8b: Waiting
+[S16 CD - grade calculator/Build and push image]   | e41644b4b81a: Waiting
+[S16 CD - grade calculator/Build and push image]   | 49b04c8898d4: Waiting
+[S16 CD - grade calculator/Build and push image]   | 4f4fb700ef54: Waiting
+[S16 CD - grade calculator/Build and push image]   | d21f6b2afeb7: Waiting
+[S16 CD - grade calculator/Build and push image]   | 74202e18a58b: Waiting
+[S16 CD - grade calculator/Build and push image]   | 0e1667fa430b: Waiting
+[S16 CD - grade calculator/Build and push image]   | e41644b4b81a: Waiting
+[S16 CD - grade calculator/Build and push image]   | 49b04c8898d4: Waiting
+[S16 CD - grade calculator/Build and push image]   | 4f4fb700ef54: Waiting
+[S16 CD - grade calculator/Build and push image]   | d21f6b2afeb7: Waiting
+[S16 CD - grade calculator/Build and push image]   | 74202e18a58b: Waiting
+[S16 CD - grade calculator/Build and push image]   | 0e1667fa430b: Waiting
+[S16 CD - grade calculator/Build and push image]   | fa7136ea4be2: Waiting
+[S16 CD - grade calculator/Build and push image]   | 7c4b10e82ec6: Waiting
+[S16 CD - grade calculator/Build and push image]   | bbeda6b4abb7: Waiting
+[S16 CD - grade calculator/Build and push image]   | a2c5ac708d8b: Waiting
+[S16 CD - grade calculator/Build and push image]   | d21f6b2afeb7: Waiting
+[S16 CD - grade calculator/Build and push image]   | 74202e18a58b: Waiting
+[S16 CD - grade calculator/Build and push image]   | 0e1667fa430b: Waiting
+[S16 CD - grade calculator/Build and push image]   | fa7136ea4be2: Waiting
+[S16 CD - grade calculator/Build and push image]   | 7c4b10e82ec6: Waiting
+[S16 CD - grade calculator/Build and push image]   | bbeda6b4abb7: Waiting
+[S16 CD - grade calculator/Build and push image]   | a2c5ac708d8b: Waiting
+[S16 CD - grade calculator/Build and push image]   | e41644b4b81a: Waiting
+[S16 CD - grade calculator/Build and push image]   | 49b04c8898d4: Waiting
+[S16 CD - grade calculator/Build and push image]   | 4f4fb700ef54: Waiting
+[S16 CD - grade calculator/Build and push image]   | fa7136ea4be2: Already exists
+[S16 CD - grade calculator/Build and push image]   | 7c4b10e82ec6: Layer already exists
+[S16 CD - grade calculator/Build and push image]   | bbeda6b4abb7: Layer already exists
+[S16 CD - grade calculator/Build and push image]   | a2c5ac708d8b: Layer already exists
+[S16 CD - grade calculator/Build and push image]   | e41644b4b81a: Layer already exists
+[S16 CD - grade calculator/Build and push image]   | 49b04c8898d4: Layer already exists
+[S16 CD - grade calculator/Build and push image]   | 4f4fb700ef54: Layer already exists
+[S16 CD - grade calculator/Build and push image]   | d21f6b2afeb7: Layer already exists
+[S16 CD - grade calculator/Build and push image]   | 74202e18a58b: Layer already exists
+[S16 CD - grade calculator/Build and push image]   | 0e1667fa430b: Layer already exists
+[S16 CD - grade calculator/Build and push image]   | latest: digest: sha256:7c6b8a95469c4c0e4ff470e2a28c2d3e6ba05da7d57baf9ec85a3b896a2413a8 size: 856
+[S16 CD - grade calculator/Build and push image]   | pushed localhost:5055/bypratyush/grade-calculator@sha256:7c6b8a95469c4c0e4ff470e2a28c2d3e6ba05da7d57baf9ec85a3b896a2413a8
+[S16 CD - grade calculator/Build and push image]   ✅  Success - Main docker push [2.48609425s]
+[S16 CD - grade calculator/Build and push image]   ⚙  ::set-output:: digest=sha256:7c6b8a95469c4c0e4ff470e2a28c2d3e6ba05da7d57baf9ec85a3b896a2413a8
+[S16 CD - grade calculator/Build and push image] ⭐ Run Complete job
+[S16 CD - grade calculator/Build and push image] Cleaning up container for job Build and push image
+[S16 CD - grade calculator/Build and push image]   ✅  Success - Complete job
+[S16 CD - grade calculator/Build and push image] 🏁  Job succeeded
+[S16 CD - grade calculator/Smoke-test pushed image] ⭐ Run Set up job
+[S16 CD - grade calculator/Smoke-test pushed image] 🚀  Start image=ghcr.io/catthehacker/ubuntu:act-latest
+[S16 CD - grade calculator/Smoke-test pushed image]   🐳  docker pull image=ghcr.io/catthehacker/ubuntu:act-latest platform=linux/arm64 username= forcePull=false
+[S16 CD - grade calculator/Smoke-test pushed image]   🐳  docker create image=ghcr.io/catthehacker/ubuntu:act-latest platform=linux/arm64 entrypoint=["tail" "-f" "/dev/null"] cmd=[] network="host"
+[S16 CD - grade calculator/Smoke-test pushed image]   🐳  docker run image=ghcr.io/catthehacker/ubuntu:act-latest platform=linux/arm64 entrypoint=["tail" "-f" "/dev/null"] cmd=[] network="host"
+[S16 CD - grade calculator/Smoke-test pushed image]   🐳  docker exec cmd=[node --no-warnings -e console.log(process.execPath)] user= workdir=
+[S16 CD - grade calculator/Smoke-test pushed image]   ✅  Success - Set up job
+[S16 CD - grade calculator/Smoke-test pushed image]   ☁  git clone 'https://github.com/docker/login-action' # ref=v4
+[S16 CD - grade calculator/Smoke-test pushed image] ⭐ Run Main Check out code
+[S16 CD - grade calculator/Smoke-test pushed image]   🐳  docker cp src=/Users/pratyushmohanty/Devops-assignment/. dst=/Users/pratyushmohanty/Devops-assignment
+[S16 CD - grade calculator/Smoke-test pushed image]   ✅  Success - Main Check out code [1.631103875s]
+[S16 CD - grade calculator/Smoke-test pushed image] ⭐ Run Main Pull by digest (not by tag)
+[S16 CD - grade calculator/Smoke-test pushed image]   🐳  docker exec cmd=[bash --noprofile --norc -e -o pipefail /var/run/act/workflow/2.sh] user= workdir=cicd-github-actions
+[S16 CD - grade calculator/Smoke-test pushed image]   | localhost:5055/bypratyush/grade-calculator@sha256:7c6b8a95469c4c0e4ff470e2a28c2d3e6ba05da7d57baf9ec85a3b896a2413a8: Pulling from bypratyush/grade-calculator
+[S16 CD - grade calculator/Smoke-test pushed image]   | Digest: sha256:7c6b8a95469c4c0e4ff470e2a28c2d3e6ba05da7d57baf9ec85a3b896a2413a8
+[S16 CD - grade calculator/Smoke-test pushed image]   | Status: Downloaded newer image for localhost:5055/bypratyush/grade-calculator@sha256:7c6b8a95469c4c0e4ff470e2a28c2d3e6ba05da7d57baf9ec85a3b896a2413a8
+[S16 CD - grade calculator/Smoke-test pushed image]   | localhost:5055/bypratyush/grade-calculator@sha256:7c6b8a95469c4c0e4ff470e2a28c2d3e6ba05da7d57baf9ec85a3b896a2413a8
+[S16 CD - grade calculator/Smoke-test pushed image]   ✅  Success - Main Pull by digest (not by tag) [3.064461959s]
+[S16 CD - grade calculator/Smoke-test pushed image] ⭐ Run Main Run and test
+[S16 CD - grade calculator/Smoke-test pushed image]   🐳  docker exec cmd=[bash --noprofile --norc -e -o pipefail /var/run/act/workflow/3.sh] user= workdir=cicd-github-actions
+[S16 CD - grade calculator/Smoke-test pushed image]   | b37e13d164702de686f5f2bd5cfa2f174539cb0f67f84a1a7eae70998e59855f
+[S16 CD - grade calculator/Smoke-test pushed image]   | --- waiting for the Docker HEALTHCHECK to report healthy
+[S16 CD - grade calculator/Smoke-test pushed image]   | health status: healthy (after ~6s)
+[S16 CD - grade calculator/Smoke-test pushed image]   | container s16-cd-smoke is at http://172.17.0.4:8080
+[S16 CD - grade calculator/Smoke-test pushed image]   | --- endpoints
+[S16 CD - grade calculator/Smoke-test pushed image]   |   GET /health                                  HTTP 200  {"status":"ok"}
+[S16 CD - grade calculator/Smoke-test pushed image]   |   GET /version                                 HTTP 200  {"commit":"888cd817ad3fcef35caa73374366c0af95030157","version":"1.2.0"}
+[S16 CD - grade calculator/Smoke-test pushed image]   |   image was built from the expected commit
+[S16 CD - grade calculator/Smoke-test pushed image]   |   GET /api/grade?score=91                      HTTP 200  {"grade":"O","points":10,"score":91.0}
+[S16 CD - grade calculator/Smoke-test pushed image]   |   GET /api/grade?score=abc (bad)               HTTP 400  {"error":"score must be a number"}
+[S16 CD - grade calculator/Smoke-test pushed image]   |   POST /api/sgpa                               HTTP 200  {"courses":[{"credits":4,"grade":"O","name":"DevOps","points":10},{"credits":3,"grade":"A","name":"DBMS","poin
+[S16 CD - grade calculator/Smoke-test pushed image]   | --- container hardening
+[S16 CD - grade calculator/Smoke-test pushed image]   |   process runs as uid 10001
+[S16 CD - grade calculator/Smoke-test pushed image]   | --- secret-protected endpoint
+[S16 CD - grade calculator/Smoke-test pushed image]   |   ADMIN_API_KEY secret is present (30 chars)
+[S16 CD - grade calculator/Smoke-test pushed image]   |   GET /api/admin/stats (no key)                HTTP 401  {"error":"invalid or missing X-API-Key"}
+[S16 CD - grade calculator/Smoke-test pushed image]   |   GET /api/admin/stats (with key)              HTTP 200  {"pid":8,"requests_served":{"grade":1,"sgpa":0},"uptime_seconds":5.7}
+[S16 CD - grade calculator/Smoke-test pushed image]   | smoke test passed
+[S16 CD - grade calculator/Smoke-test pushed image]   ✅  Success - Main Run and test [6.7180605s]
+[S16 CD - grade calculator/Smoke-test pushed image] ⭐ Run Main Remove the container
+[S16 CD - grade calculator/Smoke-test pushed image]   🐳  docker exec cmd=[bash --noprofile --norc -e -o pipefail /var/run/act/workflow/4.sh] user= workdir=cicd-github-actions
+[S16 CD - grade calculator/Smoke-test pushed image]   | s16-cd-smoke
+[S16 CD - grade calculator/Smoke-test pushed image]   ✅  Success - Main Remove the container [319.939667ms]
+[S16 CD - grade calculator/Smoke-test pushed image] ⭐ Run Complete job
+[S16 CD - grade calculator/Smoke-test pushed image] Cleaning up container for job Smoke-test pushed image
+[S16 CD - grade calculator/Smoke-test pushed image]   ✅  Success - Complete job
+[S16 CD - grade calculator/Smoke-test pushed image] 🏁  Job succeeded
+[S16 CD - grade calculator/Deploy to production   ] ⭐ Run Set up job
+[S16 CD - grade calculator/Deploy to production   ] 🚀  Start image=ghcr.io/catthehacker/ubuntu:act-latest
+[S16 CD - grade calculator/Deploy to production   ]   🐳  docker pull image=ghcr.io/catthehacker/ubuntu:act-latest platform=linux/arm64 username= forcePull=false
+[S16 CD - grade calculator/Deploy to production   ]   🐳  docker create image=ghcr.io/catthehacker/ubuntu:act-latest platform=linux/arm64 entrypoint=["tail" "-f" "/dev/null"] cmd=[] network="host"
+[S16 CD - grade calculator/Deploy to production   ]   🐳  docker run image=ghcr.io/catthehacker/ubuntu:act-latest platform=linux/arm64 entrypoint=["tail" "-f" "/dev/null"] cmd=[] network="host"
+[S16 CD - grade calculator/Deploy to production   ]   🐳  docker exec cmd=[node --no-warnings -e console.log(process.execPath)] user= workdir=
+[S16 CD - grade calculator/Deploy to production   ]   ✅  Success - Set up job
+[S16 CD - grade calculator/Deploy to production   ]   ☁  git clone 'https://github.com/docker/login-action' # ref=v4
+[S16 CD - grade calculator/Deploy to production   ] ⭐ Run Main Check out code
+[S16 CD - grade calculator/Deploy to production   ]   🐳  docker cp src=/Users/pratyushmohanty/Devops-assignment/. dst=/Users/pratyushmohanty/Devops-assignment
+[S16 CD - grade calculator/Deploy to production   ]   ✅  Success - Main Check out code [3.405853625s]
+[S16 CD - grade calculator/Deploy to production   ] ⭐ Run Main Require the production secret
+[S16 CD - grade calculator/Deploy to production   ]   🐳  docker exec cmd=[bash --noprofile --norc -e -o pipefail /var/run/act/workflow/2.sh] user= workdir=cicd-github-actions
+[S16 CD - grade calculator/Deploy to production   ]   | ADMIN_API_KEY present (30 chars)
+[S16 CD - grade calculator/Deploy to production   ]   ✅  Success - Main Require the production secret [117.589125ms]
+[S16 CD - grade calculator/Deploy to production   ] ⭐ Run Main Replace the running release
+[S16 CD - grade calculator/Deploy to production   ]   🐳  docker exec cmd=[bash --noprofile --norc -e -o pipefail /var/run/act/workflow/3.sh] user= workdir=cicd-github-actions
+[S16 CD - grade calculator/Deploy to production   ]   | localhost:5055/bypratyush/grade-calculator@sha256:7c6b8a95469c4c0e4ff470e2a28c2d3e6ba05da7d57baf9ec85a3b896a2413a8
+[S16 CD - grade calculator/Deploy to production   ]   | previous release: none
+[S16 CD - grade calculator/Deploy to production   ]   | 101818dc39835fdf68400c131f2a5da7217f7264dd6b53edbb20aaf10469676a
+[S16 CD - grade calculator/Deploy to production   ]   | new release:      localhost:5055/bypratyush/grade-calculator@sha256:7c6b8a95469c4c0e4ff470e2a28c2d3e6ba05da7d57baf9ec85a3b896a2413a8
+[S16 CD - grade calculator/Deploy to production   ]   ✅  Success - Main Replace the running release [3.546359333s]
+[S16 CD - grade calculator/Deploy to production   ] ⭐ Run Main Verify the deployment
+[S16 CD - grade calculator/Deploy to production   ]   🐳  docker exec cmd=[bash --noprofile --norc -e -o pipefail /var/run/act/workflow/4.sh] user= workdir=cicd-github-actions
+[S16 CD - grade calculator/Deploy to production   ]   | --- waiting for the Docker HEALTHCHECK to report healthy
+[S16 CD - grade calculator/Deploy to production   ]   | health status: healthy (after ~6s)
+[S16 CD - grade calculator/Deploy to production   ]   | container grade-calculator-production is at http://172.17.0.4:8080
+[S16 CD - grade calculator/Deploy to production   ]   | --- endpoints
+[S16 CD - grade calculator/Deploy to production   ]   |   GET /health                                  HTTP 200  {"status":"ok"}
+[S16 CD - grade calculator/Deploy to production   ]   |   GET /version                                 HTTP 200  {"commit":"888cd817ad3fcef35caa73374366c0af95030157","version":"1.2.0"}
+[S16 CD - grade calculator/Deploy to production   ]   |   image was built from the expected commit
+[S16 CD - grade calculator/Deploy to production   ]   |   GET /api/grade?score=91                      HTTP 200  {"grade":"O","points":10,"score":91.0}
+[S16 CD - grade calculator/Deploy to production   ]   |   GET /api/grade?score=abc (bad)               HTTP 400  {"error":"score must be a number"}
+[S16 CD - grade calculator/Deploy to production   ]   |   POST /api/sgpa                               HTTP 200  {"courses":[{"credits":4,"grade":"O","name":"DevOps","points":10},{"credits":3,"grade":"A","name":"DBMS","poin
+[S16 CD - grade calculator/Deploy to production   ]   | --- container hardening
+[S16 CD - grade calculator/Deploy to production   ]   |   process runs as uid 10001
+[S16 CD - grade calculator/Deploy to production   ]   | --- secret-protected endpoint
+[S16 CD - grade calculator/Deploy to production   ]   |   ADMIN_API_KEY secret is present (30 chars)
+[S16 CD - grade calculator/Deploy to production   ]   |   GET /api/admin/stats (no key)                HTTP 401  {"error":"invalid or missing X-API-Key"}
+[S16 CD - grade calculator/Deploy to production   ]   |   GET /api/admin/stats (with key)              HTTP 200  {"pid":8,"requests_served":{"grade":1,"sgpa":0},"uptime_seconds":5.8}
+[S16 CD - grade calculator/Deploy to production   ]   | smoke test passed
+[S16 CD - grade calculator/Deploy to production   ]   ✅  Success - Main Verify the deployment [6.639930916s]
+[S16 CD - grade calculator/Deploy to production   ] ⭐ Run Main Deployment summary
+[S16 CD - grade calculator/Deploy to production   ]   🐳  docker exec cmd=[bash --noprofile --norc -e -o pipefail /var/run/act/workflow/5.sh] user= workdir=cicd-github-actions
+[S16 CD - grade calculator/Deploy to production   ]   ✅  Success - Main Deployment summary [103.172666ms]
+[S16 CD - grade calculator/Deploy to production   ]   ⚙  Summary - ### Deployed grade-calculator to production
+
+| Item | Value |
+|---|---|
+| Image | `localhost:5055/bypratyush/grade-calculator` |
+| Digest | `sha256:7c6b8a95469c4c0e4ff470e2a28c2d3e6ba05da7d57baf9ec85a3b896a2413a8` |
+| Commit | `888cd817ad3fcef35caa73374366c0af95030157` |
+| Container | `grade-calculator-production` - healthy |
+| Triggered by | workflow_run |
+[S16 CD - grade calculator/Deploy to production   ] ⭐ Run Complete job
+[S16 CD - grade calculator/Deploy to production   ] Cleaning up container for job Deploy to production
+[S16 CD - grade calculator/Deploy to production   ]   ✅  Success - Complete job
+[S16 CD - grade calculator/Deploy to production   ] 🏁  Job succeeded
