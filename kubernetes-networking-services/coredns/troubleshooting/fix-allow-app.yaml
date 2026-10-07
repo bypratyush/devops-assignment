@@ -1,0 +1,21 @@
+# FIX 2: DNS alone is not enough - the client also needs to reach the app.
+# Allow egress from the client to the hello pods on port 80.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-client-to-hello
+  namespace: s11-coredns
+spec:
+  podSelector:
+    matchLabels:
+      app: dns-client
+  policyTypes:
+    - Egress
+  egress:
+    - to:
+        - podSelector:
+            matchLabels:
+              app: hello
+      ports:
+        - protocol: TCP
+          port: 80

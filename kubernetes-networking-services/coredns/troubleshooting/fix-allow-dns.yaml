@@ -1,0 +1,26 @@
+# FIX 1: keep the default-deny, but allow DNS to the CoreDNS pods.
+# NetworkPolicy matches the real destination pod (after kube-proxy has
+# DNAT-ed 10.96.0.10 to a CoreDNS pod IP), so select the CoreDNS pods by
+# label, in kube-system, on port 53 UDP and TCP.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-dns-egress
+  namespace: s11-coredns
+spec:
+  podSelector: {}
+  policyTypes:
+    - Egress
+  egress:
+    - to:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: kube-system
+          podSelector:
+            matchLabels:
+              k8s-app: kube-dns
+      ports:
+        - protocol: UDP
+          port: 53
+        - protocol: TCP
+          port: 53

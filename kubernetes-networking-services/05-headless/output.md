@@ -2,7 +2,7 @@
 
 > **Submitted by:** Pratyush Mohanty  |  **Roll No.:** 24BCS10238
 
-Produced by `./run.sh` on 2026-09-18.
+Produced by `./run.sh` on 2026-10-07.
 
 ```text
 
@@ -24,7 +24,7 @@ pod/headless-dns-client condition met
 STEP 2 - The service has NO ClusterIP
 ==============================================================
 NAME                   TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
-web-service-headless   ClusterIP   None         <none>        80/TCP    2s
+web-service-headless   ClusterIP   None         <none>        80/TCP    4s
 
 >>> CLUSTER-IP is 'None'. That is what 'headless' means.
     No virtual IP, no kube-proxy rules, no L4 load balancing.
@@ -32,10 +32,10 @@ web-service-headless   ClusterIP   None         <none>        80/TCP    2s
 ==============================================================
 STEP 3 - StatefulSet pods have STABLE, ORDERED names
 ==============================================================
-NAME             READY   STATUS    RESTARTS   AGE   IP             NODE                NOMINATED NODE   READINESS GATES
-web-stateful-0   1/1     Running   0          2s    10.244.1.195   devops-hw-worker2   <none>           <none>
-web-stateful-1   1/1     Running   0          2s    10.244.2.180   devops-hw-worker    <none>           <none>
-web-stateful-2   1/1     Running   0          1s    10.244.1.197   devops-hw-worker2   <none>           <none>
+NAME             READY   STATUS    RESTARTS   AGE   IP            NODE                NOMINATED NODE   READINESS GATES
+web-stateful-0   1/1     Running   0          4s    10.244.1.34   devops-hw-worker2   <none>           <none>
+web-stateful-1   1/1     Running   0          2s    10.244.2.36   devops-hw-worker    <none>           <none>
+web-stateful-2   1/1     Running   0          2s    10.244.1.36   devops-hw-worker2   <none>           <none>
 
 Names are web-stateful-0, -1, -2 - an ordinal index, not a random hash.
 A Deployment would give you names like web-app-66865d4855-xxnrh.
@@ -44,23 +44,23 @@ Delete web-stateful-1 and it comes back as web-stateful-1, every time.
 ==============================================================
 STEP 4 - Endpoints still exist (unlike ExternalName)
 ==============================================================
-NAME                         ADDRESSTYPE   PORTS   ENDPOINTS                                AGE
-web-service-headless-8x6br   IPv4          80      10.244.1.195,10.244.2.180,10.244.1.197   2s
+NAME                         ADDRESSTYPE   PORTS   ENDPOINTS                             AGE
+web-service-headless-5dzh6   IPv4          80      10.244.1.34,10.244.2.36,10.244.1.36   4s
 
-  10.244.1.195  hostname=web-stateful-0  pod=web-stateful-0
-  10.244.2.180  hostname=web-stateful-1  pod=web-stateful-1
-  10.244.1.197  hostname=web-stateful-2  pod=web-stateful-2
+  10.244.1.34  hostname=web-stateful-0  pod=web-stateful-0
+  10.244.2.36  hostname=web-stateful-1  pod=web-stateful-1
+  10.244.1.36  hostname=web-stateful-2  pod=web-stateful-2
 
 ==============================================================
 STEP 5 - THE KEY DIFFERENCE: DNS returns ALL pod IPs, not one VIP
 ==============================================================
 $ nslookup web-service-headless.default.svc.cluster.local
   Name:	web-service-headless.default.svc.cluster.local
-  Address: 10.244.1.195
+  Address: 10.244.2.36
   Name:	web-service-headless.default.svc.cluster.local
-  Address: 10.244.1.197
+  Address: 10.244.1.34
   Name:	web-service-headless.default.svc.cluster.local
-  Address: 10.244.2.180
+  Address: 10.244.1.36
 
 Three A records - one per pod. A normal ClusterIP service would return
 exactly ONE address (the virtual IP). The client now sees every backend
@@ -71,9 +71,9 @@ STEP 6 - Every pod gets its OWN stable DNS name
 ==============================================================
 Pattern:  <pod-name>.<service-name>.<namespace>.svc.cluster.local
 
-  web-stateful-0.web-service-headless                  -> 10.244.1.195
-  web-stateful-1.web-service-headless                  -> 10.244.2.180
-  web-stateful-2.web-service-headless                  -> 10.244.1.197
+  web-stateful-0.web-service-headless                  -> 10.244.1.34
+  web-stateful-1.web-service-headless                  -> 10.244.2.36
+  web-stateful-2.web-service-headless                  -> 10.244.1.36
 
 This is what a Deployment CANNOT give you. It is the reason StatefulSets
 and headless services go together.
@@ -90,14 +90,14 @@ Each request goes to that exact pod - no load balancing in between.
 ==============================================================
 STEP 8 - Stable identity survives a pod deletion
 ==============================================================
-before:  web-stateful-1  ip=10.244.2.180
+before:  web-stateful-1  ip=10.244.2.36
 deleting web-stateful-1 ...
-after:   web-stateful-1  ip=10.244.2.181
+after:   web-stateful-1  ip=10.244.2.37
 
 The NAME came back identical (web-stateful-1) even though the IP changed.
 Its DNS record follows it:
   Name:	web-stateful-1.web-service-headless.default.svc.cluster.local
-  Address: 10.244.2.181
+  Address: 10.244.2.37
 
 A peer that had written down 'web-stateful-1' in its config still finds it.
 That is why databases and Kafka use this: peers reference each other by

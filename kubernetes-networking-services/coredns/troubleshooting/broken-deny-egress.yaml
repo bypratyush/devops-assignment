@@ -1,0 +1,12 @@
+# BROKEN: a "lock everything down" egress policy for the namespace.
+# It selects every pod in s11-coredns and allows NO egress at all - which
+# silently includes DNS (UDP/TCP 53 to CoreDNS in kube-system).
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: default-deny-egress
+  namespace: s11-coredns
+spec:
+  podSelector: {}
+  policyTypes:
+    - Egress

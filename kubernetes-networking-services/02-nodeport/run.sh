@@ -19,6 +19,16 @@ deploy() {
   kubectl run np-client --image=curlimages/curl:8.5.0 --restart=Never \
     --command -- sh -c "sleep 3600" 2>/dev/null || true
   kubectl wait --for=condition=Ready pod/np-client --timeout=120s
+  # A freshly created NodePort is not answering yet: kube-proxy on each node has
+  # to see the Service + EndpointSlice and write its rules first. Without this
+  # poll, a run on 2026-10-07 got HTTP 000 from every node (see README notes).
+  echo
+  echo "waiting for kube-proxy to program the NodePort rules..."
+  for i in $(seq 1 60); do
+    CODE=$(curl -s -o /dev/null -w '%{http_code}' --max-time 2 "http://localhost:$NODEPORT" 2>/dev/null)
+    if [ "$CODE" = "200" ]; then echo "  localhost:$NODEPORT answered after ~${i}s"; break; fi
+    sleep 1
+  done
 }
 
 verify() {

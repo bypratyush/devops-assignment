@@ -1,0 +1,21 @@
+# FIXED: keep the cluster defaults (dnsPolicy ClusterFirst, the default) and
+# only tune what was actually wanted - a lower ndots. dnsConfig is MERGED with
+# the cluster settings instead of replacing them.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: custom-dns
+  namespace: s11-coredns
+spec:
+  dnsPolicy: ClusterFirst
+  dnsConfig:
+    options:
+      - name: ndots
+        value: "2"
+  containers:
+    - name: dig
+      image: registry.k8s.io/e2e-test-images/jessie-dnsutils:1.7
+      command: ["sleep", "3600"]
+      resources:
+        requests: { cpu: "5m", memory: "8Mi" }
+        limits:   { cpu: "100m", memory: "64Mi" }

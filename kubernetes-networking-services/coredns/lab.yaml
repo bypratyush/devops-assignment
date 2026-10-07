@@ -1,0 +1,81 @@
+# CoreDNS lab. Everything lives in two namespaces of my own; CoreDNS itself is
+# only read (and its Corefile temporarily gets the 'log' plugin, then is restored).
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: s11-coredns
+---
+# A second namespace with a probe pod: used to check whether a DNS problem is
+# cluster-wide or only affects s11-coredns.
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: s11-coredns-probe
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello
+  namespace: s11-coredns
+spec:
+  replicas: 2
+  selector:
+    matchLabels: { app: hello }
+  template:
+    metadata:
+      labels: { app: hello }
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:1.25-alpine
+          ports:
+            - containerPort: 80
+          resources:
+            requests: { cpu: "10m", memory: "16Mi" }
+            limits:   { cpu: "100m", memory: "64Mi" }
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hello
+  namespace: s11-coredns
+spec:
+  selector: { app: hello }
+  ports:
+    - port: 80
+      targetPort: 80
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: dns-client
+  namespace: s11-coredns
+  labels: { app: dns-client }
+spec:
+  containers:
+    - name: dig
+      image: registry.k8s.io/e2e-test-images/jessie-dnsutils:1.7
+      command: ["sleep", "3600"]
+      resources:
+        requests: { cpu: "5m", memory: "8Mi" }
+        limits:   { cpu: "100m", memory: "64Mi" }
+    - name: curl
+      image: curlimages/curl:8.5.0
+      command: ["sleep", "3600"]
+      resources:
+        requests: { cpu: "5m", memory: "8Mi" }
+        limits:   { cpu: "100m", memory: "32Mi" }
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: dns-probe
+  namespace: s11-coredns-probe
+spec:
+  containers:
+    - name: dig
+      image: registry.k8s.io/e2e-test-images/jessie-dnsutils:1.7
+      command: ["sleep", "3600"]
+      resources:
+        requests: { cpu: "5m", memory: "8Mi" }
+        limits:   { cpu: "100m", memory: "64Mi" }

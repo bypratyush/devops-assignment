@@ -1,0 +1,30 @@
+# A ClusterIP Service for the Deployment's pods. Note what is NOT here: no
+# reference to the Deployment or the ReplicaSet. The only link is the label.
+apiVersion: v1
+kind: Service
+metadata:
+  name: web
+  namespace: s11-compare
+spec:
+  selector:
+    app: web
+  ports:
+    - port: 80
+      targetPort: 80
+---
+# A bare pod that happens to carry app=web. The Service will pick it up; the
+# ReplicaSet will not, because its selector also requires pod-template-hash.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: stray-web
+  namespace: s11-compare
+  labels:
+    app: web
+spec:
+  containers:
+    - name: nginx
+      image: nginx:1.25-alpine
+      resources:
+        requests: { cpu: "10m", memory: "16Mi" }
+        limits:   { cpu: "100m", memory: "64Mi" }

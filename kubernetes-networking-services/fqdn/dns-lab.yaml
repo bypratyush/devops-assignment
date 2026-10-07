@@ -1,0 +1,139 @@
+# FQDN lab: two namespaces, a normal Service, a headless Service with a
+# StatefulSet, and a client pod with both dig and curl.
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: s11-dns
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: s11-dns-other
+---
+# backend: Deployment + ClusterIP Service in s11-dns
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+  namespace: s11-dns
+spec:
+  replicas: 2
+  selector:
+    matchLabels: { app: backend }
+  template:
+    metadata:
+      labels: { app: backend }
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:1.25-alpine
+          ports:
+            - name: http          # a NAMED port -> CoreDNS also serves an SRV record
+              containerPort: 80
+          resources:
+            requests: { cpu: "10m", memory: "16Mi" }
+            limits:   { cpu: "100m", memory: "64Mi" }
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend
+  namespace: s11-dns
+spec:
+  selector: { app: backend }
+  ports:
+    - name: http
+      port: 80
+      targetPort: http
+---
+# peer: StatefulSet + headless Service, for per-pod DNS names
+apiVersion: v1
+kind: Service
+metadata:
+  name: peer
+  namespace: s11-dns
+spec:
+  clusterIP: None
+  selector: { app: peer }
+  ports:
+    - name: http
+      port: 80
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: peer
+  namespace: s11-dns
+spec:
+  serviceName: peer
+  replicas: 2
+  selector:
+    matchLabels: { app: peer }
+  template:
+    metadata:
+      labels: { app: peer }
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:1.25-alpine
+          ports:
+            - containerPort: 80
+          resources:
+            requests: { cpu: "10m", memory: "16Mi" }
+            limits:   { cpu: "100m", memory: "64Mi" }
+---
+# payments: a Service in ANOTHER namespace, for cross-namespace lookups
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payments
+  namespace: s11-dns-other
+spec:
+  replicas: 1
+  selector:
+    matchLabels: { app: payments }
+  template:
+    metadata:
+      labels: { app: payments }
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:1.25-alpine
+          ports:
+            - containerPort: 80
+          resources:
+            requests: { cpu: "10m", memory: "16Mi" }
+            limits:   { cpu: "100m", memory: "64Mi" }
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: payments
+  namespace: s11-dns-other
+spec:
+  selector: { app: payments }
+  ports:
+    - port: 80
+      targetPort: 80
+---
+# The client: one pod, two containers. 'dig' has dig/nslookup/host,
+# 'curl' has curl. Both share the pod's network namespace and resolv.conf.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: dns-client
+  namespace: s11-dns
+spec:
+  containers:
+    - name: dig
+      image: registry.k8s.io/e2e-test-images/jessie-dnsutils:1.7
+      command: ["sleep", "3600"]
+      resources:
+        requests: { cpu: "5m", memory: "8Mi" }
+        limits:   { cpu: "100m", memory: "64Mi" }
+    - name: curl
+      image: curlimages/curl:8.5.0
+      command: ["sleep", "3600"]
+      resources:
+        requests: { cpu: "5m", memory: "8Mi" }
+        limits:   { cpu: "100m", memory: "32Mi" }

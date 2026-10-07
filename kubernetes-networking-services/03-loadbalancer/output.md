@@ -2,7 +2,7 @@
 
 > **Submitted by:** Pratyush Mohanty  |  **Roll No.:** 24BCS10238
 
-Produced by `./run.sh` on 2026-09-18.
+Produced by `./run.sh` on 2026-10-07.
 
 ```text
 
@@ -24,8 +24,8 @@ Removing the MetalLB address pool to show the default kind behaviour:
 service/web-service-loadbalancer created
 
 waiting a few seconds...
-NAME                       TYPE           CLUSTER-IP      EXTERNAL-IP   PORT(S)        AGE
-web-service-loadbalancer   LoadBalancer   10.96.224.252   <pending>     80:30592/TCP   0s
+NAME                       TYPE           CLUSTER-IP     EXTERNAL-IP   PORT(S)        AGE
+web-service-loadbalancer   LoadBalancer   10.96.25.107   <pending>     80:30452/TCP   0s
 
 >>> EXTERNAL-IP is <pending>, and it will stay that way forever.
 
@@ -58,16 +58,16 @@ kind-pool   true          false             ["192.168.96.200-192.168.96.250"]
 ==============================================================
 STEP 4 - The EXTERNAL-IP is allocated
 ==============================================================
-NAME                       TYPE           CLUSTER-IP      EXTERNAL-IP      PORT(S)        AGE
-web-service-loadbalancer   LoadBalancer   10.96.224.252   192.168.96.200   80:30592/TCP   1s
+NAME                       TYPE           CLUSTER-IP     EXTERNAL-IP      PORT(S)        AGE
+web-service-loadbalancer   LoadBalancer   10.96.25.107   192.168.96.200   80:30452/TCP   1s
 
 EXTERNAL-IP = 192.168.96.200   (allocated by MetalLB from 192.168.96.200-250)
 
 ==============================================================
 STEP 5 - A LoadBalancer is a SUPERSET of NodePort and ClusterIP
 ==============================================================
-  ClusterIP : 10.96.224.252
-  NodePort  : 30592
+  ClusterIP : 10.96.25.107
+  NodePort  : 30452
   ExternalIP: 192.168.96.200
 
 All three exist at once. Kubernetes layers them:
@@ -79,7 +79,7 @@ All three exist at once. Kubernetes layers them:
 STEP 6 - Reaching the external IP FROM INSIDE the Docker network
 ==============================================================
 waiting for MetalLB L2 advertisement to converge...
-  answered after ~1s
+  answered after ~2s
 
   http://192.168.96.200  ->  HTTP 200
 
@@ -114,11 +114,11 @@ To reach it from macOS anyway:
 ==============================================================
 STEP 9 - Load balancing across the 3 pods
 ==============================================================
-sent 30 requests to the EXTERNAL IP (tagged lbprobe-49103)
+sent 30 requests to the EXTERNAL IP (tagged lbprobe-19947)
 
-  web-app-loadbalancer-5db87c7b9-ltpk9       served 10 requests
-  web-app-loadbalancer-5db87c7b9-r9ltb       served 10 requests
-  web-app-loadbalancer-5db87c7b9-vz54w       served 10 requests
+  web-app-loadbalancer-5db87c7b9-2rg5j       served  9 requests
+  web-app-loadbalancer-5db87c7b9-rx867       served 10 requests
+  web-app-loadbalancer-5db87c7b9-vsh6v       served 11 requests
   ------------------------------------------------------------
   TOTAL                                      served 30 requests
 

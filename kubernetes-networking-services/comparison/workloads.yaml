@@ -1,0 +1,132 @@
+# Three workload controllers side by side, in their own namespace, so the
+# differences show up in real `kubectl get` output rather than in a table.
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: s11-compare
+---
+# 1. Deployment: stateless, interchangeable replicas, managed via ReplicaSets.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web
+  namespace: s11-compare
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: web
+  template:
+    metadata:
+      labels:
+        app: web
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:1.25-alpine
+          ports:
+            - containerPort: 80
+          resources:
+            requests: { cpu: "10m", memory: "16Mi" }
+            limits:   { cpu: "100m", memory: "64Mi" }
+---
+# 2. DaemonSet: one pod per node, no replicas field at all.
+#    The toleration lets it run on the control-plane too (the node is tainted
+#    NoSchedule); nothing about the nodes themselves is changed.
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: node-agent
+  namespace: s11-compare
+spec:
+  selector:
+    matchLabels:
+      app: node-agent
+  template:
+    metadata:
+      labels:
+        app: node-agent
+    spec:
+      tolerations:
+        - key: node-role.kubernetes.io/control-plane
+          operator: Exists
+          effect: NoSchedule
+      containers:
+        - name: agent
+          image: busybox:1.36
+          command: ["sh", "-c", "echo agent on $NODE_NAME; sleep 3600"]
+          env:
+            - name: NODE_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
+          resources:
+            requests: { cpu: "5m", memory: "8Mi" }
+            limits:   { cpu: "50m", memory: "32Mi" }
+---
+# 3. StatefulSet: ordered, sticky identity, and one PVC per pod.
+apiVersion: v1
+kind: Service
+metadata:
+  name: db
+  namespace: s11-compare
+spec:
+  clusterIP: None            # headless - gives every pod its own DNS name
+  selector:
+    app: db
+  ports:
+    - port: 80
+      targetPort: 80
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: db
+  namespace: s11-compare
+spec:
+  serviceName: db
+  replicas: 3
+  selector:
+    matchLabels:
+      app: db
+  template:
+    metadata:
+      labels:
+        app: db
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:1.25-alpine
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: data
+              mountPath: /data
+          resources:
+            requests: { cpu: "10m", memory: "16Mi" }
+            limits:   { cpu: "100m", memory: "64Mi" }
+  volumeClaimTemplates:          # one PVC per pod: data-db-0, data-db-1, ...
+    - metadata:
+        name: data
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        storageClassName: standard
+        resources:
+          requests:
+            storage: 64Mi
+
+---
+# A client pod to run curl / nslookup from inside the namespace.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: client
+  namespace: s11-compare
+spec:
+  containers:
+    - name: curl
+      image: curlimages/curl:8.5.0
+      command: ["sh", "-c", "sleep 3600"]
+      resources:
+        requests: { cpu: "5m", memory: "8Mi" }
+        limits:   { cpu: "100m", memory: "32Mi" }

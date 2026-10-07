@@ -1,0 +1,25 @@
+# BROKEN: someone "fixed DNS" for one pod by hand-writing its resolver config
+# and typed the wrong nameserver. dnsPolicy: None means the kubelet uses ONLY
+# dnsConfig - no cluster nameserver, no search domains.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: custom-dns
+  namespace: s11-coredns
+spec:
+  dnsPolicy: None
+  dnsConfig:
+    nameservers:
+      - 10.96.0.100          # typo: the kube-dns Service is 10.96.0.10
+    searches:
+      - s11-coredns.svc.cluster.local
+    options:
+      - name: ndots
+        value: "2"
+  containers:
+    - name: dig
+      image: registry.k8s.io/e2e-test-images/jessie-dnsutils:1.7
+      command: ["sleep", "3600"]
+      resources:
+        requests: { cpu: "5m", memory: "8Mi" }
+        limits:   { cpu: "100m", memory: "64Mi" }
