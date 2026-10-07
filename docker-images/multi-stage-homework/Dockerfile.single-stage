@@ -1,0 +1,13 @@
+# Single-stage build of the course's multi-stage app - for comparison only.
+#
+# This is the course Dockerfile's builder stage shipped as it is: one FROM,
+# everything that was copied and installed ends up in the final image.
+# Build it against the cloned source folder:
+#   docker build -f Dockerfile.single-stage -t multi-stage-hello:single <clone>/session6-7-docker/multi-stage-dockerfile
+FROM node:24-alpine
+WORKDIR /app
+COPY package*.json ./
+RUN npm install
+COPY . .
+EXPOSE 3000
+CMD ["npm", "start"]

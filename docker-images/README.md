@@ -210,3 +210,17 @@ possible at the cost of being undebuggable from inside.
 It excludes files from the build context sent to the daemon. Without it `.git`
 and build artifacts are uploaded on every build, slowing builds and risking
 secrets being baked into an image.
+
+---
+
+## Homework: run the course's multi-stage Dockerfile
+
+[multi-stage-homework/](multi-stage-homework/README.md) clones the course repository,
+builds `session6-7-docker/multi-stage-dockerfile`, runs it on **host port 8080**
+(`0.0.0.0:8080->3000/tcp`) and checks for
+"Hello World from Docker Multi-Stage Build!". It also builds the same app single-stage
+for comparison (255MB vs 249MB - small, because that app has no build step, unlike the
+Go service above) and deploys Node.js, Python and Java apps for Task 3.
+
+Name, roll number, screenshots and output: [multi-stage-homework/README.md](multi-stage-homework/README.md)
+· [output.md](multi-stage-homework/output.md)
