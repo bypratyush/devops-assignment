@@ -1,0 +1,45 @@
+# Two Ingress objects that are identical except for ingressClassName.
+#
+# 'routed' names the class 'nginx'. The IngressClass 'nginx' says its controller
+# is k8s.io/ingress-nginx, and the ingress-nginx pod runs with
+# --controller-class=k8s.io/ingress-nginx, so that pod picks it up.
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: routed
+  namespace: s12-ingress
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: routed.s12.local
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: hello
+                port:
+                  number: 80
+---
+# 'orphan' names a class nobody in this cluster implements (as if the manifest
+# had been copied from a k3s cluster that uses Traefik). It is accepted by the
+# API server - it is valid YAML and a valid object - and then nothing happens.
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: orphan
+  namespace: s12-ingress
+spec:
+  ingressClassName: traefik
+  rules:
+    - host: orphan.s12.local
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: hello
+                port:
+                  number: 80

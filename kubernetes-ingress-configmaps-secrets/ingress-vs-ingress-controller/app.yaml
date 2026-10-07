@@ -1,0 +1,38 @@
+# One small app and its Service - the backend for every Ingress in this demo.
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: s12-ingress
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello
+  namespace: s12-ingress
+spec:
+  replicas: 2
+  selector:
+    matchLabels: { app: hello }
+  template:
+    metadata:
+      labels: { app: hello }
+    spec:
+      containers:
+        - name: app
+          image: nginxdemos/nginx-hello:plain-text   # replies with its own pod name
+          ports:
+            - containerPort: 8080
+          resources:
+            requests: { cpu: "10m", memory: "16Mi" }
+            limits:   { cpu: "100m", memory: "64Mi" }
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hello
+  namespace: s12-ingress
+spec:
+  selector: { app: hello }
+  ports:
+    - port: 80
+      targetPort: 8080

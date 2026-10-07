@@ -1,0 +1,49 @@
+# BROKEN: the app's copy of the DB password was encoded with
+#   echo "mypassword" | base64      ->  bXlwYXNzd29yZAo=
+# echo adds a trailing newline (0x0a), so the Secret really holds 11 bytes:
+# "mypassword\n". The database expects 10.
+apiVersion: v1
+kind: Secret
+metadata:
+  name: app-db-secret
+  namespace: s12-trouble
+type: Opaque
+data:
+  DB_PASSWORD: bXlwYXNzd29yZAo=
+---
+# The "application": connects to postgres with the password from the Secret
+# every 5 seconds and prints the result.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app
+  namespace: s12-trouble
+spec:
+  replicas: 1
+  selector:
+    matchLabels: { app: db-client }
+  template:
+    metadata:
+      labels: { app: db-client }
+    spec:
+      containers:
+        - name: app
+          image: postgres:16-alpine      # only for its psql client
+          command: ["sh", "-c"]
+          args:
+            - |
+              while true; do
+                if out=$(PGPASSWORD="$DB_PASSWORD" psql -h postgres -U yatri_admin -d postgres -tAc 'select current_user' 2>&1); then
+                  echo "$(date +%T) connected as: $out"
+                else
+                  echo "$(date +%T) $out"
+                fi
+                sleep 5
+              done
+          env:
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef: { name: app-db-secret, key: DB_PASSWORD }
+          resources:
+            requests: { cpu: "10m", memory: "16Mi" }
+            limits:   { cpu: "100m", memory: "64Mi" }

@@ -1,0 +1,13 @@
+# FIXED: the selector matches the labels the pods actually carry.
+apiVersion: v1
+kind: Service
+metadata:
+  name: broken-backend-service
+  namespace: s12-trouble
+spec:
+  selector:
+    app: yatri-backend
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8080

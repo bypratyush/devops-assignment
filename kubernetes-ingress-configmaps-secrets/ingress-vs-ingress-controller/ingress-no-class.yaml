@@ -1,0 +1,21 @@
+# No ingressClassName at all. Whether anything serves this depends entirely on
+# the controllers in the cluster: an IngressClass marked as default, or a
+# controller started with --watch-ingress-without-class=true (as ingress-nginx
+# is on this kind cluster).
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: classless
+  namespace: s12-ingress
+spec:
+  rules:
+    - host: classless.s12.local
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: hello
+                port:
+                  number: 80

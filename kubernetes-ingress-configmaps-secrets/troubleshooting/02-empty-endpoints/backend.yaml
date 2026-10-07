@@ -1,0 +1,23 @@
+# The backend pods (labelled app: yatri-backend), as in the
+# session-11 troubleshooting drill. Correct and unchanged during the exercise.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: yatri-backend
+  namespace: s12-trouble
+spec:
+  replicas: 2
+  selector:
+    matchLabels: { app: yatri-backend }
+  template:
+    metadata:
+      labels: { app: yatri-backend, tier: api }
+    spec:
+      containers:
+        - name: backend
+          image: nginxdemos/nginx-hello:plain-text   # answers with its pod name
+          ports:
+            - containerPort: 8080
+          resources:
+            requests: { cpu: "10m", memory: "16Mi" }
+            limits:   { cpu: "100m", memory: "64Mi" }

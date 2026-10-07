@@ -1,0 +1,11 @@
+# FIXED: encoded with   echo -n "mypassword" | base64   ->  bXlwYXNzd29yZA==
+# (or avoid hand-encoding entirely: stringData, or
+#  kubectl create secret generic app-db-secret --from-literal=DB_PASSWORD=mypassword)
+apiVersion: v1
+kind: Secret
+metadata:
+  name: app-db-secret
+  namespace: s12-trouble
+type: Opaque
+data:
+  DB_PASSWORD: bXlwYXNzd29yZA==

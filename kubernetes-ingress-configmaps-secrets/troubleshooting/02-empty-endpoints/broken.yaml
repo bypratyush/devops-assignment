@@ -1,0 +1,33 @@
+# BROKEN (the session-11 empty-endpoints drill, put behind an Ingress):
+# the Service selector says app: wrong-backend-name, the pods say app: yatri-backend.
+apiVersion: v1
+kind: Service
+metadata:
+  name: broken-backend-service
+  namespace: s12-trouble
+spec:
+  selector:
+    app: wrong-backend-name        # BUG: no pod has this label
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8080
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: backend
+  namespace: s12-trouble
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: backend.s12.local
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: broken-backend-service
+                port:
+                  number: 80

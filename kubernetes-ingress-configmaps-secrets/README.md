@@ -14,6 +14,11 @@ Run it: `./run.sh`  ·  Verified output: [output.md](output.md)
 | [services.yaml](services.yaml) | Two apps with Services, so Ingress has two backends |
 | [ingress.yaml](ingress.yaml) | Host-based and path-based HTTP routing |
 
+| Folder | Task |
+|---|---|
+| [ingress-vs-ingress-controller/](ingress-vs-ingress-controller/README.md) | Task 4 - Ingress vs Ingress Controller, proven with an Ingress no controller picks up ([output](ingress-vs-ingress-controller/output.md)) |
+| [troubleshooting/](troubleshooting/README.md) | Task 5 - three real breakages (Secret newline, empty endpoints behind an Ingress, missing ConfigMap key) with before/after ([output](troubleshooting/output.md)) |
+
 Verified on a 3-node kind cluster (Kubernetes v1.37.0) with the
 **ingress-nginx** controller, using kind port mappings so `localhost:80` reaches
 the controller exactly as a browser would.
@@ -213,3 +218,16 @@ Do not keep them in git. Use an external manager (Vault, cloud secret manager)
 with the External Secrets Operator syncing them in, or Sealed Secrets if they
 must live in git encrypted. Enable etcd encryption at rest, lock down RBAC on
 `secrets`, and mount them as files rather than environment variables.
+
+---
+
+## Tasks 4 and 5
+
+- **[Ingress vs Ingress Controller](ingress-vs-ingress-controller/README.md)** - two
+  identical Ingresses, one with `ingressClassName: nginx` (ADDRESS, nginx.conf
+  server block, HTTP 200) and one with a class no controller implements (no
+  ADDRESS, no events, ignored in the controller log, 404).
+- **[Troubleshooting](troubleshooting/README.md)** - the course's
+  `secret-base64-gotcha` and `empty-endpoints` problems reproduced for real, plus a
+  `CreateContainerConfigError` from a wrong ConfigMap key; each with identify,
+  investigate, root cause, fix, verify and before/after screenshots.
