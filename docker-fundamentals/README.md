@@ -185,3 +185,25 @@ host. Add a user in the Dockerfile and set `USER`, as both apps here do.
 **Q: Why is `docker ps` empty when my container "exists"?**
 `docker ps` lists only running containers. Use `docker ps -a` to see stopped
 ones, then `docker logs` to find out why it exited.
+
+---
+
+## Homework: Hello World apps in six stacks
+
+The homework's six apps are in [hello-world-apps/](hello-world-apps/README.md), one
+folder each with its code and Dockerfile: `nodejs-app`, `python-app`, `java-app`,
+`Apache-app`, `React-app` and `nginx-app`. `hello-world-apps/run.sh` builds and runs all
+six on ports 8081-8086 and checks that "Hello World" is on every page, including the
+React one, which only appears after the browser runs its JavaScript.
+
+| App | Port | Image size |
+|---|---|---|
+| nodejs-app (Express) | 8081 | 246MB |
+| python-app (Flask + gunicorn) | 8082 | 212MB |
+| java-app (JDK HTTP server, multi-stage) | 8083 | 286MB |
+| Apache-app (httpd) | 8084 | 115MB |
+| React-app (Vite build -> nginx, multi-stage) | 8085 | 92.4MB |
+| nginx-app | 8086 | 92.1MB |
+
+Output: [hello-world-apps/output.md](hello-world-apps/output.md) · browser screenshots of
+every page in the [hello-world-apps README](hello-world-apps/README.md#in-the-browser).
