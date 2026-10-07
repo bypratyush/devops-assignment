@@ -1,0 +1,64 @@
+# Unit tests for the alert rules:  promtool test rules alert-rules.test.yml
+# Fake time series go in, and we assert which alerts are firing at which moment.
+# This catches a broken threshold or `for:` before it reaches production.
+rule_files:
+  - alert-rules.yml
+
+evaluation_interval: 5s
+
+tests:
+  # app scraped fine for 1 minute, then the scrape fails
+  - interval: 5s
+    input_series:
+      - series: 'up{job="demo-app", instance="app:8000", service="orders-api"}'
+        values: '1x11 0x20'
+    alert_rule_test:
+      - eval_time: 75s        # down for 15s: only PENDING, nothing fires yet
+        alertname: AppDown
+        exp_alerts: []
+      - eval_time: 100s       # down for > 30s: FIRING
+        alertname: AppDown
+        exp_alerts:
+          - exp_labels:
+              severity: critical
+              job: demo-app
+              instance: app:8000
+              service: orders-api
+            exp_annotations:
+              summary: "orders-api is not answering scrapes"
+              description: "Prometheus could not scrape app:8000 for 30s."
+
+  # one full core of CPU for 3 minutes
+  - interval: 15s
+    input_series:
+      - series: 'process_cpu_seconds_total{job="demo-app", instance="app:8000"}'
+        values: '0+15x12'      # +15 CPU-seconds every 15s = 1.0 core
+    alert_rule_test:
+      - eval_time: 2m
+        alertname: HighCPU
+        exp_alerts:
+          - exp_labels:
+              severity: warning
+              job: demo-app
+              instance: app:8000
+            exp_annotations:
+              summary: "orders-api is using 1.00 CPU cores"
+              description: "Process CPU above 0.8 cores for 30s."
+
+  # 10% of requests failing
+  - interval: 15s
+    input_series:
+      - series: 'app_requests_total{job="demo-app", service="orders-api", status="200"}'
+        values: '0+90x12'
+      - series: 'app_requests_total{job="demo-app", service="orders-api", status="500"}'
+        values: '0+10x12'
+    alert_rule_test:
+      - eval_time: 2m
+        alertname: HighErrorRate
+        exp_alerts:
+          - exp_labels:
+              severity: critical
+              service: orders-api
+            exp_annotations:
+              summary: "10% of orders-api requests are failing"
+              description: "5xx ratio above 5% for 30s."

@@ -1,0 +1,28 @@
+# The one object applied by hand. It tells Argo CD: "make namespace gitops-demo
+# look like the app/ folder of this Git repo, forever".
+#
+# Source of truth for the demo: the Gitea server running inside the cluster
+# (git-server namespace). For the GitHub version see application-github.yaml.
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: gitops-demo
+  namespace: argocd
+  # Deleting the Application also deletes the resources it created.
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io/foreground
+spec:
+  project: default
+  source:
+    repoURL: http://gitea.git-server.svc.cluster.local:3000/gitops/gitops-demo.git
+    targetRevision: main
+    path: app
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: gitops-demo
+  syncPolicy:
+    automated:
+      prune: true      # resources removed from Git are deleted from the cluster
+      selfHeal: true   # manual changes in the cluster are reverted to match Git
+    syncOptions:
+      - CreateNamespace=true

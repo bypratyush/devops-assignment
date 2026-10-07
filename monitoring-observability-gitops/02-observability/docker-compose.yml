@@ -1,0 +1,49 @@
+# Session 20 - observability: three signals for ONE request.
+#   shop -> inventory, both instrumented with OpenTelemetry
+#   traces  -> Jaeger (OTLP/HTTP)        UI: http://localhost:26686
+#   logs    -> JSON on stdout with trace_id
+#   metrics -> Prometheus, with the trace_id attached as an exemplar
+name: observability-demo
+
+x-otel: &otel
+  OTEL_EXPORTER_OTLP_ENDPOINT: http://jaeger:4318
+  OTEL_BSP_SCHEDULE_DELAY: "1000"        # flush spans every second (default 5s)
+
+services:
+  shop:
+    build: ./services
+    image: s20-otel-demo:1.0
+    command: ["gunicorn", "-b", "0.0.0.0:8000", "-w", "1", "--threads", "4", "shop:app"]
+    environment:
+      <<: *otel
+      SERVICE_NAME: shop
+      INVENTORY_URL: http://inventory:8000
+    ports: ["18020:8000"]
+    depends_on: [inventory, jaeger]
+    mem_limit: 256m
+
+  inventory:
+    image: s20-otel-demo:1.0      # built by the shop service
+    pull_policy: never
+    command: ["gunicorn", "-b", "0.0.0.0:8000", "-w", "1", "--threads", "4", "inventory:app"]
+    environment:
+      <<: *otel
+      SERVICE_NAME: inventory
+    depends_on: [jaeger]
+    mem_limit: 256m
+
+  jaeger:
+    # Jaeger v2 all-in-one: OTLP receiver (4317 gRPC / 4318 HTTP) + in-memory store + UI
+    image: jaegertracing/jaeger:2.22.0
+    ports: ["26686:16686"]
+    mem_limit: 512m
+
+  prometheus:
+    image: quay.io/prometheus/prometheus:v3.15.0
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --enable-feature=exemplar-storage
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    ports: ["29190:9090"]
+    mem_limit: 512m

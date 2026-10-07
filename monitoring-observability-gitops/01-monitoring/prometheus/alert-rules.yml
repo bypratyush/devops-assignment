@@ -1,0 +1,83 @@
+# Alert rules are PromQL expressions evaluated every evaluation_interval.
+# expr true  -> alert goes PENDING
+# still true after `for:` -> FIRING (sent to Alertmanager)
+# expr false -> back to inactive, Alertmanager sends "resolved"
+groups:
+  - name: orders-api
+    rules:
+      - alert: AppDown
+        expr: up{job="demo-app"} == 0
+        for: 30s
+        labels:
+          severity: critical
+        annotations:
+          summary: "orders-api is not answering scrapes"
+          description: "Prometheus could not scrape {{ $labels.instance }} for 30s."
+
+      - alert: HealthCheckFailing
+        expr: probe_success{job="app-health"} == 0
+        for: 30s
+        labels:
+          severity: warning
+        annotations:
+          summary: "/health is failing on orders-api"
+          description: "Black-box probe of {{ $labels.instance }} has failed for 30s."
+
+      - alert: HighCPU
+        expr: rate(process_cpu_seconds_total{job="demo-app"}[1m]) > 0.8
+        for: 30s
+        labels:
+          severity: warning
+        annotations:
+          summary: "orders-api is using {{ $value | printf \"%.2f\" }} CPU cores"
+          description: "Process CPU above 0.8 cores for 30s."
+
+      - alert: HighMemory
+        expr: process_resident_memory_bytes{job="demo-app"} > 250 * 1024 * 1024
+        for: 30s
+        labels:
+          severity: warning
+        annotations:
+          summary: "orders-api RSS is {{ $value | humanize1024 }}B"
+          description: "Resident memory above 250 MiB for 30s."
+
+      - alert: HighErrorRate
+        expr: |
+          sum by (service) (rate(app_requests_total{job="demo-app", status=~"5.."}[1m]))
+            /
+          sum by (service) (rate(app_requests_total{job="demo-app"}[1m])) > 0.05
+        for: 30s
+        labels:
+          severity: critical
+        annotations:
+          summary: "{{ $value | humanizePercentage }} of orders-api requests are failing"
+          description: "5xx ratio above 5% for 30s."
+
+      - alert: HighLatencyP95
+        expr: |
+          histogram_quantile(0.95,
+            sum by (le) (rate(app_request_duration_seconds_bucket{job="demo-app", endpoint="/api/orders"}[1m]))
+          ) > 0.5
+        for: 1m
+        labels:
+          severity: warning
+        annotations:
+          summary: "orders-api p95 latency is {{ $value | humanizeDuration }}"
+
+  - name: host
+    rules:
+      - alert: HostHighCPU
+        expr: 100 * (1 - avg(rate(node_cpu_seconds_total{mode="idle"}[1m]))) > 85
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Host CPU at {{ $value | printf \"%.0f\" }}%"
+
+      - alert: HostLowMemory
+        expr: node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes < 0.10
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Only {{ $value | humanizePercentage }} of host memory is available"

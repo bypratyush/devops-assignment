@@ -1,0 +1,123 @@
+# Session 20 - monitoring stack: app + Prometheus + Alertmanager + Grafana
+# + node-exporter + cAdvisor + blackbox-exporter + Loki/Alloy.
+# All image tags are pinned. Host ports avoid 80/443/30080 (kind) and 8080-8086.
+#
+#   docker compose up -d --build      Grafana  http://localhost:13030  (anonymous viewer, admin/admin)
+#                                     Prometheus http://localhost:19190
+#                                     Alertmanager http://localhost:19193
+#                                     App      http://localhost:18010
+name: monitoring-demo
+
+services:
+  app:
+    build: ./app
+    image: s20-orders-api:1.0
+    environment:
+      SERVICE_NAME: orders-api
+      APP_VERSION: "1.0.0"
+      ERROR_RATE: "0.02"
+      HEALTH_MEMORY_LIMIT_MB: "300"
+    ports: ["18010:8000"]
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health', timeout=2)"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+    mem_limit: 768m
+
+  alert-receiver:
+    image: s20-orders-api:1.0     # same image as the app, different command
+    pull_policy: never
+    command: ["python", "alert_receiver.py"]
+    depends_on: [app]
+
+  prometheus:
+    image: quay.io/prometheus/prometheus:v3.15.0
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --storage.tsdb.retention.time=1d
+      - --web.enable-lifecycle
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./prometheus/alert-rules.yml:/etc/prometheus/alert-rules.yml:ro
+      - prometheus-data:/prometheus
+    ports: ["19190:9090"]
+
+  alertmanager:
+    image: quay.io/prometheus/alertmanager:v0.34.1
+    command: ["--config.file=/etc/alertmanager/alertmanager.yml"]
+    volumes:
+      - ./alertmanager/alertmanager.yml:/etc/alertmanager/alertmanager.yml:ro
+    ports: ["19193:9093"]
+
+  node-exporter:
+    image: quay.io/prometheus/node-exporter:v1.12.1
+    command: ["--path.rootfs=/host"]
+    pid: host
+    volumes:
+      # the upstream docs use "/:/host:ro,rslave"; on Docker Desktop that fails with
+      # "path / is mounted on / but it is not a shared or slave mount"
+      - /:/host:ro
+
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:v0.55.1
+    command:
+      - --docker_only=true
+      - --housekeeping_interval=10s
+      - --store_container_labels=false
+      - --disable_metrics=advtcp,cpu_topology,cpuset,disk,diskIO,hugetlb,memory_numa,network,percpu,process,referenced_memory,resctrl,sched,tcp,udp
+    privileged: true
+    devices: ["/dev/kmsg"]
+    volumes:
+      - /:/rootfs:ro
+      # mounting /var/run (as the cAdvisor docs do) does not expose Docker Desktop's
+      # socket; the socket itself has to be mounted, or no container gets a name
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      # Docker 29 uses the containerd image store, so cAdvisor's docker factory
+      # also needs the containerd socket to resolve container metadata
+      - /run/containerd/containerd.sock:/run/containerd/containerd.sock:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+
+  blackbox-exporter:
+    image: quay.io/prometheus/blackbox-exporter:v0.29.0
+    command: ["--config.file=/etc/blackbox/blackbox.yml"]
+    volumes:
+      - ./blackbox/blackbox.yml:/etc/blackbox/blackbox.yml:ro
+
+  loki:
+    image: grafana/loki:3.7.8
+    command: ["-config.file=/etc/loki/loki-config.yml"]
+    volumes:
+      - ./loki/loki-config.yml:/etc/loki/loki-config.yml:ro
+      - loki-data:/loki
+    ports: ["13100:3100"]
+
+  alloy:
+    image: grafana/alloy:v1.20.1
+    command: ["run", "--server.http.listen-addr=0.0.0.0:12345", "--storage.path=/var/lib/alloy/data", "/etc/alloy/config.alloy"]
+    volumes:
+      - ./alloy/config.alloy:/etc/alloy/config.alloy:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    depends_on: [loki]
+
+  grafana:
+    image: grafana/grafana:13.2.3
+    environment:
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: admin          # demo only
+      GF_AUTH_ANONYMOUS_ENABLED: "true"          # read-only viewer, so headless Chrome can render dashboards
+      GF_AUTH_ANONYMOUS_ORG_ROLE: Viewer
+      GF_DASHBOARDS_DEFAULT_HOME_DASHBOARD_PATH: /var/lib/grafana/dashboards/orders-api.json
+      GF_ANALYTICS_REPORTING_ENABLED: "false"
+      GF_ANALYTICS_CHECK_FOR_UPDATES: "false"
+      GF_NEWS_NEWS_FEED_ENABLED: "false"
+    volumes:
+      - ./grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./grafana/dashboards:/var/lib/grafana/dashboards:ro
+    ports: ["13030:3000"]
+    depends_on: [prometheus, loki]
+
+volumes:
+  prometheus-data:
+  loki-data:

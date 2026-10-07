@@ -1,0 +1,27 @@
+# Argo CD itself, installed declaratively.
+#
+# The upstream install manifest is pinned to an exact release tag (never "stable",
+# which moves). Two settings are layered on top with a strategic-merge patch so the
+# install stays reproducible:
+#   - timeout.reconciliation: how often the controller re-checks Git when no webhook
+#     arrives. Default is 180s; 60s keeps the polling demo short.
+#   - timeout.reconciliation.jitter: 0s so the polling interval is predictable for
+#     the timing measurements (the default adds up to 60s of random delay).
+#
+#   kubectl apply --server-side --force-conflicts -k argocd/
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: argocd
+
+resources:
+  - https://raw.githubusercontent.com/argoproj/argo-cd/v3.5.4/manifests/install.yaml
+
+patches:
+  - patch: |-
+      apiVersion: v1
+      kind: ConfigMap
+      metadata:
+        name: argocd-cm
+      data:
+        timeout.reconciliation: 60s
+        timeout.reconciliation.jitter: 0s

@@ -1,0 +1,63 @@
+# Prometheus PULLS metrics: every 5s it scrapes each target's /metrics.
+# 5s is far too aggressive for production (15-60s is normal) but it keeps the
+# demo snappy.
+global:
+  scrape_interval: 5s
+  evaluation_interval: 5s          # how often alert rules are checked
+  external_labels:
+    lab: session-20
+
+rule_files:
+  - /etc/prometheus/alert-rules.yml
+
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets: ["alertmanager:9093"]
+
+scrape_configs:
+  # the application itself: request count, latency histogram, process CPU/RSS
+  - job_name: demo-app
+    static_configs:
+      - targets: ["app:8000"]
+        labels:
+          service: orders-api
+
+  # host-level CPU / memory / disk (here: the Docker Desktop Linux VM)
+  - job_name: node
+    static_configs:
+      - targets: ["node-exporter:9100"]
+
+  # per-container CPU / memory, read from cgroups
+  - job_name: cadvisor
+    static_configs:
+      - targets: ["cadvisor:8080"]
+    metric_relabel_configs:     # keep only the series the dashboard uses
+      - source_labels: [__name__]
+        regex: "container_(cpu_usage_seconds_total|memory_working_set_bytes|memory_rss|spec_memory_limit_bytes|last_seen)"
+        action: keep
+
+  # black-box health check: hit /health from the outside, like a load balancer would
+  - job_name: app-health
+    metrics_path: /probe
+    params:
+      module: [http_2xx]
+    static_configs:
+      - targets: ["http://app:8000/health"]
+        labels:
+          service: orders-api
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: blackbox-exporter:9115
+
+  - job_name: prometheus
+    static_configs:
+      - targets: ["localhost:9090"]
+
+  - job_name: alertmanager
+    static_configs:
+      - targets: ["alertmanager:9093"]

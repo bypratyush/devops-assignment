@@ -1,0 +1,32 @@
+# GITHUB VARIANT - NOT APPLIED IN THE DEMO.
+#
+# Same Application, but the source of truth is this homework repo on GitHub
+# instead of the in-cluster Gitea server. It only works once the repo has been
+# pushed to GitHub (it is public, so Argo CD needs no credentials):
+#
+#   kubectl apply -f application-github.yaml
+#
+# After that, editing monitoring-observability-gitops/03-gitops/gitops-repo/app/*
+# and pushing to main is the whole deployment process.
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: gitops-demo-github
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io/foreground
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/bypratyush/devops-assignment.git
+    targetRevision: main
+    path: monitoring-observability-gitops/03-gitops/gitops-repo/app
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: gitops-demo-github
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

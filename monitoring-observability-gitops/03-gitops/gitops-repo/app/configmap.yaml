@@ -1,0 +1,10 @@
+# The page nginx serves. Changing it in Git is the "config change" in the demo.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: web-content
+  labels:
+    app.kubernetes.io/name: web
+data:
+  index.html: |
+    gitops-demo version=v1 message="hello from git"

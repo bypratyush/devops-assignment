@@ -1,0 +1,27 @@
+# Alertmanager receives FIRING alerts from Prometheus and decides who hears
+# about them: grouping, de-duplication, silences, inhibition, routing.
+route:
+  receiver: webhook-oncall
+  group_by: [alertname, service]
+  group_wait: 5s          # wait briefly so related alerts arrive as one notification
+  group_interval: 15s
+  repeat_interval: 1h     # do not re-page for the same still-firing alert
+  routes:
+    # critical alerts re-notify sooner; in real life this route would point at
+    # PagerDuty and the default one at a Slack channel
+    - matchers: ['severity="critical"']
+      receiver: webhook-oncall
+      repeat_interval: 15m
+
+receivers:
+  # stand-in for Slack/PagerDuty: a tiny HTTP server that prints each alert
+  - name: webhook-oncall
+    webhook_configs:
+      - url: http://alert-receiver:9000/alerts
+        send_resolved: true
+
+inhibit_rules:
+  # if the whole app is down, a failing /health check is just noise
+  - source_matchers: ['alertname="AppDown"']
+    target_matchers: ['alertname="HealthCheckFailing"']
+    equal: [service]

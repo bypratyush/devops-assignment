@@ -1,0 +1,100 @@
+# A small Git server running INSIDE the kind cluster, used as the GitOps source
+# of truth while the GitHub repo cannot be pushed to.
+#
+# Gitea, rootless image, single replica, SQLite on a local-path PVC. HTTP only.
+# Argo CD reaches it through the in-cluster Service DNS name:
+#   http://gitea.git-server.svc.cluster.local:3000/<owner>/<repo>.git
+# From the Mac it is reached through a port-forward (see lab/gitops.sh).
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: git-server
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: gitea-data
+  namespace: git-server
+spec:
+  accessModes: ["ReadWriteOnce"]
+  storageClassName: standard
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gitea
+  namespace: git-server
+  labels:
+    app: gitea
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate            # SQLite + RWO volume: never run two copies at once
+  selector:
+    matchLabels:
+      app: gitea
+  template:
+    metadata:
+      labels:
+        app: gitea
+    spec:
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+      containers:
+        - name: gitea
+          image: gitea/gitea:28.1.0-rootless
+          ports:
+            - name: http
+              containerPort: 3000
+          env:
+            # keep app.ini on the volume so generated secrets survive restarts
+            - { name: GITEA_APP_INI, value: /var/lib/gitea/custom/conf/app.ini }
+            - { name: GITEA__database__DB_TYPE, value: sqlite3 }
+            - { name: GITEA__database__PATH, value: /var/lib/gitea/data/gitea.db }
+            - { name: GITEA__server__DOMAIN, value: gitea.git-server.svc.cluster.local }
+            - { name: GITEA__server__ROOT_URL, value: "http://gitea.git-server.svc.cluster.local:3000/" }
+            - { name: GITEA__server__HTTP_PORT, value: "3000" }
+            - { name: GITEA__server__DISABLE_SSH, value: "true" }
+            - { name: GITEA__server__START_SSH_SERVER, value: "false" }
+            - { name: GITEA__security__INSTALL_LOCK, value: "true" }     # skip the web installer
+            - { name: GITEA__service__DISABLE_REGISTRATION, value: "true" }
+            - { name: GITEA__actions__ENABLED, value: "false" }
+            # let push webhooks reach argocd-server (a private ClusterIP, self-signed TLS)
+            - { name: GITEA__security__ALLOWED_HOST_LIST, value: private }
+            - { name: GITEA__webhook__SKIP_TLS_VERIFY, value: "true" }
+          readinessProbe:
+            httpGet: { path: /api/healthz, port: http }
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          livenessProbe:
+            httpGet: { path: /api/healthz, port: http }
+            initialDelaySeconds: 30
+            periodSeconds: 20
+          resources:
+            requests: { cpu: 50m, memory: 128Mi }
+            limits:   { memory: 512Mi }
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/gitea
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: gitea-data
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: gitea
+  namespace: git-server
+spec:
+  selector:
+    app: gitea
+  ports:
+    - name: http
+      port: 3000
+      targetPort: http
