@@ -1,0 +1,17 @@
+# Security gate policy - the single place thresholds are defined.
+# security/gate.py reads this; the Security Gate job fails if any control is over its limit.
+# A missing report counts as a failure (fail closed).
+
+[sast]            # Bandit, source code
+block_severity = ["HIGH", "MEDIUM"]
+min_confidence = "MEDIUM"
+
+[sca]             # pip-audit, requirements.txt
+max_vulnerabilities = 0     # any known CVE/GHSA/PYSEC in a pinned dependency blocks
+
+[secrets]         # gitleaks, every file in devsecops-pipeline/
+max_findings = 0
+
+[image]           # Trivy, the built image (OS packages + Python packages)
+block_severity = ["CRITICAL", "HIGH"]
+ignore_unfixed = true       # only block on findings that have a fixed version to move to

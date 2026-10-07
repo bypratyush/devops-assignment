@@ -1,0 +1,4 @@
+# The image needs requirements.txt and the built wheel in dist/, nothing else
+*
+!requirements.txt
+!dist/*.whl

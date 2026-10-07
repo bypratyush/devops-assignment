@@ -1,0 +1,333 @@
+# Session 17 - DevSecOps pipeline for devsecops-pipeline/ (PassGuard API)
+#
+# Code -> Build -> Unit Test -> SAST -> SCA -> Secret Scan -> Docker Build
+#      -> Container Image Scan -> Security Gate -> Push Image -> Deploy to Kubernetes
+#
+# Scanners DETECT and upload a JSON report; the Security Gate DECIDES using one
+# policy file (security/policy.toml). Nothing reaches the registry or the cluster
+# unless the gate passes.
+name: "S17 DevSecOps - PassGuard"
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "devsecops-pipeline/**"
+      - ".github/workflows/devsecops.yml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "devsecops-pipeline/**"
+      - ".github/workflows/devsecops.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: s17-devsecops-${{ github.ref }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    shell: bash
+    working-directory: devsecops-pipeline
+
+env:
+  PIP_DISABLE_PIP_VERSION_CHECK: "1"
+  PIP_ROOT_USER_ACTION: ignore
+  IMAGE_NAME: passguard
+  TRIVY_NO_PROGRESS: "true"
+
+jobs:
+  code:
+    name: 1 Code
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+      - name: Commit under test
+        run: echo "commit ${GITHUB_SHA} on ${GITHUB_REF} (event ${GITHUB_EVENT_NAME})"
+      - name: Lint (ruff)
+        run: |
+          pip install --quiet ruff==0.16.10
+          ruff check --output-format=github .
+          ruff format --check .
+
+  build:
+    name: 2 Build
+    needs: code
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+      - name: Build the wheel
+        run: |
+          pip install --quiet build==1.6.1
+          python -m build --wheel --outdir dist/ .
+          ls -l dist/
+      - uses: actions/upload-artifact@v5
+        with:
+          name: wheel
+          path: devsecops-pipeline/dist/*.whl
+          retention-days: 3
+
+  unit-test:
+    name: 3 Unit Test
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+      - uses: actions/download-artifact@v7
+        with:
+          name: wheel
+          path: devsecops-pipeline/dist
+      - name: Test the built wheel (not the source tree)
+        run: |
+          pip install --quiet -r requirements.txt pytest==9.1.1 pytest-cov==7.1.0
+          pip install --quiet --no-deps dist/*.whl
+          python -m pytest --cov=passguard --cov-report=term --cov-fail-under=90
+
+  sast:
+    name: 4 SAST (Bandit)
+    needs: unit-test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+      - name: Bandit
+        run: |
+          pip install --quiet bandit==1.9.4
+          mkdir -p reports
+          bandit -c pyproject.toml -r src -f json -o reports/bandit.json --exit-zero
+          bandit -c pyproject.toml -r src --exit-zero
+      - uses: actions/upload-artifact@v5
+        with:
+          name: report-sast
+          path: devsecops-pipeline/reports/bandit.json
+
+  sca:
+    name: 5 SCA (pip-audit)
+    needs: sast
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+      - name: pip-audit on the pinned requirements
+        run: |
+          pip install --quiet pip-audit==2.10.1
+          mkdir -p reports
+          # exit code is left to the gate; the report is what matters here
+          pip-audit -r requirements.txt --format json --output reports/pip-audit.json --progress-spinner off || true
+          pip-audit -r requirements.txt --desc off --progress-spinner off || true
+      - uses: actions/upload-artifact@v5
+        with:
+          name: report-sca
+          path: devsecops-pipeline/reports/pip-audit.json
+
+  secret-scan:
+    name: 6 Secret Scan (gitleaks)
+    needs: sca
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Install gitleaks (pinned, checksum verified)
+        run: |
+          ./security/install-tools.sh gitleaks
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+      - name: gitleaks
+        run: |
+          mkdir -p reports
+          gitleaks dir . --config security/gitleaks.toml --redact --no-banner \
+            --report-format json --report-path reports/gitleaks.json --exit-code 0 -v
+      - uses: actions/upload-artifact@v5
+        with:
+          name: report-secrets
+          path: devsecops-pipeline/reports/gitleaks.json
+
+  docker-build:
+    name: 7 Docker Build
+    needs: secret-scan
+    runs-on: ubuntu-latest
+    outputs:
+      tag: ${{ steps.build.outputs.tag }}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/download-artifact@v7
+        with:
+          name: wheel
+          path: devsecops-pipeline/dist
+      - name: docker build (from the tested wheel)
+        id: build
+        run: |
+          tag="${GITHUB_SHA::7}"
+          docker build --provenance=false --build-arg GIT_SHA=${GITHUB_SHA} -t ${IMAGE_NAME}:${tag} .
+          docker save ${IMAGE_NAME}:${tag} -o dist/image.tar
+          ls -lh dist/image.tar
+          echo "tag=${tag}" >> "$GITHUB_OUTPUT"
+      - uses: actions/upload-artifact@v5
+        with:
+          name: image
+          path: devsecops-pipeline/dist/image.tar
+          retention-days: 1
+
+  image-scan:
+    name: 8 Container Image Scan (Trivy)
+    needs: docker-build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/download-artifact@v7
+        with:
+          name: image
+          path: devsecops-pipeline/dist
+      - name: Install Trivy (pinned, checksum verified)
+        run: |
+          ./security/install-tools.sh trivy
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+      - name: Trivy scan of the exact image tarball
+        run: |
+          mkdir -p reports
+          trivy image --quiet --input dist/image.tar --scanners vuln \
+            --format json --output reports/trivy-image.json
+          trivy convert --format table --severity HIGH,CRITICAL reports/trivy-image.json
+      - uses: actions/upload-artifact@v5
+        with:
+          name: report-image
+          path: devsecops-pipeline/reports/trivy-image.json
+
+  security-gate:
+    name: 9 Security Gate
+    needs: image-scan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+      - uses: actions/download-artifact@v7
+        with:
+          pattern: report-*
+          merge-multiple: true
+          path: devsecops-pipeline/reports
+      - name: Apply security/policy.toml
+        run: |
+          ls reports/
+          python security/gate.py reports/ --summary "$GITHUB_STEP_SUMMARY"
+
+  push-image:
+    name: 10 Push Image
+    needs: [docker-build, security-gate]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    outputs:
+      ref: ${{ steps.push.outputs.ref }}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/download-artifact@v7
+        with:
+          name: image
+          path: devsecops-pipeline/dist
+      - name: Log in to GHCR
+        if: ${{ !env.ACT }}
+        uses: docker/login-action@v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Push the scanned image
+        id: push
+        env:
+          OWNER: ${{ github.repository_owner }}
+          TAG: ${{ needs.docker-build.outputs.tag }}
+        run: |
+          # under act a local registry:2 on localhost:5056 stands in for GHCR
+          if [ -n "${ACT:-}" ]; then registry=localhost:5056; else registry=ghcr.io; fi
+          repo="${registry}/$(echo "$OWNER" | tr '[:upper:]' '[:lower:]')/${IMAGE_NAME}"
+          docker load --input dist/image.tar
+          docker tag "${IMAGE_NAME}:${TAG}" "${repo}:${TAG}"
+          docker push "${repo}:${TAG}" | tee /tmp/push.log
+          digest=$(grep -oE 'digest: sha256:[0-9a-f]{64}' /tmp/push.log | cut -d' ' -f2)
+          echo "ref=${repo}@${digest}" >> "$GITHUB_OUTPUT"
+          echo "pushed ${repo}@${digest}"
+
+  deploy:
+    name: 11 Deploy to Kubernetes
+    needs: push-image
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: read
+    env:
+      REF: ${{ needs.push-image.outputs.ref }}
+      CLUSTER: devsecops-ci
+      # same node image (by digest) as kind v0.33.0's default for Kubernetes v1.37.0
+      NODE_IMAGE: kindest/node:v1.37.0@sha256:a1ed56cfb0e7b93589bdf97c8cd566405a265939e3620fc4f5de89adff580ae5
+    steps:
+      - uses: actions/checkout@v6
+      - name: Install kind and kubectl (pinned, checksum verified)
+        run: |
+          ./security/install-tools.sh kind kubectl
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+      - name: Log in to GHCR
+        if: ${{ !env.ACT }}
+        uses: docker/login-action@v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Pull the pushed image by digest
+        run: |
+          docker pull "$REF"
+          docker tag "$REF" "passguard:deploy-${GITHUB_SHA::7}"
+      - name: Create an ephemeral kind cluster
+        run: |
+          kind create cluster --name "$CLUSTER" --image "$NODE_IMAGE" --wait 120s
+          # Talk to the API server on the node's Docker-network IP. Under act this
+          # job is itself a container, so kind's 127.0.0.1:<port> is not reachable.
+          ip=$(docker inspect "${CLUSTER}-control-plane" --format '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}')
+          kind get kubeconfig --internal --name "$CLUSTER" \
+            | sed "s#https://${CLUSTER}-control-plane:6443#https://${ip}:6443#" > "$RUNNER_TEMP/kubeconfig"
+          echo "KUBECONFIG=$RUNNER_TEMP/kubeconfig" >> "$GITHUB_ENV"
+      - name: Load the image into the cluster nodes
+        run: kind load docker-image "passguard:deploy-${GITHUB_SHA::7}" --name "$CLUSTER"
+      - name: kubectl apply
+        run: |
+          kubectl version
+          kubectl apply -f k8s/namespace.yaml -f k8s/service.yaml
+          sed "s#IMAGE_PLACEHOLDER#passguard:deploy-${GITHUB_SHA::7}#" k8s/deployment.yaml | kubectl apply -f -
+          kubectl -n passguard rollout status deployment/passguard --timeout=180s
+          kubectl -n passguard get deploy,pods,svc -o wide
+      - name: Smoke test through the Service
+        run: |
+          kubectl -n passguard port-forward svc/passguard 18080:80 >/tmp/pf.log 2>&1 &
+          for i in $(seq 1 20); do curl -fs localhost:18080/healthz >/dev/null && break; sleep 1; done
+          curl -fsS localhost:18080/version; echo
+          curl -fsS -X POST localhost:18080/api/strength -H 'Content-Type: application/json' \
+            -d '{"password":"correct-horse-battery-staple"}'; echo
+          curl -fsS -o /dev/null -w 'GET / -> HTTP %{http_code}\n' localhost:18080/
+          kill %1
+      - name: Prove the namespace refuses an insecure pod
+        run: |
+          if kubectl -n passguard run root-shell --image=busybox:1.37 --restart=Never \
+               --overrides='{"spec":{"securityContext":{"runAsUser":0}}}' 2>/tmp/psa.err; then
+            echo "::error::a root pod was admitted"; exit 1
+          fi
+          echo "rejected as expected:"; cat /tmp/psa.err
+      - name: Delete the cluster
+        if: ${{ always() }}
+        run: kind delete cluster --name "$CLUSTER"

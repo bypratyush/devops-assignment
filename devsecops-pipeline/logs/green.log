@@ -1,0 +1,1125 @@
+time="2026-10-08T00:02:44+05:30" level=info msg="Using docker host 'unix:///var/run/docker.sock', and daemon socket 'unix:///var/run/docker.sock'"
+time="2026-10-08T00:02:44+05:30" level=info msg="Start server on http://100.128.166.254:34568"
+[S17 DevSecOps - PassGuard/1 Code] ⭐ Run Set up job
+[S17 DevSecOps - PassGuard/1 Code] 🚀  Start image=ghcr.io/catthehacker/ubuntu:act-latest
+[S17 DevSecOps - PassGuard/1 Code]   🐳  docker pull image=ghcr.io/catthehacker/ubuntu:act-latest platform=linux/arm64 username= forcePull=false
+[S17 DevSecOps - PassGuard/1 Code]   🐳  docker create image=ghcr.io/catthehacker/ubuntu:act-latest platform=linux/arm64 entrypoint=["tail" "-f" "/dev/null"] cmd=[] network="host"
+[S17 DevSecOps - PassGuard/1 Code]   🐳  docker run image=ghcr.io/catthehacker/ubuntu:act-latest platform=linux/arm64 entrypoint=["tail" "-f" "/dev/null"] cmd=[] network="host"
+[S17 DevSecOps - PassGuard/1 Code]   🐳  docker exec cmd=[node --no-warnings -e console.log(process.execPath)] user= workdir=
+[S17 DevSecOps - PassGuard/1 Code]   ✅  Success - Set up job
+[S17 DevSecOps - PassGuard/1 Code]   ☁  git clone 'https://github.com/actions/setup-python' # ref=v6
+[S17 DevSecOps - PassGuard/1 Code] ⭐ Run Main actions/checkout@v6
+[S17 DevSecOps - PassGuard/1 Code]   🐳  docker cp src=/Users/pratyushmohanty/Devops-assignment/. dst=/Users/pratyushmohanty/Devops-assignment
+[S17 DevSecOps - PassGuard/1 Code]   ✅  Success - Main actions/checkout@v6 [1.87420525s]
+[S17 DevSecOps - PassGuard/1 Code] ⭐ Run Main actions/setup-python@v6
+[S17 DevSecOps - PassGuard/1 Code]   🐳  docker cp src=/Users/pratyushmohanty/.cache/act/actions-setup-python@v6/ dst=/var/run/act/actions/actions-setup-python@v6/
+[S17 DevSecOps - PassGuard/1 Code]   🐳  docker exec cmd=[/opt/acttoolcache/node/24.19.0/arm64/bin/node /var/run/act/actions/actions-setup-python@v6/dist/setup/index.js] user= workdir=
+[S17 DevSecOps - PassGuard/1 Code]   ❓  ::group::Installed versions
+[S17 DevSecOps - PassGuard/1 Code]   | Successfully set up CPython (3.13.16)
+[S17 DevSecOps - PassGuard/1 Code]   ❓  ::endgroup::
+[S17 DevSecOps - PassGuard/1 Code]   ❓ add-matcher /run/act/actions/actions-setup-python@v6/.github/python.json
+[S17 DevSecOps - PassGuard/1 Code]   ✅  Success - Main actions/setup-python@v6 [1.912935625s]
+[S17 DevSecOps - PassGuard/1 Code]   ⚙  ::set-env:: pythonLocation=/opt/hostedtoolcache/Python/3.13.16/arm64
+[S17 DevSecOps - PassGuard/1 Code]   ⚙  ::set-env:: PKG_CONFIG_PATH=/opt/hostedtoolcache/Python/3.13.16/arm64/lib/pkgconfig
+[S17 DevSecOps - PassGuard/1 Code]   ⚙  ::set-env:: Python_ROOT_DIR=/opt/hostedtoolcache/Python/3.13.16/arm64
+[S17 DevSecOps - PassGuard/1 Code]   ⚙  ::set-env:: Python2_ROOT_DIR=/opt/hostedtoolcache/Python/3.13.16/arm64
+[S17 DevSecOps - PassGuard/1 Code]   ⚙  ::set-env:: Python3_ROOT_DIR=/opt/hostedtoolcache/Python/3.13.16/arm64
+[S17 DevSecOps - PassGuard/1 Code]   ⚙  ::set-env:: LD_LIBRARY_PATH=/opt/hostedtoolcache/Python/3.13.16/arm64/lib
+[S17 DevSecOps - PassGuard/1 Code]   ⚙  ::set-output:: python-version=3.13.16
+[S17 DevSecOps - PassGuard/1 Code]   ⚙  ::set-output:: python-path=/opt/hostedtoolcache/Python/3.13.16/arm64/bin/python
+[S17 DevSecOps - PassGuard/1 Code]   ⚙  ::add-path:: /opt/hostedtoolcache/Python/3.13.16/arm64
+[S17 DevSecOps - PassGuard/1 Code]   ⚙  ::add-path:: /opt/hostedtoolcache/Python/3.13.16/arm64/bin
+[S17 DevSecOps - PassGuard/1 Code] ⭐ Run Main Commit under test
+[S17 DevSecOps - PassGuard/1 Code]   🐳  docker exec cmd=[bash --noprofile --norc -e -o pipefail /var/run/act/workflow/2.sh] user= workdir=devsecops-pipeline
+[S17 DevSecOps - PassGuard/1 Code]   | commit 888cd817ad3fcef35caa73374366c0af95030157 on refs/heads/main (event push)
+[S17 DevSecOps - PassGuard/1 Code]   ✅  Success - Main Commit under test [142.430833ms]
+[S17 DevSecOps - PassGuard/1 Code] ⭐ Run Main Lint (ruff)
+[S17 DevSecOps - PassGuard/1 Code]   🐳  docker exec cmd=[bash --noprofile --norc -e -o pipefail /var/run/act/workflow/3.sh] user= workdir=devsecops-pipeline
+[S17 DevSecOps - PassGuard/1 Code]   | 6 files already formatted
+[S17 DevSecOps - PassGuard/1 Code]   ✅  Success - Main Lint (ruff) [849.657ms]
+[S17 DevSecOps - PassGuard/1 Code] ⭐ Run Post actions/setup-python@v6
+[S17 DevSecOps - PassGuard/1 Code]   🐳  docker exec cmd=[/opt/acttoolcache/node/24.19.0/arm64/bin/node /var/run/act/actions/actions-setup-python@v6/dist/cache-save/index.js] user= workdir=
+[S17 DevSecOps - PassGuard/1 Code]   ✅  Success - Post actions/setup-python@v6 [291.122292ms]
+[S17 DevSecOps - PassGuard/1 Code] ⭐ Run Complete job
+[S17 DevSecOps - PassGuard/1 Code] Cleaning up container for job 1 Code
+[S17 DevSecOps - PassGuard/1 Code]   ✅  Success - Complete job
+[S17 DevSecOps - PassGuard/1 Code] 🏁  Job succeeded
+[S17 DevSecOps - PassGuard/2 Build] ⭐ Run Set up job
+[S17 DevSecOps - PassGuard/2 Build] 🚀  Start image=ghcr.io/catthehacker/ubuntu:act-latest
+[S17 DevSecOps - PassGuard/2 Build]   🐳  docker pull image=ghcr.io/catthehacker/ubuntu:act-latest platform=linux/arm64 username= forcePull=false
+[S17 DevSecOps - PassGuard/2 Build]   🐳  docker create image=ghcr.io/catthehacker/ubuntu:act-latest platform=linux/arm64 entrypoint=["tail" "-f" "/dev/null"] cmd=[] network="host"
+[S17 DevSecOps - PassGuard/2 Build]   🐳  docker run image=ghcr.io/catthehacker/ubuntu:act-latest platform=linux/arm64 entrypoint=["tail" "-f" "/dev/null"] cmd=[] network="host"
+[S17 DevSecOps - PassGuard/2 Build]   🐳  docker exec cmd=[node --no-warnings -e console.log(process.execPath)] user= workdir=
+[S17 DevSecOps - PassGuard/2 Build]   ✅  Success - Set up job
+[S17 DevSecOps - PassGuard/2 Build]   ☁  git clone 'https://github.com/actions/setup-python' # ref=v6
+[S17 DevSecOps - PassGuard/2 Build]   ☁  git clone 'https://github.com/actions/upload-artifact' # ref=v5
+[S17 DevSecOps - PassGuard/2 Build] ⭐ Run Main actions/checkout@v6
+[S17 DevSecOps - PassGuard/2 Build]   🐳  docker cp src=/Users/pratyushmohanty/Devops-assignment/. dst=/Users/pratyushmohanty/Devops-assignment
+[S17 DevSecOps - PassGuard/2 Build]   ✅  Success - Main actions/checkout@v6 [1.59610875s]
+[S17 DevSecOps - PassGuard/2 Build] ⭐ Run Main actions/setup-python@v6
+[S17 DevSecOps - PassGuard/2 Build]   🐳  docker cp src=/Users/pratyushmohanty/.cache/act/actions-setup-python@v6/ dst=/var/run/act/actions/actions-setup-python@v6/
+[S17 DevSecOps - PassGuard/2 Build]   🐳  docker exec cmd=[/opt/acttoolcache/node/24.19.0/arm64/bin/node /var/run/act/actions/actions-setup-python@v6/dist/setup/index.js] user= workdir=
+[S17 DevSecOps - PassGuard/2 Build]   ❓  ::group::Installed versions
+[S17 DevSecOps - PassGuard/2 Build]   | Successfully set up CPython (3.13.16)
+[S17 DevSecOps - PassGuard/2 Build]   ❓  ::endgroup::
+[S17 DevSecOps - PassGuard/2 Build]   ❓ add-matcher /run/act/actions/actions-setup-python@v6/.github/python.json
+[S17 DevSecOps - PassGuard/2 Build]   ✅  Success - Main actions/setup-python@v6 [1.159883792s]
+[S17 DevSecOps - PassGuard/2 Build]   ⚙  ::set-env:: PKG_CONFIG_PATH=/opt/hostedtoolcache/Python/3.13.16/arm64/lib/pkgconfig
+[S17 DevSecOps - PassGuard/2 Build]   ⚙  ::set-env:: Python_ROOT_DIR=/opt/hostedtoolcache/Python/3.13.16/arm64
+[S17 DevSecOps - PassGuard/2 Build]   ⚙  ::set-env:: Python2_ROOT_DIR=/opt/hostedtoolcache/Python/3.13.16/arm64
+[S17 DevSecOps - PassGuard/2 Build]   ⚙  ::set-env:: Python3_ROOT_DIR=/opt/hostedtoolcache/Python/3.13.16/arm64
+[S17 DevSecOps - PassGuard/2 Build]   ⚙  ::set-env:: LD_LIBRARY_PATH=/opt/hostedtoolcache/Python/3.13.16/arm64/lib
+[S17 DevSecOps - PassGuard/2 Build]   ⚙  ::set-env:: pythonLocation=/opt/hostedtoolcache/Python/3.13.16/arm64
+[S17 DevSecOps - PassGuard/2 Build]   ⚙  ::set-output:: python-version=3.13.16
+[S17 DevSecOps - PassGuard/2 Build]   ⚙  ::set-output:: python-path=/opt/hostedtoolcache/Python/3.13.16/arm64/bin/python
+[S17 DevSecOps - PassGuard/2 Build]   ⚙  ::add-path:: /opt/hostedtoolcache/Python/3.13.16/arm64
+[S17 DevSecOps - PassGuard/2 Build]   ⚙  ::add-path:: /opt/hostedtoolcache/Python/3.13.16/arm64/bin
+[S17 DevSecOps - PassGuard/2 Build] ⭐ Run Main Build the wheel
+[S17 DevSecOps - PassGuard/2 Build]   🐳  docker exec cmd=[bash --noprofile --norc -e -o pipefail /var/run/act/workflow/2.sh] user= workdir=devsecops-pipeline
+[S17 DevSecOps - PassGuard/2 Build]   | * Creating isolated environment: venv+pip...
+[S17 DevSecOps - PassGuard/2 Build]   | * Installing packages in isolated environment:
+[S17 DevSecOps - PassGuard/2 Build]   |   - setuptools>=80
+[S17 DevSecOps - PassGuard/2 Build]   |   - wheel
+[S17 DevSecOps - PassGuard/2 Build]   | * Getting build dependencies for wheel...
+[S17 DevSecOps - PassGuard/2 Build]   | running egg_info
+[S17 DevSecOps - PassGuard/2 Build]   | creating src/passguard.egg-info
+[S17 DevSecOps - PassGuard/2 Build]   | writing src/passguard.egg-info/PKG-INFO
+[S17 DevSecOps - PassGuard/2 Build]   | writing dependency_links to src/passguard.egg-info/dependency_links.txt
+[S17 DevSecOps - PassGuard/2 Build]   | writing requirements to src/passguard.egg-info/requires.txt
+[S17 DevSecOps - PassGuard/2 Build]   | writing top-level names to src/passguard.egg-info/top_level.txt
+[S17 DevSecOps - PassGuard/2 Build]   | writing manifest file 'src/passguard.egg-info/SOURCES.txt'
+[S17 DevSecOps - PassGuard/2 Build]   | reading manifest file 'src/passguard.egg-info/SOURCES.txt'
+[S17 DevSecOps - PassGuard/2 Build]   | writing manifest file 'src/passguard.egg-info/SOURCES.txt'
+[S17 DevSecOps - PassGuard/2 Build]   | * Installed build dependency versions:
+[S17 DevSecOps - PassGuard/2 Build]   |   - setuptools==84.0.0
+[S17 DevSecOps - PassGuard/2 Build]   |   - wheel==0.48.0
+[S17 DevSecOps - PassGuard/2 Build]   | * Building wheel...
+[S17 DevSecOps - PassGuard/2 Build]   | running bdist_wheel
+[S17 DevSecOps - PassGuard/2 Build]   | running build
+[S17 DevSecOps - PassGuard/2 Build]   | running build_py
+[S17 DevSecOps - PassGuard/2 Build]   | creating build/lib/passguard
+[S17 DevSecOps - PassGuard/2 Build]   | copying src/passguard/__init__.py -> build/lib/passguard
+[S17 DevSecOps - PassGuard/2 Build]   | copying src/passguard/strength.py -> build/lib/passguard
+[S17 DevSecOps - PassGuard/2 Build]   | running egg_info
+[S17 DevSecOps - PassGuard/2 Build]   | writing src/passguard.egg-info/PKG-INFO
+[S17 DevSecOps - PassGuard/2 Build]   | writing dependency_links to src/passguard.egg-info/dependency_links.txt
+[S17 DevSecOps - PassGuard/2 Build]   | writing requirements to src/passguard.egg-info/requires.txt
+[S17 DevSecOps - PassGuard/2 Build]   | writing top-level names to src/passguard.egg-info/top_level.txt
+[S17 DevSecOps - PassGuard/2 Build]   | reading manifest file 'src/passguard.egg-info/SOURCES.txt'
+[S17 DevSecOps - PassGuard/2 Build]   | writing manifest file 'src/passguard.egg-info/SOURCES.txt'
+[S17 DevSecOps - PassGuard/2 Build]   | creating build/lib/passguard/templates
+[S17 DevSecOps - PassGuard/2 Build]   | copying src/passguard/templates/index.html -> build/lib/passguard/templates
+[S17 DevSecOps - PassGuard/2 Build]   | creating build/lib/passguard/static
+[S17 DevSecOps - PassGuard/2 Build]   | copying src/passguard/static/style.css -> build/lib/passguard/static
+[S17 DevSecOps - PassGuard/2 Build]   | copying src/passguard/static/app.js -> build/lib/passguard/static
+[S17 DevSecOps - PassGuard/2 Build]   | installing to build/bdist.linux-aarch64/wheel
+[S17 DevSecOps - PassGuard/2 Build]   | running install
+[S17 DevSecOps - PassGuard/2 Build]   | running install_lib
+[S17 DevSecOps - PassGuard/2 Build]   | creating build/bdist.linux-aarch64/wheel
+[S17 DevSecOps - PassGuard/2 Build]   | creating build/bdist.linux-aarch64/wheel/passguard
+[S17 DevSecOps - PassGuard/2 Build]   | creating build/bdist.linux-aarch64/wheel/passguard/static
+[S17 DevSecOps - PassGuard/2 Build]   | copying build/lib/passguard/static/style.css -> build/bdist.linux-aarch64/wheel/./passguard/static
+[S17 DevSecOps - PassGuard/2 Build]   | copying build/lib/passguard/static/app.js -> build/bdist.linux-aarch64/wheel/./passguard/static
+[S17 DevSecOps - PassGuard/2 Build]   | copying build/lib/passguard/__init__.py -> build/bdist.linux-aarch64/wheel/./passguard
+[S17 DevSecOps - PassGuard/2 Build]   | copying build/lib/passguard/strength.py -> build/bdist.linux-aarch64/wheel/./passguard
+[S17 DevSecOps - PassGuard/2 Build]   | creating build/bdist.linux-aarch64/wheel/passguard/templates
+[S17 DevSecOps - PassGuard/2 Build]   | copying build/lib/passguard/templates/index.html -> build/bdist.linux-aarch64/wheel/./passguard/templates
+[S17 DevSecOps - PassGuard/2 Build]   | running install_egg_info
+[S17 DevSecOps - PassGuard/2 Build]   | Copying src/passguard.egg-info to build/bdist.linux-aarch64/wheel/./passguard-1.0.0-py3.13.egg-info
+[S17 DevSecOps - PassGuard/2 Build]   | running install_scripts
+[S17 DevSecOps - PassGuard/2 Build]   | creating build/bdist.linux-aarch64/wheel/passguard-1.0.0.dist-info/WHEEL
+[S17 DevSecOps - PassGuard/2 Build]   | creating '/Users/pratyushmohanty/Devops-assignment/devsecops-pipeline/dist/.tmp-yz2t73ka/passguard-1.0.0-py3-none-any.whl' and adding 'build/bdist.linux-aarch64/wheel' to it
+[S17 DevSecOps - PassGuard/2 Build]   | adding 'passguard/__init__.py'
+[S17 DevSecOps - PassGuard/2 Build]   | adding 'passguard/strength.py'
+[S17 DevSecOps - PassGuard/2 Build]   | adding 'passguard/static/app.js'
+[S17 DevSecOps - PassGuard/2 Build]   | adding 'passguard/static/style.css'
+[S17 DevSecOps - PassGuard/2 Build]   | adding 'passguard/templates/index.html'
+[S17 DevSecOps - PassGuard/2 Build]   | adding 'passguard-1.0.0.dist-info/METADATA'
+[S17 DevSecOps - PassGuard/2 Build]   | adding 'passguard-1.0.0.dist-info/WHEEL'
+[S17 DevSecOps - PassGuard/2 Build]   | adding 'passguard-1.0.0.dist-info/top_level.txt'
+[S17 DevSecOps - PassGuard/2 Build]   | adding 'passguard-1.0.0.dist-info/RECORD'
+[S17 DevSecOps - PassGuard/2 Build]   | removing build/bdist.linux-aarch64/wheel
+[S17 DevSecOps - PassGuard/2 Build]   | Successfully built passguard-1.0.0-py3-none-any.whl
+[S17 DevSecOps - PassGuard/2 Build]   | total 8
+[S17 DevSecOps - PassGuard/2 Build]   | -rw-r--r-- 1 root root 6023 Oct  7 18:32 passguard-1.0.0-py3-none-any.whl
+[S17 DevSecOps - PassGuard/2 Build]   ✅  Success - Main Build the wheel [2.905851291s]
+[S17 DevSecOps - PassGuard/2 Build] ⭐ Run Main actions/upload-artifact@v5
+[S17 DevSecOps - PassGuard/2 Build]   🐳  docker cp src=/Users/pratyushmohanty/.cache/act/actions-upload-artifact@v5/ dst=/var/run/act/actions/actions-upload-artifact@v5/
+[S17 DevSecOps - PassGuard/2 Build]   🐳  docker exec cmd=[/opt/acttoolcache/node/24.19.0/arm64/bin/node /var/run/act/actions/actions-upload-artifact@v5/dist/upload/index.js] user= workdir=
+[S17 DevSecOps - PassGuard/2 Build]   | (node:92) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+[S17 DevSecOps - PassGuard/2 Build]   | (Use `node --trace-deprecation ...` to show where the warning was created)
+[S17 DevSecOps - PassGuard/2 Build]   | With the provided path, there will be 1 file uploaded
+[S17 DevSecOps - PassGuard/2 Build]   | Artifact name is valid!
+[S17 DevSecOps - PassGuard/2 Build]   | Root directory input is valid!
+[S17 DevSecOps - PassGuard/2 Build]   | Beginning upload of artifact content to blob storage
+[S17 DevSecOps - PassGuard/2 Build]   | (node:92) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+[S17 DevSecOps - PassGuard/2 Build]   | Uploaded bytes 5499
+[S17 DevSecOps - PassGuard/2 Build]   | Finished uploading artifact content to blob storage!
+[S17 DevSecOps - PassGuard/2 Build]   | SHA256 digest of uploaded artifact zip is e5ab6f0db944be6b62adbdbf2714fd62d80eb7b63cf2cebb5b487a6d8b134c9a
+[S17 DevSecOps - PassGuard/2 Build]   | Finalizing artifact upload
+[S17 DevSecOps - PassGuard/2 Build]   | Artifact wheel.zip successfully finalized. Artifact ID 473058556
+[S17 DevSecOps - PassGuard/2 Build]   | Artifact wheel has been successfully uploaded! Final size is 5499 bytes. Artifact ID is 473058556
+[S17 DevSecOps - PassGuard/2 Build]   | Artifact download URL: https://github.com/bypratyush/devops-assignment/actions/runs/1/artifacts/473058556
+[S17 DevSecOps - PassGuard/2 Build]   ✅  Success - Main actions/upload-artifact@v5 [960.913667ms]
+[S17 DevSecOps - PassGuard/2 Build]   ⚙  ::set-output:: artifact-id=473058556
+[S17 DevSecOps - PassGuard/2 Build]   ⚙  ::set-output:: artifact-digest=e5ab6f0db944be6b62adbdbf2714fd62d80eb7b63cf2cebb5b487a6d8b134c9a
+[S17 DevSecOps - PassGuard/2 Build]   ⚙  ::set-output:: artifact-url=https://github.com/bypratyush/devops-assignment/actions/runs/1/artifacts/473058556
+[S17 DevSecOps - PassGuard/2 Build] ⭐ Run Post actions/setup-python@v6
+[S17 DevSecOps - PassGuard/2 Build]   🐳  docker exec cmd=[/opt/acttoolcache/node/24.19.0/arm64/bin/node /var/run/act/actions/actions-setup-python@v6/dist/cache-save/index.js] user= workdir=
+[S17 DevSecOps - PassGuard/2 Build]   ✅  Success - Post actions/setup-python@v6 [229.415709ms]
+[S17 DevSecOps - PassGuard/2 Build] ⭐ Run Complete job
+[S17 DevSecOps - PassGuard/2 Build] Cleaning up container for job 2 Build
+[S17 DevSecOps - PassGuard/2 Build]   ✅  Success - Complete job
+[S17 DevSecOps - PassGuard/2 Build] 🏁  Job succeeded
+[S17 DevSecOps - PassGuard/3 Unit Test] ⭐ Run Set up job
+[S17 DevSecOps - PassGuard/3 Unit Test] 🚀  Start image=ghcr.io/catthehacker/ubuntu:act-latest
+[S17 DevSecOps - PassGuard/3 Unit Test]   🐳  docker pull image=ghcr.io/catthehacker/ubuntu:act-latest platform=linux/arm64 username= forcePull=false
+[S17 DevSecOps - PassGuard/3 Unit Test]   🐳  docker create image=ghcr.io/catthehacker/ubuntu:act-latest platform=linux/arm64 entrypoint=["tail" "-f" "/dev/null"] cmd=[] network="host"
+[S17 DevSecOps - PassGuard/3 Unit Test]   🐳  docker run image=ghcr.io/catthehacker/ubuntu:act-latest platform=linux/arm64 entrypoint=["tail" "-f" "/dev/null"] cmd=[] network="host"
+[S17 DevSecOps - PassGuard/3 Unit Test]   🐳  docker exec cmd=[node --no-warnings -e console.log(process.execPath)] user= workdir=
+[S17 DevSecOps - PassGuard/3 Unit Test]   ✅  Success - Set up job
+[S17 DevSecOps - PassGuard/3 Unit Test]   ☁  git clone 'https://github.com/actions/setup-python' # ref=v6
+[S17 DevSecOps - PassGuard/3 Unit Test]   ☁  git clone 'https://github.com/actions/download-artifact' # ref=v7
+[S17 DevSecOps - PassGuard/3 Unit Test] ⭐ Run Main actions/checkout@v6
+[S17 DevSecOps - PassGuard/3 Unit Test]   🐳  docker cp src=/Users/pratyushmohanty/Devops-assignment/. dst=/Users/pratyushmohanty/Devops-assignment
+[S17 DevSecOps - PassGuard/3 Unit Test]   ✅  Success - Main actions/checkout@v6 [1.90874675s]
+[S17 DevSecOps - PassGuard/3 Unit Test] ⭐ Run Main actions/setup-python@v6
+[S17 DevSecOps - PassGuard/3 Unit Test]   🐳  docker cp src=/Users/pratyushmohanty/.cache/act/actions-setup-python@v6/ dst=/var/run/act/actions/actions-setup-python@v6/
+[S17 DevSecOps - PassGuard/3 Unit Test]   🐳  docker exec cmd=[/opt/acttoolcache/node/24.19.0/arm64/bin/node /var/run/act/actions/actions-setup-python@v6/dist/setup/index.js] user= workdir=
+[S17 DevSecOps - PassGuard/3 Unit Test]   ❓  ::group::Installed versions
+[S17 DevSecOps - PassGuard/3 Unit Test]   | Successfully set up CPython (3.13.16)
+[S17 DevSecOps - PassGuard/3 Unit Test]   ❓  ::endgroup::
+[S17 DevSecOps - PassGuard/3 Unit Test]   ❓ add-matcher /run/act/actions/actions-setup-python@v6/.github/python.json
+[S17 DevSecOps - PassGuard/3 Unit Test]   ✅  Success - Main actions/setup-python@v6 [1.259756167s]
+[S17 DevSecOps - PassGuard/3 Unit Test]   ⚙  ::set-env:: Python3_ROOT_DIR=/opt/hostedtoolcache/Python/3.13.16/arm64
+[S17 DevSecOps - PassGuard/3 Unit Test]   ⚙  ::set-env:: LD_LIBRARY_PATH=/opt/hostedtoolcache/Python/3.13.16/arm64/lib
+[S17 DevSecOps - PassGuard/3 Unit Test]   ⚙  ::set-env:: pythonLocation=/opt/hostedtoolcache/Python/3.13.16/arm64
+[S17 DevSecOps - PassGuard/3 Unit Test]   ⚙  ::set-env:: PKG_CONFIG_PATH=/opt/hostedtoolcache/Python/3.13.16/arm64/lib/pkgconfig
+[S17 DevSecOps - PassGuard/3 Unit Test]   ⚙  ::set-env:: Python_ROOT_DIR=/opt/hostedtoolcache/Python/3.13.16/arm64
+[S17 DevSecOps - PassGuard/3 Unit Test]   ⚙  ::set-env:: Python2_ROOT_DIR=/opt/hostedtoolcache/Python/3.13.16/arm64
+[S17 DevSecOps - PassGuard/3 Unit Test]   ⚙  ::set-output:: python-version=3.13.16
+[S17 DevSecOps - PassGuard/3 Unit Test]   ⚙  ::set-output:: python-path=/opt/hostedtoolcache/Python/3.13.16/arm64/bin/python
+[S17 DevSecOps - PassGuard/3 Unit Test]   ⚙  ::add-path:: /opt/hostedtoolcache/Python/3.13.16/arm64
+[S17 DevSecOps - PassGuard/3 Unit Test]   ⚙  ::add-path:: /opt/hostedtoolcache/Python/3.13.16/arm64/bin
+[S17 DevSecOps - PassGuard/3 Unit Test] ⭐ Run Main actions/download-artifact@v7
+[S17 DevSecOps - PassGuard/3 Unit Test]   🐳  docker cp src=/Users/pratyushmohanty/.cache/act/actions-download-artifact@v7/ dst=/var/run/act/actions/actions-download-artifact@v7/
+[S17 DevSecOps - PassGuard/3 Unit Test]   🐳  docker exec cmd=[/opt/acttoolcache/node/24.19.0/arm64/bin/node /var/run/act/actions/actions-download-artifact@v7/dist/index.js] user= workdir=
+[S17 DevSecOps - PassGuard/3 Unit Test]   | Downloading single artifact
+[S17 DevSecOps - PassGuard/3 Unit Test]   | Preparing to download the following artifacts:
+[S17 DevSecOps - PassGuard/3 Unit Test]   | - wheel (ID: 473058556, Size: 96, Expected Digest: undefined)
+[S17 DevSecOps - PassGuard/3 Unit Test]   | Redirecting to blob download url: http://100.128.166.254:34568/twirp/github.actions.results.api.v1.ArtifactService/DownloadArtifact
+[S17 DevSecOps - PassGuard/3 Unit Test]   | Starting download of artifact to: /Users/pratyushmohanty/Devops-assignment/devsecops-pipeline/dist
+[S17 DevSecOps - PassGuard/3 Unit Test]   | (node:44) [DEP0005] DeprecationWarning: Buffer() is deprecated due to security and usability issues. Please use the Buffer.alloc(), Buffer.allocUnsafe(), or Buffer.from() methods instead.
+[S17 DevSecOps - PassGuard/3 Unit Test]   | (Use `node --trace-deprecation ...` to show where the warning was created)
+[S17 DevSecOps - PassGuard/3 Unit Test]   | SHA256 digest of downloaded artifact is e5ab6f0db944be6b62adbdbf2714fd62d80eb7b63cf2cebb5b487a6d8b134c9a
+[S17 DevSecOps - PassGuard/3 Unit Test]   | Artifact download completed successfully.
+[S17 DevSecOps - PassGuard/3 Unit Test]   | Total of 1 artifact(s) downloaded
+[S17 DevSecOps - PassGuard/3 Unit Test]   | Download artifact has finished successfully
+[S17 DevSecOps - PassGuard/3 Unit Test]   ✅  Success - Main actions/download-artifact@v7 [735.986583ms]
+[S17 DevSecOps - PassGuard/3 Unit Test]   ⚙  ::set-output:: download-path=/Users/pratyushmohanty/Devops-assignment/devsecops-pipeline/dist
+[S17 DevSecOps - PassGuard/3 Unit Test] ⭐ Run Main Test the built wheel (not the source tree)
+[S17 DevSecOps - PassGuard/3 Unit Test]   🐳  docker exec cmd=[bash --noprofile --norc -e -o pipefail /var/run/act/workflow/3.sh] user= workdir=devsecops-pipeline
+[S17 DevSecOps - PassGuard/3 Unit Test]   | ============================= test session starts ==============================
+[S17 DevSecOps - PassGuard/3 Unit Test]   | platform linux -- Python 3.13.16, pytest-9.1.1, pluggy-1.6.0
+[S17 DevSecOps - PassGuard/3 Unit Test]   | rootdir: /Users/pratyushmohanty/Devops-assignment/devsecops-pipeline
+[S17 DevSecOps - PassGuard/3 Unit Test]   | configfile: pyproject.toml
+[S17 DevSecOps - PassGuard/3 Unit Test]   | testpaths: tests
+[S17 DevSecOps - PassGuard/3 Unit Test]   | plugins: cov-7.1.0, platformdirs-4.12.3
+[S17 DevSecOps - PassGuard/3 Unit Test]   | collected 30 items
+[S17 DevSecOps - PassGuard/3 Unit Test]   | 
+[S17 DevSecOps - PassGuard/3 Unit Test]   | tests/test_api.py ............                                           [ 40%]
+[S17 DevSecOps - PassGuard/3 Unit Test]   | tests/test_strength.py ..................                                [100%]
+[S17 DevSecOps - PassGuard/3 Unit Test]   | 
+[S17 DevSecOps - PassGuard/3 Unit Test]   | ================================ tests coverage ================================
+[S17 DevSecOps - PassGuard/3 Unit Test]   | _______________ coverage: platform linux, python 3.13.16-final-0 _______________
+[S17 DevSecOps - PassGuard/3 Unit Test]   | 
+[S17 DevSecOps - PassGuard/3 Unit Test]   | Name                                                                                           Stmts   Miss  Cover
+[S17 DevSecOps - PassGuard/3 Unit Test]   | ------------------------------------------------------------------------------------------------------------------
+[S17 DevSecOps - PassGuard/3 Unit Test]   | /opt/hostedtoolcache/Python/3.13.16/arm64/lib/python3.13/site-packages/passguard/__init__.py      43      0   100%
+[S17 DevSecOps - PassGuard/3 Unit Test]   | /opt/hostedtoolcache/Python/3.13.16/arm64/lib/python3.13/site-packages/passguard/config.py         1      1     0%
+[S17 DevSecOps - PassGuard/3 Unit Test]   | /opt/hostedtoolcache/Python/3.13.16/arm64/lib/python3.13/site-packages/passguard/strength.py      62      1    98%
+[S17 DevSecOps - PassGuard/3 Unit Test]   | ------------------------------------------------------------------------------------------------------------------
+[S17 DevSecOps - PassGuard/3 Unit Test]   | TOTAL                                                                                            106      2    98%
+[S17 DevSecOps - PassGuard/3 Unit Test]   | Required test coverage of 90% reached. Total coverage: 98.11%
+[S17 DevSecOps - PassGuard/3 Unit Test]   | ============================== 30 passed in 0.34s ==============================
+[S17 DevSecOps - PassGuard/3 Unit Test]   ✅  Success - Main Test the built wheel (not the source tree) [1.449074291s]
+[S17 DevSecOps - PassGuard/3 Unit Test] ⭐ Run Post actions/setup-python@v6
+[S17 DevSecOps - PassGuard/3 Unit Test]   🐳  docker exec cmd=[/opt/acttoolcache/node/24.19.0/arm64/bin/node /var/run/act/actions/actions-setup-python@v6/dist/cache-save/index.js] user= workdir=
+[S17 DevSecOps - PassGuard/3 Unit Test]   ✅  Success - Post actions/setup-python@v6 [295.737208ms]
+[S17 DevSecOps - PassGuard/3 Unit Test] ⭐ Run Complete job
+[S17 DevSecOps - PassGuard/3 Unit Test] Cleaning up container for job 3 Unit Test
+[S17 DevSecOps - PassGuard/3 Unit Test]   ✅  Success - Complete job
+[S17 DevSecOps - PassGuard/3 Unit Test] 🏁  Job succeeded
+[S17 DevSecOps - PassGuard/4 SAST (Bandit)] ⭐ Run Set up job
+[S17 DevSecOps - PassGuard/4 SAST (Bandit)] 🚀  Start image=ghcr.io/catthehacker/ubuntu:act-latest
+[S17 DevSecOps - PassGuard/4 SAST (Bandit)]   🐳  docker pull image=ghcr.io/catthehacker/ubuntu:act-latest platform=linux/arm64 username= forcePull=false
+[S17 DevSecOps - PassGuard/4 SAST (Bandit)]   🐳  docker create image=ghcr.io/catthehacker/ubuntu:act-latest platform=linux/arm64 entrypoint=["tail" "-f" "/dev/null"] cmd=[] network="host"
+[S17 DevSecOps - PassGuard/4 SAST (Bandit)]   🐳  docker run image=ghcr.io/catthehacker/ubuntu:act-latest platform=linux/arm64 entrypoint=["tail" "-f" "/dev/null"] cmd=[] network="host"
+[S17 DevSecOps - PassGuard/4 SAST (Bandit)]   🐳  docker exec cmd=[node --no-warnings -e console.log(process.execPath)] user= workdir=
+[S17 DevSecOps - PassGuard/4 SAST (Bandit)]   ✅  Success - Set up job
+[S17 DevSecOps - PassGuard/4 SAST (Bandit)]   ☁  git clone 'https://github.com/actions/setup-python' # ref=v6
+[S17 DevSecOps - PassGuard/4 SAST (Bandit)]   ☁  git clone 'https://github.com/actions/upload-artifact' # ref=v5
+[S17 DevSecOps - PassGuard/4 SAST (Bandit)] ⭐ Run Main actions/checkout@v6
+[S17 DevSecOps - PassGuard/4 SAST (Bandit)]   🐳  docker cp src=/Users/pratyushmohanty/Devops-assignment/. dst=/Users/pratyushmohanty/Devops-assignment
+[S17 DevSecOps - PassGuard/4 SAST (Bandit)]   ✅  Success - Main actions/checkout@v6 [1.668625333s]
+[S17 DevSecOps - PassGuard/4 SAST (Bandit)] ⭐ Run Main actions/setup-python@v6
+[S17 DevSecOps - PassGuard/4 SAST (Bandit)]   🐳  docker cp src=/Users/pratyushmohanty/.cache/act/actions-setup-python@v6/ dst=/var/run/act/actions/actions-setup-python@v6/
+[S17 DevSecOps - PassGuard/4 SAST (Bandit)]   🐳  docker exec cmd=[/opt/acttoolcache/node/24.19.0/arm64/bin/node /var/run/act/actions/actions-setup-python@v6/dist/setup/index.js] user= workdir=
+[S17 DevSecOps - PassGuard/4 SAST (Bandit)]   ❓  ::group::Installed versions
+[S17 DevSecOps - PassGuard/4 SAST (Bandit)]   | Successfully set up CPython (3.13.16)
+[S17 DevSecOps - PassGuard/4 SAST (Bandit)]   ❓  ::endgroup::
+[S17 DevSecOps - PassGuard/4 SAST (Bandit)]   ❓ add-matcher /run/act/actions/actions-setup-python@v6/.github/python.json
+[S17 DevSecOps - PassGuard/4 SAST (Bandit)]   ✅  Success - Main actions/setup-python@v6 [1.7789335s]
+[S17 DevSecOps - PassGuard/4 SAST (Bandit)]   ⚙  ::set-env:: pythonLocation=/opt/hostedtoolcache/Python/3.13.16/arm64
+[S17 DevSecOps - PassGuard/4 SAST (Bandit)]   ⚙  ::set-env:: PKG_CONFIG_PATH=/opt/hostedtoolcache/Python/3.13.16/arm64/lib/pkgconfig
+[S17 DevSecOps - PassGuard/4 SAST (Bandit)]   ⚙  ::set-env:: Python_ROOT_DIR=/opt/hostedtoolcache/Python/3.13.16/arm64
+[S17 DevSecOps - PassGuard/4 SAST (Bandit)]   ⚙  ::set-env:: Python2_ROOT_DIR=/opt/hostedtoolcache/Python/3.13.16/arm64
+[S17 DevSecOps - PassGuard/4 SAST (Bandit)]   ⚙  ::set-env:: Python3_ROOT_DIR=/opt/hostedtoolcache/Python/3.13.16/arm64
+[S17 DevSecOps - PassGuard/4 SAST (Bandit)]   ⚙  ::set-env:: LD_LIBRARY_PATH=/opt/hostedtoolcache/Python/3.13.16/arm64/lib
+[S17 DevSecOps - PassGuard/4 SAST (Bandit)]   ⚙  ::set-output:: python-path=/opt/hostedtoolcache/Python/3.13.16/arm64/bin/python
+[S17 DevSecOps - PassGuard/4 SAST (Bandit)]   ⚙  ::set-output:: python-version=3.13.16
+[S17 DevSecOps - PassGuard/4 SAST (Bandit)]   ⚙  ::add-path:: /opt/hostedtoolcache/Python/3.13.16/arm64
+[S17 DevSecOps - PassGuard/4 SAST (Bandit)]   ⚙  ::add-path:: /opt/hostedtoolcache/Python/3.13.16/arm64/bin
+[S17 DevSecOps - PassGuard/4 SAST (Bandit)] ⭐ Run Main Bandit
+[S17 DevSecOps - PassGuard/4 SAST (Bandit)]   🐳  docker exec cmd=[bash --noprofile --norc -e -o pipefail /var/run/act/workflow/2.sh] user= workdir=devsecops-pipeline
+[S17 DevSecOps - PassGuard/4 SAST (Bandit)]   | [main]	INFO	profile include tests: None
+[S17 DevSecOps - PassGuard/4 SAST (Bandit)]   | [main]	INFO	profile exclude tests: None
+[S17 DevSecOps - PassGuard/4 SAST (Bandit)]   | [main]	INFO	cli include tests: None
+[S17 DevSecOps - PassGuard/4 SAST (Bandit)]   | [main]	INFO	cli exclude tests: None
+[S17 DevSecOps - PassGuard/4 SAST (Bandit)]   | [json]	INFO	JSON output written to file: reports/bandit.json
+[S17 DevSecOps - PassGuard/4 SAST (Bandit)]   | [main]	INFO	profile include tests: None
+[S17 DevSecOps - PassGuard/4 SAST (Bandit)]   | [main]	INFO	profile exclude tests: None
+[S17 DevSecOps - PassGuard/4 SAST (Bandit)]   | [main]	INFO	cli include tests: None
+[S17 DevSecOps - PassGuard/4 SAST (Bandit)]   | [main]	INFO	cli exclude tests: None
+[S17 DevSecOps - PassGuard/4 SAST (Bandit)]   | [main]	INFO	using config: pyproject.toml
+[S17 DevSecOps - PassGuard/4 SAST (Bandit)]   | [main]	INFO	running on Python 3.13.16
+[S17 DevSecOps - PassGuard/4 SAST (Bandit)]   | Run started:2026-10-07 18:33:11.958163+00:00
+[S17 DevSecOps - PassGuard/4 SAST (Bandit)]   | 
+[S17 DevSecOps - PassGuard/4 SAST (Bandit)]   | Test results:
+[S17 DevSecOps - PassGuard/4 SAST (Bandit)]   | 	No issues identified.
+[S17 DevSecOps - PassGuard/4 SAST (Bandit)]   | 
+[S17 DevSecOps - PassGuard/4 SAST (Bandit)]   | Code scanned:
+[S17 DevSecOps - PassGuard/4 SAST (Bandit)]   | 	Total lines of code: 137
+[S17 DevSecOps - PassGuard/4 SAST (Bandit)]   | 	Total lines skipped (#nosec): 0
+[S17 DevSecOps - PassGuard/4 SAST (Bandit)]   | 	Total potential issues skipped due to specifically being disabled (e.g., #nosec BXXX): 0
+[S17 DevSecOps - PassGuard/4 SAST (Bandit)]   | 
+[S17 DevSecOps - PassGuard/4 SAST (Bandit)]   | Run metrics:
+[S17 DevSecOps - PassGuard/4 SAST (Bandit)]   | 	Total issues (by severity):
+[S17 DevSecOps - PassGuard/4 SAST (Bandit)]   | 		Undefined: 0
+[S17 DevSecOps - PassGuard/4 SAST (Bandit)]   | 		Low: 0
+[S17 DevSecOps - PassGuard/4 SAST (Bandit)]   | 		Medium: 0
+[S17 DevSecOps - PassGuard/4 SAST (Bandit)]   | 		High: 0
+[S17 DevSecOps - PassGuard/4 SAST (Bandit)]   | 	Total issues (by confidence):
+[S17 DevSecOps - PassGuard/4 SAST (Bandit)]   | 		Undefined: 0
+[S17 DevSecOps - PassGuard/4 SAST (Bandit)]   | 		Low: 0
+[S17 DevSecOps - PassGuard/4 SAST (Bandit)]   | 		Medium: 0
+[S17 DevSecOps - PassGuard/4 SAST (Bandit)]   | 		High: 0
+[S17 DevSecOps - PassGuard/4 SAST (Bandit)]   | Files skipped (0):
+[S17 DevSecOps - PassGuard/4 SAST (Bandit)]   ✅  Success - Main Bandit [951.227792ms]
+[S17 DevSecOps - PassGuard/4 SAST (Bandit)] ⭐ Run Main actions/upload-artifact@v5
+[S17 DevSecOps - PassGuard/4 SAST (Bandit)]   🐳  docker cp src=/Users/pratyushmohanty/.cache/act/actions-upload-artifact@v5/ dst=/var/run/act/actions/actions-upload-artifact@v5/
+[S17 DevSecOps - PassGuard/4 SAST (Bandit)]   🐳  docker exec cmd=[/opt/acttoolcache/node/24.19.0/arm64/bin/node /var/run/act/actions/actions-upload-artifact@v5/dist/upload/index.js] user= workdir=
+[S17 DevSecOps - PassGuard/4 SAST (Bandit)]   | (node:71) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+[S17 DevSecOps - PassGuard/4 SAST (Bandit)]   | (Use `node --trace-deprecation ...` to show where the warning was created)
+[S17 DevSecOps - PassGuard/4 SAST (Bandit)]   | With the provided path, there will be 1 file uploaded
+[S17 DevSecOps - PassGuard/4 SAST (Bandit)]   | Artifact name is valid!
+[S17 DevSecOps - PassGuard/4 SAST (Bandit)]   | Root directory input is valid!
+[S17 DevSecOps - PassGuard/4 SAST (Bandit)]   | Beginning upload of artifact content to blob storage
+[S17 DevSecOps - PassGuard/4 SAST (Bandit)]   | (node:71) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+[S17 DevSecOps - PassGuard/4 SAST (Bandit)]   | Uploaded bytes 382
+[S17 DevSecOps - PassGuard/4 SAST (Bandit)]   | Finished uploading artifact content to blob storage!
+[S17 DevSecOps - PassGuard/4 SAST (Bandit)]   | SHA256 digest of uploaded artifact zip is 3c7436e74ef6aec51a19d5cd990cbcd475557531814fe86ebe6e007e4c9a1867
+[S17 DevSecOps - PassGuard/4 SAST (Bandit)]   | Finalizing artifact upload
+[S17 DevSecOps - PassGuard/4 SAST (Bandit)]   | Artifact report-sast.zip successfully finalized. Artifact ID 862344689
+[S17 DevSecOps - PassGuard/4 SAST (Bandit)]   | Artifact report-sast has been successfully uploaded! Final size is 382 bytes. Artifact ID is 862344689
+[S17 DevSecOps - PassGuard/4 SAST (Bandit)]   | Artifact download URL: https://github.com/bypratyush/devops-assignment/actions/runs/1/artifacts/862344689
+[S17 DevSecOps - PassGuard/4 SAST (Bandit)]   ✅  Success - Main actions/upload-artifact@v5 [1.06105975s]
+[S17 DevSecOps - PassGuard/4 SAST (Bandit)]   ⚙  ::set-output:: artifact-url=https://github.com/bypratyush/devops-assignment/actions/runs/1/artifacts/862344689
+[S17 DevSecOps - PassGuard/4 SAST (Bandit)]   ⚙  ::set-output:: artifact-id=862344689
+[S17 DevSecOps - PassGuard/4 SAST (Bandit)]   ⚙  ::set-output:: artifact-digest=3c7436e74ef6aec51a19d5cd990cbcd475557531814fe86ebe6e007e4c9a1867
+[S17 DevSecOps - PassGuard/4 SAST (Bandit)] ⭐ Run Post actions/setup-python@v6
+[S17 DevSecOps - PassGuard/4 SAST (Bandit)]   🐳  docker exec cmd=[/opt/acttoolcache/node/24.19.0/arm64/bin/node /var/run/act/actions/actions-setup-python@v6/dist/cache-save/index.js] user= workdir=
+[S17 DevSecOps - PassGuard/4 SAST (Bandit)]   ✅  Success - Post actions/setup-python@v6 [221.60225ms]
+[S17 DevSecOps - PassGuard/4 SAST (Bandit)] ⭐ Run Complete job
+[S17 DevSecOps - PassGuard/4 SAST (Bandit)] Cleaning up container for job 4 SAST (Bandit)
+[S17 DevSecOps - PassGuard/4 SAST (Bandit)]   ✅  Success - Complete job
+[S17 DevSecOps - PassGuard/4 SAST (Bandit)] 🏁  Job succeeded
+[S17 DevSecOps - PassGuard/5 SCA (pip-audit)] ⭐ Run Set up job
+[S17 DevSecOps - PassGuard/5 SCA (pip-audit)] 🚀  Start image=ghcr.io/catthehacker/ubuntu:act-latest
+[S17 DevSecOps - PassGuard/5 SCA (pip-audit)]   🐳  docker pull image=ghcr.io/catthehacker/ubuntu:act-latest platform=linux/arm64 username= forcePull=false
+[S17 DevSecOps - PassGuard/5 SCA (pip-audit)]   🐳  docker create image=ghcr.io/catthehacker/ubuntu:act-latest platform=linux/arm64 entrypoint=["tail" "-f" "/dev/null"] cmd=[] network="host"
+[S17 DevSecOps - PassGuard/5 SCA (pip-audit)]   🐳  docker run image=ghcr.io/catthehacker/ubuntu:act-latest platform=linux/arm64 entrypoint=["tail" "-f" "/dev/null"] cmd=[] network="host"
+[S17 DevSecOps - PassGuard/5 SCA (pip-audit)]   🐳  docker exec cmd=[node --no-warnings -e console.log(process.execPath)] user= workdir=
+[S17 DevSecOps - PassGuard/5 SCA (pip-audit)]   ✅  Success - Set up job
+[S17 DevSecOps - PassGuard/5 SCA (pip-audit)]   ☁  git clone 'https://github.com/actions/setup-python' # ref=v6
+[S17 DevSecOps - PassGuard/5 SCA (pip-audit)]   ☁  git clone 'https://github.com/actions/upload-artifact' # ref=v5
+[S17 DevSecOps - PassGuard/5 SCA (pip-audit)] ⭐ Run Main actions/checkout@v6
+[S17 DevSecOps - PassGuard/5 SCA (pip-audit)]   🐳  docker cp src=/Users/pratyushmohanty/Devops-assignment/. dst=/Users/pratyushmohanty/Devops-assignment
+[S17 DevSecOps - PassGuard/5 SCA (pip-audit)]   ✅  Success - Main actions/checkout@v6 [1.943239792s]
+[S17 DevSecOps - PassGuard/5 SCA (pip-audit)] ⭐ Run Main actions/setup-python@v6
+[S17 DevSecOps - PassGuard/5 SCA (pip-audit)]   🐳  docker cp src=/Users/pratyushmohanty/.cache/act/actions-setup-python@v6/ dst=/var/run/act/actions/actions-setup-python@v6/
+[S17 DevSecOps - PassGuard/5 SCA (pip-audit)]   🐳  docker exec cmd=[/opt/acttoolcache/node/24.19.0/arm64/bin/node /var/run/act/actions/actions-setup-python@v6/dist/setup/index.js] user= workdir=
+[S17 DevSecOps - PassGuard/5 SCA (pip-audit)]   ❓  ::group::Installed versions
+[S17 DevSecOps - PassGuard/5 SCA (pip-audit)]   | Successfully set up CPython (3.13.16)
+[S17 DevSecOps - PassGuard/5 SCA (pip-audit)]   ❓  ::endgroup::
+[S17 DevSecOps - PassGuard/5 SCA (pip-audit)]   ❓ add-matcher /run/act/actions/actions-setup-python@v6/.github/python.json
+[S17 DevSecOps - PassGuard/5 SCA (pip-audit)]   ✅  Success - Main actions/setup-python@v6 [1.315545416s]
+[S17 DevSecOps - PassGuard/5 SCA (pip-audit)]   ⚙  ::set-env:: PKG_CONFIG_PATH=/opt/hostedtoolcache/Python/3.13.16/arm64/lib/pkgconfig
+[S17 DevSecOps - PassGuard/5 SCA (pip-audit)]   ⚙  ::set-env:: Python_ROOT_DIR=/opt/hostedtoolcache/Python/3.13.16/arm64
+[S17 DevSecOps - PassGuard/5 SCA (pip-audit)]   ⚙  ::set-env:: Python2_ROOT_DIR=/opt/hostedtoolcache/Python/3.13.16/arm64
+[S17 DevSecOps - PassGuard/5 SCA (pip-audit)]   ⚙  ::set-env:: Python3_ROOT_DIR=/opt/hostedtoolcache/Python/3.13.16/arm64
+[S17 DevSecOps - PassGuard/5 SCA (pip-audit)]   ⚙  ::set-env:: LD_LIBRARY_PATH=/opt/hostedtoolcache/Python/3.13.16/arm64/lib
+[S17 DevSecOps - PassGuard/5 SCA (pip-audit)]   ⚙  ::set-env:: pythonLocation=/opt/hostedtoolcache/Python/3.13.16/arm64
+[S17 DevSecOps - PassGuard/5 SCA (pip-audit)]   ⚙  ::set-output:: python-version=3.13.16
+[S17 DevSecOps - PassGuard/5 SCA (pip-audit)]   ⚙  ::set-output:: python-path=/opt/hostedtoolcache/Python/3.13.16/arm64/bin/python
+[S17 DevSecOps - PassGuard/5 SCA (pip-audit)]   ⚙  ::add-path:: /opt/hostedtoolcache/Python/3.13.16/arm64
+[S17 DevSecOps - PassGuard/5 SCA (pip-audit)]   ⚙  ::add-path:: /opt/hostedtoolcache/Python/3.13.16/arm64/bin
+[S17 DevSecOps - PassGuard/5 SCA (pip-audit)] ⭐ Run Main pip-audit on the pinned requirements
+[S17 DevSecOps - PassGuard/5 SCA (pip-audit)]   🐳  docker exec cmd=[bash --noprofile --norc -e -o pipefail /var/run/act/workflow/2.sh] user= workdir=devsecops-pipeline
+[S17 DevSecOps - PassGuard/5 SCA (pip-audit)]   | No known vulnerabilities found
+[S17 DevSecOps - PassGuard/5 SCA (pip-audit)]   | No known vulnerabilities found
+[S17 DevSecOps - PassGuard/5 SCA (pip-audit)]   ✅  Success - Main pip-audit on the pinned requirements [9.219883625s]
+[S17 DevSecOps - PassGuard/5 SCA (pip-audit)] ⭐ Run Main actions/upload-artifact@v5
+[S17 DevSecOps - PassGuard/5 SCA (pip-audit)]   🐳  docker cp src=/Users/pratyushmohanty/.cache/act/actions-upload-artifact@v5/ dst=/var/run/act/actions/actions-upload-artifact@v5/
+[S17 DevSecOps - PassGuard/5 SCA (pip-audit)]   🐳  docker exec cmd=[/opt/acttoolcache/node/24.19.0/arm64/bin/node /var/run/act/actions/actions-upload-artifact@v5/dist/upload/index.js] user= workdir=
+[S17 DevSecOps - PassGuard/5 SCA (pip-audit)]   | (node:179) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+[S17 DevSecOps - PassGuard/5 SCA (pip-audit)]   | (Use `node --trace-deprecation ...` to show where the warning was created)
+[S17 DevSecOps - PassGuard/5 SCA (pip-audit)]   | With the provided path, there will be 1 file uploaded
+[S17 DevSecOps - PassGuard/5 SCA (pip-audit)]   | Artifact name is valid!
+[S17 DevSecOps - PassGuard/5 SCA (pip-audit)]   | Root directory input is valid!
+[S17 DevSecOps - PassGuard/5 SCA (pip-audit)]   | Beginning upload of artifact content to blob storage
+[S17 DevSecOps - PassGuard/5 SCA (pip-audit)]   | (node:179) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+[S17 DevSecOps - PassGuard/5 SCA (pip-audit)]   | Uploaded bytes 305
+[S17 DevSecOps - PassGuard/5 SCA (pip-audit)]   | Finished uploading artifact content to blob storage!
+[S17 DevSecOps - PassGuard/5 SCA (pip-audit)]   | SHA256 digest of uploaded artifact zip is d812128f5b6082276857f4329e4778ff891bb9051094434bc7980629a43d41a0
+[S17 DevSecOps - PassGuard/5 SCA (pip-audit)]   | Finalizing artifact upload
+[S17 DevSecOps - PassGuard/5 SCA (pip-audit)]   | Artifact report-sca.zip successfully finalized. Artifact ID 2543950051
+[S17 DevSecOps - PassGuard/5 SCA (pip-audit)]   | Artifact report-sca has been successfully uploaded! Final size is 305 bytes. Artifact ID is 2543950051
+[S17 DevSecOps - PassGuard/5 SCA (pip-audit)]   | Artifact download URL: https://github.com/bypratyush/devops-assignment/actions/runs/1/artifacts/2543950051
+[S17 DevSecOps - PassGuard/5 SCA (pip-audit)]   ✅  Success - Main actions/upload-artifact@v5 [1.013436291s]
+[S17 DevSecOps - PassGuard/5 SCA (pip-audit)]   ⚙  ::set-output:: artifact-id=2543950051
+[S17 DevSecOps - PassGuard/5 SCA (pip-audit)]   ⚙  ::set-output:: artifact-digest=d812128f5b6082276857f4329e4778ff891bb9051094434bc7980629a43d41a0
+[S17 DevSecOps - PassGuard/5 SCA (pip-audit)]   ⚙  ::set-output:: artifact-url=https://github.com/bypratyush/devops-assignment/actions/runs/1/artifacts/2543950051
+[S17 DevSecOps - PassGuard/5 SCA (pip-audit)] ⭐ Run Post actions/setup-python@v6
+[S17 DevSecOps - PassGuard/5 SCA (pip-audit)]   🐳  docker exec cmd=[/opt/acttoolcache/node/24.19.0/arm64/bin/node /var/run/act/actions/actions-setup-python@v6/dist/cache-save/index.js] user= workdir=
+[S17 DevSecOps - PassGuard/5 SCA (pip-audit)]   ✅  Success - Post actions/setup-python@v6 [270.834792ms]
+[S17 DevSecOps - PassGuard/5 SCA (pip-audit)] ⭐ Run Complete job
+[S17 DevSecOps - PassGuard/5 SCA (pip-audit)] Cleaning up container for job 5 SCA (pip-audit)
+[S17 DevSecOps - PassGuard/5 SCA (pip-audit)]   ✅  Success - Complete job
+[S17 DevSecOps - PassGuard/5 SCA (pip-audit)] 🏁  Job succeeded
+[S17 DevSecOps - PassGuard/6 Secret Scan (gitleaks)] ⭐ Run Set up job
+[S17 DevSecOps - PassGuard/6 Secret Scan (gitleaks)] 🚀  Start image=ghcr.io/catthehacker/ubuntu:act-latest
+[S17 DevSecOps - PassGuard/6 Secret Scan (gitleaks)]   🐳  docker pull image=ghcr.io/catthehacker/ubuntu:act-latest platform=linux/arm64 username= forcePull=false
+[S17 DevSecOps - PassGuard/6 Secret Scan (gitleaks)]   🐳  docker create image=ghcr.io/catthehacker/ubuntu:act-latest platform=linux/arm64 entrypoint=["tail" "-f" "/dev/null"] cmd=[] network="host"
+[S17 DevSecOps - PassGuard/6 Secret Scan (gitleaks)]   🐳  docker run image=ghcr.io/catthehacker/ubuntu:act-latest platform=linux/arm64 entrypoint=["tail" "-f" "/dev/null"] cmd=[] network="host"
+[S17 DevSecOps - PassGuard/6 Secret Scan (gitleaks)]   🐳  docker exec cmd=[node --no-warnings -e console.log(process.execPath)] user= workdir=
+[S17 DevSecOps - PassGuard/6 Secret Scan (gitleaks)]   ✅  Success - Set up job
+[S17 DevSecOps - PassGuard/6 Secret Scan (gitleaks)]   ☁  git clone 'https://github.com/actions/upload-artifact' # ref=v5
+[S17 DevSecOps - PassGuard/6 Secret Scan (gitleaks)] ⭐ Run Main actions/checkout@v6
+[S17 DevSecOps - PassGuard/6 Secret Scan (gitleaks)]   🐳  docker cp src=/Users/pratyushmohanty/Devops-assignment/. dst=/Users/pratyushmohanty/Devops-assignment
+[S17 DevSecOps - PassGuard/6 Secret Scan (gitleaks)]   ✅  Success - Main actions/checkout@v6 [2.199520417s]
+[S17 DevSecOps - PassGuard/6 Secret Scan (gitleaks)] ⭐ Run Main Install gitleaks (pinned, checksum verified)
+[S17 DevSecOps - PassGuard/6 Secret Scan (gitleaks)]   🐳  docker exec cmd=[bash --noprofile --norc -e -o pipefail /var/run/act/workflow/1.sh] user= workdir=devsecops-pipeline
+[S17 DevSecOps - PassGuard/6 Secret Scan (gitleaks)]   | installed gitleaks (arm64, sha256 verified) -> /root/.local/bin/gitleaks
+[S17 DevSecOps - PassGuard/6 Secret Scan (gitleaks)]   ✅  Success - Main Install gitleaks (pinned, checksum verified) [4.422709s]
+[S17 DevSecOps - PassGuard/6 Secret Scan (gitleaks)]   ⚙  ::add-path:: /root/.local/bin
+[S17 DevSecOps - PassGuard/6 Secret Scan (gitleaks)] ⭐ Run Main gitleaks
+[S17 DevSecOps - PassGuard/6 Secret Scan (gitleaks)]   🐳  docker exec cmd=[bash --noprofile --norc -e -o pipefail /var/run/act/workflow/2.sh] user= workdir=devsecops-pipeline
+[S17 DevSecOps - PassGuard/6 Secret Scan (gitleaks)]   | 6:33PM INF scanned ~238344 bytes (238.34 KB) in 31.5ms
+[S17 DevSecOps - PassGuard/6 Secret Scan (gitleaks)]   | 6:33PM INF no leaks found
+[S17 DevSecOps - PassGuard/6 Secret Scan (gitleaks)]   ✅  Success - Main gitleaks [421.088042ms]
+[S17 DevSecOps - PassGuard/6 Secret Scan (gitleaks)] ⭐ Run Main actions/upload-artifact@v5
+[S17 DevSecOps - PassGuard/6 Secret Scan (gitleaks)]   🐳  docker cp src=/Users/pratyushmohanty/.cache/act/actions-upload-artifact@v5/ dst=/var/run/act/actions/actions-upload-artifact@v5/
+[S17 DevSecOps - PassGuard/6 Secret Scan (gitleaks)]   🐳  docker exec cmd=[/opt/acttoolcache/node/24.19.0/arm64/bin/node /var/run/act/actions/actions-upload-artifact@v5/dist/upload/index.js] user= workdir=
+[S17 DevSecOps - PassGuard/6 Secret Scan (gitleaks)]   | (node:74) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+[S17 DevSecOps - PassGuard/6 Secret Scan (gitleaks)]   | (Use `node --trace-deprecation ...` to show where the warning was created)
+[S17 DevSecOps - PassGuard/6 Secret Scan (gitleaks)]   | With the provided path, there will be 1 file uploaded
+[S17 DevSecOps - PassGuard/6 Secret Scan (gitleaks)]   | Artifact name is valid!
+[S17 DevSecOps - PassGuard/6 Secret Scan (gitleaks)]   | Root directory input is valid!
+[S17 DevSecOps - PassGuard/6 Secret Scan (gitleaks)]   | Beginning upload of artifact content to blob storage
+[S17 DevSecOps - PassGuard/6 Secret Scan (gitleaks)]   | (node:74) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+[S17 DevSecOps - PassGuard/6 Secret Scan (gitleaks)]   | Uploaded bytes 145
+[S17 DevSecOps - PassGuard/6 Secret Scan (gitleaks)]   | Finished uploading artifact content to blob storage!
+[S17 DevSecOps - PassGuard/6 Secret Scan (gitleaks)]   | SHA256 digest of uploaded artifact zip is 850bf48ea1fdcb42d3377c48373d4739c528bdebd8036442cb5785a146bc054e
+[S17 DevSecOps - PassGuard/6 Secret Scan (gitleaks)]   | Finalizing artifact upload
+[S17 DevSecOps - PassGuard/6 Secret Scan (gitleaks)]   | Artifact report-secrets.zip successfully finalized. Artifact ID 3564946595
+[S17 DevSecOps - PassGuard/6 Secret Scan (gitleaks)]   | Artifact report-secrets has been successfully uploaded! Final size is 145 bytes. Artifact ID is 3564946595
+[S17 DevSecOps - PassGuard/6 Secret Scan (gitleaks)]   | Artifact download URL: https://github.com/bypratyush/devops-assignment/actions/runs/1/artifacts/3564946595
+[S17 DevSecOps - PassGuard/6 Secret Scan (gitleaks)]   ✅  Success - Main actions/upload-artifact@v5 [723.724625ms]
+[S17 DevSecOps - PassGuard/6 Secret Scan (gitleaks)]   ⚙  ::set-output:: artifact-id=3564946595
+[S17 DevSecOps - PassGuard/6 Secret Scan (gitleaks)]   ⚙  ::set-output:: artifact-digest=850bf48ea1fdcb42d3377c48373d4739c528bdebd8036442cb5785a146bc054e
+[S17 DevSecOps - PassGuard/6 Secret Scan (gitleaks)]   ⚙  ::set-output:: artifact-url=https://github.com/bypratyush/devops-assignment/actions/runs/1/artifacts/3564946595
+[S17 DevSecOps - PassGuard/6 Secret Scan (gitleaks)] ⭐ Run Complete job
+[S17 DevSecOps - PassGuard/6 Secret Scan (gitleaks)] Cleaning up container for job 6 Secret Scan (gitleaks)
+[S17 DevSecOps - PassGuard/6 Secret Scan (gitleaks)]   ✅  Success - Complete job
+[S17 DevSecOps - PassGuard/6 Secret Scan (gitleaks)] 🏁  Job succeeded
+[S17 DevSecOps - PassGuard/7 Docker Build          ] ⭐ Run Set up job
+[S17 DevSecOps - PassGuard/7 Docker Build          ] 🚀  Start image=ghcr.io/catthehacker/ubuntu:act-latest
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   🐳  docker pull image=ghcr.io/catthehacker/ubuntu:act-latest platform=linux/arm64 username= forcePull=false
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   🐳  docker create image=ghcr.io/catthehacker/ubuntu:act-latest platform=linux/arm64 entrypoint=["tail" "-f" "/dev/null"] cmd=[] network="host"
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   🐳  docker run image=ghcr.io/catthehacker/ubuntu:act-latest platform=linux/arm64 entrypoint=["tail" "-f" "/dev/null"] cmd=[] network="host"
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   🐳  docker exec cmd=[node --no-warnings -e console.log(process.execPath)] user= workdir=
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   ✅  Success - Set up job
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   ☁  git clone 'https://github.com/actions/download-artifact' # ref=v7
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   ☁  git clone 'https://github.com/actions/upload-artifact' # ref=v5
+[S17 DevSecOps - PassGuard/7 Docker Build          ] ⭐ Run Main actions/checkout@v6
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   🐳  docker cp src=/Users/pratyushmohanty/Devops-assignment/. dst=/Users/pratyushmohanty/Devops-assignment
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   ✅  Success - Main actions/checkout@v6 [1.807730875s]
+[S17 DevSecOps - PassGuard/7 Docker Build          ] ⭐ Run Main actions/download-artifact@v7
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   🐳  docker cp src=/Users/pratyushmohanty/.cache/act/actions-download-artifact@v7/ dst=/var/run/act/actions/actions-download-artifact@v7/
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   🐳  docker exec cmd=[/opt/acttoolcache/node/24.19.0/arm64/bin/node /var/run/act/actions/actions-download-artifact@v7/dist/index.js] user= workdir=
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | Downloading single artifact
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | Preparing to download the following artifacts:
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | - wheel (ID: 473058556, Size: 96, Expected Digest: undefined)
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | Redirecting to blob download url: http://100.128.166.254:34568/twirp/github.actions.results.api.v1.ArtifactService/DownloadArtifact
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | Starting download of artifact to: /Users/pratyushmohanty/Devops-assignment/devsecops-pipeline/dist
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | (node:31) [DEP0005] DeprecationWarning: Buffer() is deprecated due to security and usability issues. Please use the Buffer.alloc(), Buffer.allocUnsafe(), or Buffer.from() methods instead.
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | (Use `node --trace-deprecation ...` to show where the warning was created)
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | SHA256 digest of downloaded artifact is e5ab6f0db944be6b62adbdbf2714fd62d80eb7b63cf2cebb5b487a6d8b134c9a
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | Artifact download completed successfully.
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | Total of 1 artifact(s) downloaded
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | Download artifact has finished successfully
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   ✅  Success - Main actions/download-artifact@v7 [896.293917ms]
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   ⚙  ::set-output:: download-path=/Users/pratyushmohanty/Devops-assignment/devsecops-pipeline/dist
+[S17 DevSecOps - PassGuard/7 Docker Build          ] ⭐ Run Main docker build (from the tested wheel)
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   🐳  docker exec cmd=[bash --noprofile --norc -e -o pipefail /var/run/act/workflow/build.sh] user= workdir=devsecops-pipeline
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | #0 building with "default" instance using docker driver
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | 
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | #1 [internal] load build definition from Dockerfile
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | #1 transferring dockerfile: 1.68kB done
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | #1 DONE 0.0s
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | 
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | #2 [internal] load metadata for docker.io/library/python:3.13-slim
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | #2 DONE 0.0s
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | 
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | #3 [internal] load .dockerignore
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | #3 transferring context: 150B done
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | #3 DONE 0.0s
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | 
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | #4 [build 1/4] FROM docker.io/library/python:3.13-slim@sha256:bf44cdfcb76cd3b41e879bc058fc37ec5872002ccfde7fcb765e218cde0cd79c
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | #4 resolve docker.io/library/python:3.13-slim@sha256:bf44cdfcb76cd3b41e879bc058fc37ec5872002ccfde7fcb765e218cde0cd79c 0.0s done
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | #4 CACHED
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | 
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | #5 [internal] load build context
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | #5 transferring context: 6.45kB done
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | #5 DONE 0.0s
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | 
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | #6 [build 2/4] COPY requirements.txt /tmp/requirements.txt
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | #6 CACHED
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | 
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | #7 [build 3/4] COPY dist/*.whl /tmp/
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | #7 DONE 0.2s
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | 
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | #8 [stage-1 2/3] RUN python -m pip uninstall --yes --root-user-action=ignore pip  && groupadd --gid 10001 app && useradd --uid 10001 --gid app --no-create-home --shell /usr/sbin/nologin app
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | #8 1.265 Found existing installation: pip 26.2.1
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | #8 1.306 Uninstalling pip-26.2.1:
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | #8 1.497   Successfully uninstalled pip-26.2.1
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | #8 DONE 1.6s
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | 
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | #9 [build 4/4] RUN python -m venv /venv  && /venv/bin/pip install -r /tmp/requirements.txt  && /venv/bin/pip install --no-deps /tmp/*.whl  && /venv/bin/pip uninstall --yes pip
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | #9 2.873 Collecting blinker==1.9.0 (from -r /tmp/requirements.txt (line 3))
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | #9 3.071   Downloading blinker-1.9.0-py3-none-any.whl.metadata (1.6 kB)
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | #9 3.111 Collecting click==8.5.0 (from -r /tmp/requirements.txt (line 4))
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | #9 3.172   Downloading click-8.5.0-py3-none-any.whl.metadata (2.6 kB)
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | #9 3.210 Collecting flask==3.1.3 (from -r /tmp/requirements.txt (line 5))
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | #9 3.273   Downloading flask-3.1.3-py3-none-any.whl.metadata (3.2 kB)
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | #9 3.306 Collecting gunicorn==26.2.0 (from -r /tmp/requirements.txt (line 6))
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | #9 3.392   Downloading gunicorn-26.2.0-py3-none-any.whl.metadata (5.5 kB)
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | #9 3.425 Collecting itsdangerous==2.2.0 (from -r /tmp/requirements.txt (line 7))
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | #9 3.482   Downloading itsdangerous-2.2.0-py3-none-any.whl.metadata (1.9 kB)
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | #9 3.511 Collecting jinja2==3.1.6 (from -r /tmp/requirements.txt (line 8))
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | #9 3.545   Downloading jinja2-3.1.6-py3-none-any.whl.metadata (2.9 kB)
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | #9 3.636 Collecting markupsafe==3.0.4 (from -r /tmp/requirements.txt (line 9))
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | #9 3.684   Downloading markupsafe-3.0.4-cp313-cp313-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl.metadata (2.7 kB)
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | #9 3.712 Collecting werkzeug==3.1.9 (from -r /tmp/requirements.txt (line 10))
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | #9 3.731   Downloading werkzeug-3.1.9-py3-none-any.whl.metadata (4.1 kB)
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | #9 3.785 Downloading blinker-1.9.0-py3-none-any.whl (8.5 kB)
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | #9 3.807 Downloading click-8.5.0-py3-none-any.whl (125 kB)
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | #9 3.924 Downloading flask-3.1.3-py3-none-any.whl (103 kB)
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | #9 4.015 Downloading gunicorn-26.2.0-py3-none-any.whl (228 kB)
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | #9 4.092 Downloading itsdangerous-2.2.0-py3-none-any.whl (16 kB)
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | #9 4.122 Downloading jinja2-3.1.6-py3-none-any.whl (134 kB)
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | #9 4.198 Downloading markupsafe-3.0.4-cp313-cp313-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl (24 kB)
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | #9 4.222 Downloading werkzeug-3.1.9-py3-none-any.whl (228 kB)
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | #9 4.256 Installing collected packages: markupsafe, itsdangerous, gunicorn, click, blinker, werkzeug, jinja2, flask
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | #9 4.500 
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | #9 4.501 Successfully installed blinker-1.9.0 click-8.5.0 flask-3.1.3 gunicorn-26.2.0 itsdangerous-2.2.0 jinja2-3.1.6 markupsafe-3.0.4 werkzeug-3.1.9
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | #9 4.683 Processing ./tmp/passguard-1.0.0-py3-none-any.whl
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | #9 4.690 Installing collected packages: passguard
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | #9 4.695 Successfully installed passguard-1.0.0
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | #9 4.835 Found existing installation: pip 26.2.1
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | #9 4.847 Uninstalling pip-26.2.1:
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | #9 4.849   Successfully uninstalled pip-26.2.1
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | #9 DONE 4.9s
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | 
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | #10 [stage-1 3/3] COPY --from=build /venv /venv
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | #10 DONE 0.1s
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | 
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | #11 exporting to image
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | #11 exporting layers
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | #11 exporting layers 0.2s done
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | #11 exporting manifest sha256:fba32e34992fd3feb000db6c7ce508303b6cfbc3cdb154415510d8647d8c213f done
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | #11 exporting config sha256:0048257bbc89af50a6dc0f02e07ffd94d618eee6966ad38a20b845c2926305c0 done
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | #11 naming to docker.io/library/passguard:888cd81 done
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | #11 unpacking to docker.io/library/passguard:888cd81 0.0s done
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | #11 DONE 0.3s
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | -rw------- 1 root root 44M Oct  7 18:33 dist/image.tar
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   ✅  Success - Main docker build (from the tested wheel) [6.936905125s]
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   ⚙  ::set-output:: tag=888cd81
+[S17 DevSecOps - PassGuard/7 Docker Build          ] ⭐ Run Main actions/upload-artifact@v5
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   🐳  docker cp src=/Users/pratyushmohanty/.cache/act/actions-upload-artifact@v5/ dst=/var/run/act/actions/actions-upload-artifact@v5/
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   🐳  docker exec cmd=[/opt/acttoolcache/node/24.19.0/arm64/bin/node /var/run/act/actions/actions-upload-artifact@v5/dist/upload/index.js] user= workdir=
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | (node:120) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | (Use `node --trace-deprecation ...` to show where the warning was created)
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | With the provided path, there will be 1 file uploaded
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | Artifact name is valid!
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | Root directory input is valid!
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | Beginning upload of artifact content to blob storage
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | (node:120) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | Uploaded bytes 8388608
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | Uploaded bytes 16777216
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | Uploaded bytes 25165824
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | Uploaded bytes 33554432
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | Uploaded bytes 41943040
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | Uploaded bytes 45159900
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | Finished uploading artifact content to blob storage!
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | SHA256 digest of uploaded artifact zip is 3288c2dda1c72d31d916478d568cc5ca6328f994ac360eb3525d6330ce961a83
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | Finalizing artifact upload
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | Artifact image.zip successfully finalized. Artifact ID 3008443898
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | Artifact image has been successfully uploaded! Final size is 45159900 bytes. Artifact ID is 3008443898
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   | Artifact download URL: https://github.com/bypratyush/devops-assignment/actions/runs/1/artifacts/3008443898
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   ✅  Success - Main actions/upload-artifact@v5 [2.235724333s]
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   ⚙  ::set-output:: artifact-id=3008443898
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   ⚙  ::set-output:: artifact-digest=3288c2dda1c72d31d916478d568cc5ca6328f994ac360eb3525d6330ce961a83
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   ⚙  ::set-output:: artifact-url=https://github.com/bypratyush/devops-assignment/actions/runs/1/artifacts/3008443898
+[S17 DevSecOps - PassGuard/7 Docker Build          ] ⭐ Run Complete job
+[S17 DevSecOps - PassGuard/7 Docker Build          ] Cleaning up container for job 7 Docker Build
+[S17 DevSecOps - PassGuard/7 Docker Build          ]   ✅  Success - Complete job
+[S17 DevSecOps - PassGuard/7 Docker Build          ] 🏁  Job succeeded
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)] ⭐ Run Set up job
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)] 🚀  Start image=ghcr.io/catthehacker/ubuntu:act-latest
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   🐳  docker pull image=ghcr.io/catthehacker/ubuntu:act-latest platform=linux/arm64 username= forcePull=false
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   🐳  docker create image=ghcr.io/catthehacker/ubuntu:act-latest platform=linux/arm64 entrypoint=["tail" "-f" "/dev/null"] cmd=[] network="host"
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   🐳  docker run image=ghcr.io/catthehacker/ubuntu:act-latest platform=linux/arm64 entrypoint=["tail" "-f" "/dev/null"] cmd=[] network="host"
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   🐳  docker exec cmd=[node --no-warnings -e console.log(process.execPath)] user= workdir=
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   ✅  Success - Set up job
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   ☁  git clone 'https://github.com/actions/download-artifact' # ref=v7
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   ☁  git clone 'https://github.com/actions/upload-artifact' # ref=v5
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)] ⭐ Run Main actions/checkout@v6
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   🐳  docker cp src=/Users/pratyushmohanty/Devops-assignment/. dst=/Users/pratyushmohanty/Devops-assignment
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   ✅  Success - Main actions/checkout@v6 [1.634838666s]
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)] ⭐ Run Main actions/download-artifact@v7
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   🐳  docker cp src=/Users/pratyushmohanty/.cache/act/actions-download-artifact@v7/ dst=/var/run/act/actions/actions-download-artifact@v7/
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   🐳  docker exec cmd=[/opt/acttoolcache/node/24.19.0/arm64/bin/node /var/run/act/actions/actions-download-artifact@v7/dist/index.js] user= workdir=
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | Downloading single artifact
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | Preparing to download the following artifacts:
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | - image (ID: 3008443898, Size: 96, Expected Digest: undefined)
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | Redirecting to blob download url: http://100.128.166.254:34568/twirp/github.actions.results.api.v1.ArtifactService/DownloadArtifact
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | Starting download of artifact to: /Users/pratyushmohanty/Devops-assignment/devsecops-pipeline/dist
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | (node:31) [DEP0005] DeprecationWarning: Buffer() is deprecated due to security and usability issues. Please use the Buffer.alloc(), Buffer.allocUnsafe(), or Buffer.from() methods instead.
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | (Use `node --trace-deprecation ...` to show where the warning was created)
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | SHA256 digest of downloaded artifact is 3288c2dda1c72d31d916478d568cc5ca6328f994ac360eb3525d6330ce961a83
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | Artifact download completed successfully.
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | Total of 1 artifact(s) downloaded
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | Download artifact has finished successfully
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   ✅  Success - Main actions/download-artifact@v7 [1.184689708s]
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   ⚙  ::set-output:: download-path=/Users/pratyushmohanty/Devops-assignment/devsecops-pipeline/dist
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)] ⭐ Run Main Install Trivy (pinned, checksum verified)
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   🐳  docker exec cmd=[bash --noprofile --norc -e -o pipefail /var/run/act/workflow/2.sh] user= workdir=devsecops-pipeline
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | installed trivy (arm64, sha256 verified) -> /root/.local/bin/trivy
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   ✅  Success - Main Install Trivy (pinned, checksum verified) [7.40129325s]
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   ⚙  ::add-path:: /root/.local/bin
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)] ⭐ Run Main Trivy scan of the exact image tarball
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   🐳  docker exec cmd=[bash --noprofile --norc -e -o pipefail /var/run/act/workflow/3.sh] user= workdir=devsecops-pipeline
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | 2026-10-07T18:34:26Z	WARN	[report] No enabled scanners found. Summary table will not be displayed.
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | 
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | For OSS Maintainers: VEX Notice
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | --------------------------------
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | If you're an OSS maintainer and Trivy has detected vulnerabilities in your project that you believe are not actually exploitable, consider issuing a VEX (Vulnerability Exploitability eXchange) statement.
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | VEX allows you to communicate the actual status of vulnerabilities in your project, improving security transparency and reducing false positives for your users.
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | Learn more and start using VEX: https://trivy.dev/docs/v0.74/guide/supply-chain/vex/repo#publishing-vex-documents
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | 
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | To disable this notice, set the TRIVY_DISABLE_VEX_NOTICE environment variable.
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | 
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | 
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | dist/image.tar (debian 13.7)
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | ============================
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | Total: 44 (HIGH: 44, CRITICAL: 0)
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | 
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | ┌───────────────┬────────────────┬──────────┬──────────────┬───────────────────────────────────┬───────────────┬─────────────────────────────────────────────────────────────┐
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │    Library    │ Vulnerability  │ Severity │    Status    │         Installed Version         │ Fixed Version │                            Title                            │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | ├───────────────┼────────────────┼──────────┼──────────────┼───────────────────────────────────┼───────────────┼─────────────────────────────────────────────────────────────┤
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │ bsdutils      │ CVE-2026-76642 │ HIGH     │ affected     │ 1:2.41.5-0+deb13u1                │               │ util-linux: util-linux: failed external mount helper still  │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │                │          │              │                                   │               │ runs privileged X-mount post-hooks                          │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │                │          │              │                                   │               │ https://avd.aquasec.com/nvd/cve-2026-76642                  │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               ├────────────────┤          │              │                                   ├───────────────┼─────────────────────────────────────────────────────────────┤
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │ CVE-2026-78408 │          │              │                                   │               │ util-linux: util-linux: nsenter --join-cgroup leaks root    │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │                │          │              │                                   │               │ cgroup migration authority                                  │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │                │          │              │                                   │               │ https://avd.aquasec.com/nvd/cve-2026-78408                  │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               ├────────────────┤          │              │                                   ├───────────────┼─────────────────────────────────────────────────────────────┤
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │ CVE-2026-78409 │          │              │                                   │               │ util-linux: util-linux: X-mount.subdir detached-tree        │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │                │          │              │                                   │               │ resolution can escape via intermediate symlinks             │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │                │          │              │                                   │               │ https://avd.aquasec.com/nvd/cve-2026-78409                  │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               ├────────────────┤          │              │                                   ├───────────────┼─────────────────────────────────────────────────────────────┤
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │ CVE-2026-78410 │          │              │                                   │               │ util-linux: util-linux: restricted bind mounts do not pin   │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │                │          │              │                                   │               │ the source, allowing X-mount.owner/group/mode...            │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │                │          │              │                                   │               │ https://avd.aquasec.com/nvd/cve-2026-78410                  │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | ├───────────────┼────────────────┤          │              ├───────────────────────────────────┼───────────────┼─────────────────────────────────────────────────────────────┤
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │ libacl1       │ CVE-2026-54369 │          │              │ 2.3.2-2+b1                        │               │ acl: Symlink traversal privilege escalation via libacl      │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │                │          │              │                                   │               │ functions                                                   │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │                │          │              │                                   │               │ https://avd.aquasec.com/nvd/cve-2026-54369                  │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | ├───────────────┼────────────────┤          │              ├───────────────────────────────────┼───────────────┼─────────────────────────────────────────────────────────────┤
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │ libblkid1     │ CVE-2026-76642 │          │              │ 2.41.5-0+deb13u1                  │               │ util-linux: util-linux: failed external mount helper still  │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │                │          │              │                                   │               │ runs privileged X-mount post-hooks                          │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │                │          │              │                                   │               │ https://avd.aquasec.com/nvd/cve-2026-76642                  │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               ├────────────────┤          │              │                                   ├───────────────┼─────────────────────────────────────────────────────────────┤
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │ CVE-2026-78408 │          │              │                                   │               │ util-linux: util-linux: nsenter --join-cgroup leaks root    │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │                │          │              │                                   │               │ cgroup migration authority                                  │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │                │          │              │                                   │               │ https://avd.aquasec.com/nvd/cve-2026-78408                  │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               ├────────────────┤          │              │                                   ├───────────────┼─────────────────────────────────────────────────────────────┤
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │ CVE-2026-78409 │          │              │                                   │               │ util-linux: util-linux: X-mount.subdir detached-tree        │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │                │          │              │                                   │               │ resolution can escape via intermediate symlinks             │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │                │          │              │                                   │               │ https://avd.aquasec.com/nvd/cve-2026-78409                  │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               ├────────────────┤          │              │                                   ├───────────────┼─────────────────────────────────────────────────────────────┤
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │ CVE-2026-78410 │          │              │                                   │               │ util-linux: util-linux: restricted bind mounts do not pin   │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │                │          │              │                                   │               │ the source, allowing X-mount.owner/group/mode...            │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │                │          │              │                                   │               │ https://avd.aquasec.com/nvd/cve-2026-78410                  │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | ├───────────────┼────────────────┤          │              │                                   ├───────────────┼─────────────────────────────────────────────────────────────┤
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │ liblastlog2-2 │ CVE-2026-76642 │          │              │                                   │               │ util-linux: util-linux: failed external mount helper still  │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │                │          │              │                                   │               │ runs privileged X-mount post-hooks                          │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │                │          │              │                                   │               │ https://avd.aquasec.com/nvd/cve-2026-76642                  │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               ├────────────────┤          │              │                                   ├───────────────┼─────────────────────────────────────────────────────────────┤
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │ CVE-2026-78408 │          │              │                                   │               │ util-linux: util-linux: nsenter --join-cgroup leaks root    │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │                │          │              │                                   │               │ cgroup migration authority                                  │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │                │          │              │                                   │               │ https://avd.aquasec.com/nvd/cve-2026-78408                  │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               ├────────────────┤          │              │                                   ├───────────────┼─────────────────────────────────────────────────────────────┤
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │ CVE-2026-78409 │          │              │                                   │               │ util-linux: util-linux: X-mount.subdir detached-tree        │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │                │          │              │                                   │               │ resolution can escape via intermediate symlinks             │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │                │          │              │                                   │               │ https://avd.aquasec.com/nvd/cve-2026-78409                  │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               ├────────────────┤          │              │                                   ├───────────────┼─────────────────────────────────────────────────────────────┤
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │ CVE-2026-78410 │          │              │                                   │               │ util-linux: util-linux: restricted bind mounts do not pin   │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │                │          │              │                                   │               │ the source, allowing X-mount.owner/group/mode...            │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │                │          │              │                                   │               │ https://avd.aquasec.com/nvd/cve-2026-78410                  │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | ├───────────────┼────────────────┤          │              │                                   ├───────────────┼─────────────────────────────────────────────────────────────┤
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │ libmount1     │ CVE-2026-76642 │          │              │                                   │               │ util-linux: util-linux: failed external mount helper still  │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │                │          │              │                                   │               │ runs privileged X-mount post-hooks                          │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │                │          │              │                                   │               │ https://avd.aquasec.com/nvd/cve-2026-76642                  │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               ├────────────────┤          │              │                                   ├───────────────┼─────────────────────────────────────────────────────────────┤
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │ CVE-2026-78408 │          │              │                                   │               │ util-linux: util-linux: nsenter --join-cgroup leaks root    │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │                │          │              │                                   │               │ cgroup migration authority                                  │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │                │          │              │                                   │               │ https://avd.aquasec.com/nvd/cve-2026-78408                  │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               ├────────────────┤          │              │                                   ├───────────────┼─────────────────────────────────────────────────────────────┤
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │ CVE-2026-78409 │          │              │                                   │               │ util-linux: util-linux: X-mount.subdir detached-tree        │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │                │          │              │                                   │               │ resolution can escape via intermediate symlinks             │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │                │          │              │                                   │               │ https://avd.aquasec.com/nvd/cve-2026-78409                  │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               ├────────────────┤          │              │                                   ├───────────────┼─────────────────────────────────────────────────────────────┤
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │ CVE-2026-78410 │          │              │                                   │               │ util-linux: util-linux: restricted bind mounts do not pin   │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │                │          │              │                                   │               │ the source, allowing X-mount.owner/group/mode...            │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │                │          │              │                                   │               │ https://avd.aquasec.com/nvd/cve-2026-78410                  │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | ├───────────────┼────────────────┤          │              ├───────────────────────────────────┼───────────────┼─────────────────────────────────────────────────────────────┤
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │ libncursesw6  │ CVE-2025-69720 │          │              │ 6.5+20250216-2                    │               │ ncurses: ncurses: Buffer overflow vulnerability may lead to │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │                │          │              │                                   │               │ arbitrary code execution.                                   │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │                │          │              │                                   │               │ https://avd.aquasec.com/nvd/cve-2025-69720                  │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | ├───────────────┼────────────────┤          │              ├───────────────────────────────────┼───────────────┼─────────────────────────────────────────────────────────────┤
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │ libsmartcols1 │ CVE-2026-76642 │          │              │ 2.41.5-0+deb13u1                  │               │ util-linux: util-linux: failed external mount helper still  │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │                │          │              │                                   │               │ runs privileged X-mount post-hooks                          │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │                │          │              │                                   │               │ https://avd.aquasec.com/nvd/cve-2026-76642                  │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               ├────────────────┤          │              │                                   ├───────────────┼─────────────────────────────────────────────────────────────┤
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │ CVE-2026-78408 │          │              │                                   │               │ util-linux: util-linux: nsenter --join-cgroup leaks root    │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │                │          │              │                                   │               │ cgroup migration authority                                  │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │                │          │              │                                   │               │ https://avd.aquasec.com/nvd/cve-2026-78408                  │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               ├────────────────┤          │              │                                   ├───────────────┼─────────────────────────────────────────────────────────────┤
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │ CVE-2026-78409 │          │              │                                   │               │ util-linux: util-linux: X-mount.subdir detached-tree        │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │                │          │              │                                   │               │ resolution can escape via intermediate symlinks             │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │                │          │              │                                   │               │ https://avd.aquasec.com/nvd/cve-2026-78409                  │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               ├────────────────┤          │              │                                   ├───────────────┼─────────────────────────────────────────────────────────────┤
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │ CVE-2026-78410 │          │              │                                   │               │ util-linux: util-linux: restricted bind mounts do not pin   │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │                │          │              │                                   │               │ the source, allowing X-mount.owner/group/mode...            │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │                │          │              │                                   │               │ https://avd.aquasec.com/nvd/cve-2026-78410                  │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | ├───────────────┼────────────────┤          │              ├───────────────────────────────────┼───────────────┼─────────────────────────────────────────────────────────────┤
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │ libsystemd0   │ CVE-2026-16742 │          │              │ 257.13-1~deb13u1                  │               │ systemd: systemd-homed: Local privilege escalation via      │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │                │          │              │                                   │               │ missing home-record signature verification                  │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │                │          │              │                                   │               │ https://avd.aquasec.com/nvd/cve-2026-16742                  │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | ├───────────────┼────────────────┤          │              ├───────────────────────────────────┼───────────────┼─────────────────────────────────────────────────────────────┤
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │ libtinfo6     │ CVE-2025-69720 │          │              │ 6.5+20250216-2                    │               │ ncurses: ncurses: Buffer overflow vulnerability may lead to │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │                │          │              │                                   │               │ arbitrary code execution.                                   │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │                │          │              │                                   │               │ https://avd.aquasec.com/nvd/cve-2025-69720                  │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | ├───────────────┼────────────────┤          │              ├───────────────────────────────────┼───────────────┼─────────────────────────────────────────────────────────────┤
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │ libudev1      │ CVE-2026-16742 │          │              │ 257.13-1~deb13u1                  │               │ systemd: systemd-homed: Local privilege escalation via      │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │                │          │              │                                   │               │ missing home-record signature verification                  │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │                │          │              │                                   │               │ https://avd.aquasec.com/nvd/cve-2026-16742                  │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | ├───────────────┼────────────────┤          │              ├───────────────────────────────────┼───────────────┼─────────────────────────────────────────────────────────────┤
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │ libuuid1      │ CVE-2026-76642 │          │              │ 2.41.5-0+deb13u1                  │               │ util-linux: util-linux: failed external mount helper still  │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │                │          │              │                                   │               │ runs privileged X-mount post-hooks                          │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │                │          │              │                                   │               │ https://avd.aquasec.com/nvd/cve-2026-76642                  │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               ├────────────────┤          │              │                                   ├───────────────┼─────────────────────────────────────────────────────────────┤
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │ CVE-2026-78408 │          │              │                                   │               │ util-linux: util-linux: nsenter --join-cgroup leaks root    │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │                │          │              │                                   │               │ cgroup migration authority                                  │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │                │          │              │                                   │               │ https://avd.aquasec.com/nvd/cve-2026-78408                  │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               ├────────────────┤          │              │                                   ├───────────────┼─────────────────────────────────────────────────────────────┤
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │ CVE-2026-78409 │          │              │                                   │               │ util-linux: util-linux: X-mount.subdir detached-tree        │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │                │          │              │                                   │               │ resolution can escape via intermediate symlinks             │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │                │          │              │                                   │               │ https://avd.aquasec.com/nvd/cve-2026-78409                  │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               ├────────────────┤          │              │                                   ├───────────────┼─────────────────────────────────────────────────────────────┤
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │ CVE-2026-78410 │          │              │                                   │               │ util-linux: util-linux: restricted bind mounts do not pin   │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │                │          │              │                                   │               │ the source, allowing X-mount.owner/group/mode...            │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │                │          │              │                                   │               │ https://avd.aquasec.com/nvd/cve-2026-78410                  │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | ├───────────────┼────────────────┤          │              ├───────────────────────────────────┼───────────────┼─────────────────────────────────────────────────────────────┤
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │ login         │ CVE-2026-76642 │          │              │ 1:4.16.0-2+really2.41.5-0+deb13u1 │               │ util-linux: util-linux: failed external mount helper still  │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │                │          │              │                                   │               │ runs privileged X-mount post-hooks                          │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │                │          │              │                                   │               │ https://avd.aquasec.com/nvd/cve-2026-76642                  │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               ├────────────────┤          │              │                                   ├───────────────┼─────────────────────────────────────────────────────────────┤
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │ CVE-2026-78408 │          │              │                                   │               │ util-linux: util-linux: nsenter --join-cgroup leaks root    │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │                │          │              │                                   │               │ cgroup migration authority                                  │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │                │          │              │                                   │               │ https://avd.aquasec.com/nvd/cve-2026-78408                  │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               ├────────────────┤          │              │                                   ├───────────────┼─────────────────────────────────────────────────────────────┤
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │ CVE-2026-78409 │          │              │                                   │               │ util-linux: util-linux: X-mount.subdir detached-tree        │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │                │          │              │                                   │               │ resolution can escape via intermediate symlinks             │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │                │          │              │                                   │               │ https://avd.aquasec.com/nvd/cve-2026-78409                  │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               ├────────────────┤          │              │                                   ├───────────────┼─────────────────────────────────────────────────────────────┤
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │ CVE-2026-78410 │          │              │                                   │               │ util-linux: util-linux: restricted bind mounts do not pin   │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │                │          │              │                                   │               │ the source, allowing X-mount.owner/group/mode...            │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │                │          │              │                                   │               │ https://avd.aquasec.com/nvd/cve-2026-78410                  │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | ├───────────────┼────────────────┤          │              ├───────────────────────────────────┼───────────────┼─────────────────────────────────────────────────────────────┤
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │ mount         │ CVE-2026-76642 │          │              │ 2.41.5-0+deb13u1                  │               │ util-linux: util-linux: failed external mount helper still  │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │                │          │              │                                   │               │ runs privileged X-mount post-hooks                          │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │                │          │              │                                   │               │ https://avd.aquasec.com/nvd/cve-2026-76642                  │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               ├────────────────┤          │              │                                   ├───────────────┼─────────────────────────────────────────────────────────────┤
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │ CVE-2026-78408 │          │              │                                   │               │ util-linux: util-linux: nsenter --join-cgroup leaks root    │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │                │          │              │                                   │               │ cgroup migration authority                                  │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │                │          │              │                                   │               │ https://avd.aquasec.com/nvd/cve-2026-78408                  │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               ├────────────────┤          │              │                                   ├───────────────┼─────────────────────────────────────────────────────────────┤
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │ CVE-2026-78409 │          │              │                                   │               │ util-linux: util-linux: X-mount.subdir detached-tree        │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │                │          │              │                                   │               │ resolution can escape via intermediate symlinks             │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │                │          │              │                                   │               │ https://avd.aquasec.com/nvd/cve-2026-78409                  │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               ├────────────────┤          │              │                                   ├───────────────┼─────────────────────────────────────────────────────────────┤
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │ CVE-2026-78410 │          │              │                                   │               │ util-linux: util-linux: restricted bind mounts do not pin   │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │                │          │              │                                   │               │ the source, allowing X-mount.owner/group/mode...            │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │                │          │              │                                   │               │ https://avd.aquasec.com/nvd/cve-2026-78410                  │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | ├───────────────┼────────────────┤          │              ├───────────────────────────────────┼───────────────┼─────────────────────────────────────────────────────────────┤
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │ ncurses-base  │ CVE-2025-69720 │          │              │ 6.5+20250216-2                    │               │ ncurses: ncurses: Buffer overflow vulnerability may lead to │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │                │          │              │                                   │               │ arbitrary code execution.                                   │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │                │          │              │                                   │               │ https://avd.aquasec.com/nvd/cve-2025-69720                  │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | ├───────────────┤                │          │              │                                   ├───────────────┤                                                             │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │ ncurses-bin   │                │          │              │                                   │               │                                                             │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │                │          │              │                                   │               │                                                             │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │                │          │              │                                   │               │                                                             │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | ├───────────────┼────────────────┤          ├──────────────┼───────────────────────────────────┼───────────────┼─────────────────────────────────────────────────────────────┤
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │ perl-base     │ CVE-2026-9538  │          │ fix_deferred │ 5.40.1-6+deb13u1                  │               │ perl-Archive-Tar: perl-Archive-Tar: Denial of Service via   │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │                │          │              │                                   │               │ crafted tar header with large entry...                      │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │                │          │              │                                   │               │ https://avd.aquasec.com/nvd/cve-2026-9538                   │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | ├───────────────┼────────────────┤          ├──────────────┼───────────────────────────────────┼───────────────┼─────────────────────────────────────────────────────────────┤
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │ util-linux    │ CVE-2026-76642 │          │ affected     │ 2.41.5-0+deb13u1                  │               │ util-linux: util-linux: failed external mount helper still  │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │                │          │              │                                   │               │ runs privileged X-mount post-hooks                          │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │                │          │              │                                   │               │ https://avd.aquasec.com/nvd/cve-2026-76642                  │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               ├────────────────┤          │              │                                   ├───────────────┼─────────────────────────────────────────────────────────────┤
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │ CVE-2026-78408 │          │              │                                   │               │ util-linux: util-linux: nsenter --join-cgroup leaks root    │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │                │          │              │                                   │               │ cgroup migration authority                                  │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │                │          │              │                                   │               │ https://avd.aquasec.com/nvd/cve-2026-78408                  │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               ├────────────────┤          │              │                                   ├───────────────┼─────────────────────────────────────────────────────────────┤
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │ CVE-2026-78409 │          │              │                                   │               │ util-linux: util-linux: X-mount.subdir detached-tree        │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │                │          │              │                                   │               │ resolution can escape via intermediate symlinks             │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │                │          │              │                                   │               │ https://avd.aquasec.com/nvd/cve-2026-78409                  │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               ├────────────────┤          │              │                                   ├───────────────┼─────────────────────────────────────────────────────────────┤
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │ CVE-2026-78410 │          │              │                                   │               │ util-linux: util-linux: restricted bind mounts do not pin   │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │                │          │              │                                   │               │ the source, allowing X-mount.owner/group/mode...            │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | │               │                │          │              │                                   │               │ https://avd.aquasec.com/nvd/cve-2026-78410                  │
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | └───────────────┴────────────────┴──────────┴──────────────┴───────────────────────────────────┴───────────────┴─────────────────────────────────────────────────────────────┘
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   ✅  Success - Main Trivy scan of the exact image tarball [23.629909875s]
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)] ⭐ Run Main actions/upload-artifact@v5
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   🐳  docker cp src=/Users/pratyushmohanty/.cache/act/actions-upload-artifact@v5/ dst=/var/run/act/actions/actions-upload-artifact@v5/
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   🐳  docker exec cmd=[/opt/acttoolcache/node/24.19.0/arm64/bin/node /var/run/act/actions/actions-upload-artifact@v5/dist/upload/index.js] user= workdir=
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | (node:109) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | (Use `node --trace-deprecation ...` to show where the warning was created)
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | With the provided path, there will be 1 file uploaded
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | Artifact name is valid!
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | Root directory input is valid!
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | Beginning upload of artifact content to blob storage
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | (node:109) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | Uploaded bytes 101292
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | Finished uploading artifact content to blob storage!
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | SHA256 digest of uploaded artifact zip is 333817c39db0aec51213f4ab6e2cdc67e1952fdf14f598f976888c3a4a6811d4
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | Finalizing artifact upload
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | Artifact report-image.zip successfully finalized. Artifact ID 1329040791
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | Artifact report-image has been successfully uploaded! Final size is 101292 bytes. Artifact ID is 1329040791
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   | Artifact download URL: https://github.com/bypratyush/devops-assignment/actions/runs/1/artifacts/1329040791
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   ✅  Success - Main actions/upload-artifact@v5 [633.365084ms]
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   ⚙  ::set-output:: artifact-id=1329040791
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   ⚙  ::set-output:: artifact-digest=333817c39db0aec51213f4ab6e2cdc67e1952fdf14f598f976888c3a4a6811d4
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   ⚙  ::set-output:: artifact-url=https://github.com/bypratyush/devops-assignment/actions/runs/1/artifacts/1329040791
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)] ⭐ Run Complete job
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)] Cleaning up container for job 8 Container Image Scan (Trivy)
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)]   ✅  Success - Complete job
+[S17 DevSecOps - PassGuard/8 Container Image Scan (Trivy)] 🏁  Job succeeded
+[S17 DevSecOps - PassGuard/9 Security Gate               ] ⭐ Run Set up job
+[S17 DevSecOps - PassGuard/9 Security Gate               ] 🚀  Start image=ghcr.io/catthehacker/ubuntu:act-latest
+[S17 DevSecOps - PassGuard/9 Security Gate               ]   🐳  docker pull image=ghcr.io/catthehacker/ubuntu:act-latest platform=linux/arm64 username= forcePull=false
+[S17 DevSecOps - PassGuard/9 Security Gate               ]   🐳  docker create image=ghcr.io/catthehacker/ubuntu:act-latest platform=linux/arm64 entrypoint=["tail" "-f" "/dev/null"] cmd=[] network="host"
+[S17 DevSecOps - PassGuard/9 Security Gate               ]   🐳  docker run image=ghcr.io/catthehacker/ubuntu:act-latest platform=linux/arm64 entrypoint=["tail" "-f" "/dev/null"] cmd=[] network="host"
+[S17 DevSecOps - PassGuard/9 Security Gate               ]   🐳  docker exec cmd=[node --no-warnings -e console.log(process.execPath)] user= workdir=
+[S17 DevSecOps - PassGuard/9 Security Gate               ]   ✅  Success - Set up job
+[S17 DevSecOps - PassGuard/9 Security Gate               ]   ☁  git clone 'https://github.com/actions/setup-python' # ref=v6
+[S17 DevSecOps - PassGuard/9 Security Gate               ]   ☁  git clone 'https://github.com/actions/download-artifact' # ref=v7
+[S17 DevSecOps - PassGuard/9 Security Gate               ] ⭐ Run Main actions/checkout@v6
+[S17 DevSecOps - PassGuard/9 Security Gate               ]   🐳  docker cp src=/Users/pratyushmohanty/Devops-assignment/. dst=/Users/pratyushmohanty/Devops-assignment
+[S17 DevSecOps - PassGuard/9 Security Gate               ]   ✅  Success - Main actions/checkout@v6 [1.2780755s]
+[S17 DevSecOps - PassGuard/9 Security Gate               ] ⭐ Run Main actions/setup-python@v6
+[S17 DevSecOps - PassGuard/9 Security Gate               ]   🐳  docker cp src=/Users/pratyushmohanty/.cache/act/actions-setup-python@v6/ dst=/var/run/act/actions/actions-setup-python@v6/
+[S17 DevSecOps - PassGuard/9 Security Gate               ]   🐳  docker exec cmd=[/opt/acttoolcache/node/24.19.0/arm64/bin/node /var/run/act/actions/actions-setup-python@v6/dist/setup/index.js] user= workdir=
+[S17 DevSecOps - PassGuard/9 Security Gate               ]   ❓  ::group::Installed versions
+[S17 DevSecOps - PassGuard/9 Security Gate               ]   | Successfully set up CPython (3.13.16)
+[S17 DevSecOps - PassGuard/9 Security Gate               ]   ❓  ::endgroup::
+[S17 DevSecOps - PassGuard/9 Security Gate               ]   ❓ add-matcher /run/act/actions/actions-setup-python@v6/.github/python.json
+[S17 DevSecOps - PassGuard/9 Security Gate               ]   ✅  Success - Main actions/setup-python@v6 [796.177ms]
+[S17 DevSecOps - PassGuard/9 Security Gate               ]   ⚙  ::set-env:: pythonLocation=/opt/hostedtoolcache/Python/3.13.16/arm64
+[S17 DevSecOps - PassGuard/9 Security Gate               ]   ⚙  ::set-env:: PKG_CONFIG_PATH=/opt/hostedtoolcache/Python/3.13.16/arm64/lib/pkgconfig
+[S17 DevSecOps - PassGuard/9 Security Gate               ]   ⚙  ::set-env:: Python_ROOT_DIR=/opt/hostedtoolcache/Python/3.13.16/arm64
+[S17 DevSecOps - PassGuard/9 Security Gate               ]   ⚙  ::set-env:: Python2_ROOT_DIR=/opt/hostedtoolcache/Python/3.13.16/arm64
+[S17 DevSecOps - PassGuard/9 Security Gate               ]   ⚙  ::set-env:: Python3_ROOT_DIR=/opt/hostedtoolcache/Python/3.13.16/arm64
+[S17 DevSecOps - PassGuard/9 Security Gate               ]   ⚙  ::set-env:: LD_LIBRARY_PATH=/opt/hostedtoolcache/Python/3.13.16/arm64/lib
+[S17 DevSecOps - PassGuard/9 Security Gate               ]   ⚙  ::set-output:: python-version=3.13.16
+[S17 DevSecOps - PassGuard/9 Security Gate               ]   ⚙  ::set-output:: python-path=/opt/hostedtoolcache/Python/3.13.16/arm64/bin/python
+[S17 DevSecOps - PassGuard/9 Security Gate               ]   ⚙  ::add-path:: /opt/hostedtoolcache/Python/3.13.16/arm64
+[S17 DevSecOps - PassGuard/9 Security Gate               ]   ⚙  ::add-path:: /opt/hostedtoolcache/Python/3.13.16/arm64/bin
+[S17 DevSecOps - PassGuard/9 Security Gate               ] ⭐ Run Main actions/download-artifact@v7
+[S17 DevSecOps - PassGuard/9 Security Gate               ]   🐳  docker cp src=/Users/pratyushmohanty/.cache/act/actions-download-artifact@v7/ dst=/var/run/act/actions/actions-download-artifact@v7/
+[S17 DevSecOps - PassGuard/9 Security Gate               ]   🐳  docker exec cmd=[/opt/acttoolcache/node/24.19.0/arm64/bin/node /var/run/act/actions/actions-download-artifact@v7/dist/index.js] user= workdir=
+[S17 DevSecOps - PassGuard/9 Security Gate               ]   | Found 6 artifact(s)
+[S17 DevSecOps - PassGuard/9 Security Gate               ]   | Filtering artifacts by pattern 'report-*'
+[S17 DevSecOps - PassGuard/9 Security Gate               ]   | Preparing to download the following artifacts:
+[S17 DevSecOps - PassGuard/9 Security Gate               ]   | - report-secrets (ID: 3564946595, Size: 96, Expected Digest: undefined)
+[S17 DevSecOps - PassGuard/9 Security Gate               ]   | - report-sca (ID: 2543950051, Size: 96, Expected Digest: undefined)
+[S17 DevSecOps - PassGuard/9 Security Gate               ]   | - report-image (ID: 1329040791, Size: 96, Expected Digest: undefined)
+[S17 DevSecOps - PassGuard/9 Security Gate               ]   | - report-sast (ID: 862344689, Size: 96, Expected Digest: undefined)
+[S17 DevSecOps - PassGuard/9 Security Gate               ]   | Redirecting to blob download url: http://100.128.166.254:34568/twirp/github.actions.results.api.v1.ArtifactService/DownloadArtifact
+[S17 DevSecOps - PassGuard/9 Security Gate               ]   | Starting download of artifact to: /Users/pratyushmohanty/Devops-assignment/devsecops-pipeline/reports
+[S17 DevSecOps - PassGuard/9 Security Gate               ]   | Redirecting to blob download url: http://100.128.166.254:34568/twirp/github.actions.results.api.v1.ArtifactService/DownloadArtifact
+[S17 DevSecOps - PassGuard/9 Security Gate               ]   | Starting download of artifact to: /Users/pratyushmohanty/Devops-assignment/devsecops-pipeline/reports
+[S17 DevSecOps - PassGuard/9 Security Gate               ]   | Redirecting to blob download url: http://100.128.166.254:34568/twirp/github.actions.results.api.v1.ArtifactService/DownloadArtifact
+[S17 DevSecOps - PassGuard/9 Security Gate               ]   | Starting download of artifact to: /Users/pratyushmohanty/Devops-assignment/devsecops-pipeline/reports
+[S17 DevSecOps - PassGuard/9 Security Gate               ]   | Redirecting to blob download url: http://100.128.166.254:34568/twirp/github.actions.results.api.v1.ArtifactService/DownloadArtifact
+[S17 DevSecOps - PassGuard/9 Security Gate               ]   | Starting download of artifact to: /Users/pratyushmohanty/Devops-assignment/devsecops-pipeline/reports
+[S17 DevSecOps - PassGuard/9 Security Gate               ]   | (node:44) [DEP0005] DeprecationWarning: Buffer() is deprecated due to security and usability issues. Please use the Buffer.alloc(), Buffer.allocUnsafe(), or Buffer.from() methods instead.
+[S17 DevSecOps - PassGuard/9 Security Gate               ]   | (Use `node --trace-deprecation ...` to show where the warning was created)
+[S17 DevSecOps - PassGuard/9 Security Gate               ]   | SHA256 digest of downloaded artifact is 850bf48ea1fdcb42d3377c48373d4739c528bdebd8036442cb5785a146bc054e
+[S17 DevSecOps - PassGuard/9 Security Gate               ]   | Artifact download completed successfully.
+[S17 DevSecOps - PassGuard/9 Security Gate               ]   | SHA256 digest of downloaded artifact is 3c7436e74ef6aec51a19d5cd990cbcd475557531814fe86ebe6e007e4c9a1867
+[S17 DevSecOps - PassGuard/9 Security Gate               ]   | Artifact download completed successfully.
+[S17 DevSecOps - PassGuard/9 Security Gate               ]   | SHA256 digest of downloaded artifact is d812128f5b6082276857f4329e4778ff891bb9051094434bc7980629a43d41a0
+[S17 DevSecOps - PassGuard/9 Security Gate               ]   | Artifact download completed successfully.
+[S17 DevSecOps - PassGuard/9 Security Gate               ]   | SHA256 digest of downloaded artifact is 333817c39db0aec51213f4ab6e2cdc67e1952fdf14f598f976888c3a4a6811d4
+[S17 DevSecOps - PassGuard/9 Security Gate               ]   | Artifact download completed successfully.
+[S17 DevSecOps - PassGuard/9 Security Gate               ]   | Total of 4 artifact(s) downloaded
+[S17 DevSecOps - PassGuard/9 Security Gate               ]   | Download artifact has finished successfully
+[S17 DevSecOps - PassGuard/9 Security Gate               ]   ✅  Success - Main actions/download-artifact@v7 [500.811875ms]
+[S17 DevSecOps - PassGuard/9 Security Gate               ]   ⚙  ::set-output:: download-path=/Users/pratyushmohanty/Devops-assignment/devsecops-pipeline/reports
+[S17 DevSecOps - PassGuard/9 Security Gate               ] ⭐ Run Main Apply security/policy.toml
+[S17 DevSecOps - PassGuard/9 Security Gate               ]   🐳  docker exec cmd=[bash --noprofile --norc -e -o pipefail /var/run/act/workflow/3.sh] user= workdir=devsecops-pipeline
+[S17 DevSecOps - PassGuard/9 Security Gate               ]   | bandit.json
+[S17 DevSecOps - PassGuard/9 Security Gate               ]   | gitleaks.json
+[S17 DevSecOps - PassGuard/9 Security Gate               ]   | pip-audit.json
+[S17 DevSecOps - PassGuard/9 Security Gate               ]   | trivy-image.json
+[S17 DevSecOps - PassGuard/9 Security Gate               ]   | CONTROL  TOOL       FINDINGS BLOCKING  RESULT THRESHOLD
+[S17 DevSecOps - PassGuard/9 Security Gate               ]   | SAST     bandit            0        0  PASS   severity HIGH/MEDIUM, confidence >= MEDIUM
+[S17 DevSecOps - PassGuard/9 Security Gate               ]   | SCA      pip-audit         0        0  PASS   max 0 known vulns
+[S17 DevSecOps - PassGuard/9 Security Gate               ]   | Secrets  gitleaks          0        0  PASS   max 0 findings
+[S17 DevSecOps - PassGuard/9 Security Gate               ]   | Image    trivy           165        0  PASS   CRITICAL/HIGH with a fix
+[S17 DevSecOps - PassGuard/9 Security Gate               ]   | 
+[S17 DevSecOps - PassGuard/9 Security Gate               ]   | SECURITY GATE: PASSED - image may be pushed
+[S17 DevSecOps - PassGuard/9 Security Gate               ]   ✅  Success - Main Apply security/policy.toml [106.682042ms]
+[S17 DevSecOps - PassGuard/9 Security Gate               ]   ⚙  Summary - ### Security gate
+
+| Control | Tool | Findings | Blocking | Result |
+|---|---|---|---|---|
+| SAST | bandit | 0 | 0 | PASS |
+| SCA | pip-audit | 0 | 0 | PASS |
+| Secrets | gitleaks | 0 | 0 | PASS |
+| Image | trivy | 165 | 0 | PASS |
+
+**PASSED - image may be pushed**
+[S17 DevSecOps - PassGuard/9 Security Gate               ] ⭐ Run Post actions/setup-python@v6
+[S17 DevSecOps - PassGuard/9 Security Gate               ]   🐳  docker exec cmd=[/opt/acttoolcache/node/24.19.0/arm64/bin/node /var/run/act/actions/actions-setup-python@v6/dist/cache-save/index.js] user= workdir=
+[S17 DevSecOps - PassGuard/9 Security Gate               ]   ✅  Success - Post actions/setup-python@v6 [129.438875ms]
+[S17 DevSecOps - PassGuard/9 Security Gate               ] ⭐ Run Complete job
+[S17 DevSecOps - PassGuard/9 Security Gate               ] Cleaning up container for job 9 Security Gate
+[S17 DevSecOps - PassGuard/9 Security Gate               ]   ✅  Success - Complete job
+[S17 DevSecOps - PassGuard/9 Security Gate               ] 🏁  Job succeeded
+[S17 DevSecOps - PassGuard/10 Push Image                 ] ⭐ Run Set up job
+[S17 DevSecOps - PassGuard/10 Push Image                 ] 🚀  Start image=ghcr.io/catthehacker/ubuntu:act-latest
+[S17 DevSecOps - PassGuard/10 Push Image                 ]   🐳  docker pull image=ghcr.io/catthehacker/ubuntu:act-latest platform=linux/arm64 username= forcePull=false
+[S17 DevSecOps - PassGuard/10 Push Image                 ]   🐳  docker create image=ghcr.io/catthehacker/ubuntu:act-latest platform=linux/arm64 entrypoint=["tail" "-f" "/dev/null"] cmd=[] network="host"
+[S17 DevSecOps - PassGuard/10 Push Image                 ]   🐳  docker run image=ghcr.io/catthehacker/ubuntu:act-latest platform=linux/arm64 entrypoint=["tail" "-f" "/dev/null"] cmd=[] network="host"
+[S17 DevSecOps - PassGuard/10 Push Image                 ]   🐳  docker exec cmd=[node --no-warnings -e console.log(process.execPath)] user= workdir=
+[S17 DevSecOps - PassGuard/10 Push Image                 ]   ✅  Success - Set up job
+[S17 DevSecOps - PassGuard/10 Push Image                 ]   ☁  git clone 'https://github.com/actions/download-artifact' # ref=v7
+[S17 DevSecOps - PassGuard/10 Push Image                 ]   ☁  git clone 'https://github.com/docker/login-action' # ref=v4
+[S17 DevSecOps - PassGuard/10 Push Image                 ] ⭐ Run Main actions/checkout@v6
+[S17 DevSecOps - PassGuard/10 Push Image                 ]   🐳  docker cp src=/Users/pratyushmohanty/Devops-assignment/. dst=/Users/pratyushmohanty/Devops-assignment
+[S17 DevSecOps - PassGuard/10 Push Image                 ]   ✅  Success - Main actions/checkout@v6 [1.091352167s]
+[S17 DevSecOps - PassGuard/10 Push Image                 ] ⭐ Run Main actions/download-artifact@v7
+[S17 DevSecOps - PassGuard/10 Push Image                 ]   🐳  docker cp src=/Users/pratyushmohanty/.cache/act/actions-download-artifact@v7/ dst=/var/run/act/actions/actions-download-artifact@v7/
+[S17 DevSecOps - PassGuard/10 Push Image                 ]   🐳  docker exec cmd=[/opt/acttoolcache/node/24.19.0/arm64/bin/node /var/run/act/actions/actions-download-artifact@v7/dist/index.js] user= workdir=
+[S17 DevSecOps - PassGuard/10 Push Image                 ]   | Downloading single artifact
+[S17 DevSecOps - PassGuard/10 Push Image                 ]   | Preparing to download the following artifacts:
+[S17 DevSecOps - PassGuard/10 Push Image                 ]   | - image (ID: 3008443898, Size: 96, Expected Digest: undefined)
+[S17 DevSecOps - PassGuard/10 Push Image                 ]   | Redirecting to blob download url: http://100.128.166.254:34568/twirp/github.actions.results.api.v1.ArtifactService/DownloadArtifact
+[S17 DevSecOps - PassGuard/10 Push Image                 ]   | Starting download of artifact to: /Users/pratyushmohanty/Devops-assignment/devsecops-pipeline/dist
+[S17 DevSecOps - PassGuard/10 Push Image                 ]   | (node:31) [DEP0005] DeprecationWarning: Buffer() is deprecated due to security and usability issues. Please use the Buffer.alloc(), Buffer.allocUnsafe(), or Buffer.from() methods instead.
+[S17 DevSecOps - PassGuard/10 Push Image                 ]   | (Use `node --trace-deprecation ...` to show where the warning was created)
+[S17 DevSecOps - PassGuard/10 Push Image                 ]   | SHA256 digest of downloaded artifact is 3288c2dda1c72d31d916478d568cc5ca6328f994ac360eb3525d6330ce961a83
+[S17 DevSecOps - PassGuard/10 Push Image                 ]   | Artifact download completed successfully.
+[S17 DevSecOps - PassGuard/10 Push Image                 ]   | Total of 1 artifact(s) downloaded
+[S17 DevSecOps - PassGuard/10 Push Image                 ]   | Download artifact has finished successfully
+[S17 DevSecOps - PassGuard/10 Push Image                 ]   ✅  Success - Main actions/download-artifact@v7 [994.892291ms]
+[S17 DevSecOps - PassGuard/10 Push Image                 ]   ⚙  ::set-output:: download-path=/Users/pratyushmohanty/Devops-assignment/devsecops-pipeline/dist
+[S17 DevSecOps - PassGuard/10 Push Image                 ] ⭐ Run Main Push the scanned image
+[S17 DevSecOps - PassGuard/10 Push Image                 ]   🐳  docker exec cmd=[bash --noprofile --norc -e -o pipefail /var/run/act/workflow/push.sh] user= workdir=devsecops-pipeline
+[S17 DevSecOps - PassGuard/10 Push Image                 ]   | Loaded image: passguard:888cd81
+[S17 DevSecOps - PassGuard/10 Push Image                 ]   | The push refers to repository [localhost:5056/bypratyush/passguard]
+[S17 DevSecOps - PassGuard/10 Push Image                 ]   | bbeda6b4abb7: Waiting
+[S17 DevSecOps - PassGuard/10 Push Image                 ]   | a2c5ac708d8b: Waiting
+[S17 DevSecOps - PassGuard/10 Push Image                 ]   | e41644b4b81a: Waiting
+[S17 DevSecOps - PassGuard/10 Push Image                 ]   | 1400433f1bd4: Waiting
+[S17 DevSecOps - PassGuard/10 Push Image                 ]   | 74202e18a58b: Waiting
+[S17 DevSecOps - PassGuard/10 Push Image                 ]   | 488f54626717: Waiting
+[S17 DevSecOps - PassGuard/10 Push Image                 ]   | bbeda6b4abb7: Waiting
+[S17 DevSecOps - PassGuard/10 Push Image                 ]   | a2c5ac708d8b: Waiting
+[S17 DevSecOps - PassGuard/10 Push Image                 ]   | e41644b4b81a: Waiting
+[S17 DevSecOps - PassGuard/10 Push Image                 ]   | 1400433f1bd4: Waiting
+[S17 DevSecOps - PassGuard/10 Push Image                 ]   | 74202e18a58b: Waiting
+[S17 DevSecOps - PassGuard/10 Push Image                 ]   | 488f54626717: Waiting
+[S17 DevSecOps - PassGuard/10 Push Image                 ]   | bbeda6b4abb7: Waiting
+[S17 DevSecOps - PassGuard/10 Push Image                 ]   | a2c5ac708d8b: Waiting
+[S17 DevSecOps - PassGuard/10 Push Image                 ]   | e41644b4b81a: Waiting
+[S17 DevSecOps - PassGuard/10 Push Image                 ]   | 1400433f1bd4: Waiting
+[S17 DevSecOps - PassGuard/10 Push Image                 ]   | 74202e18a58b: Waiting
+[S17 DevSecOps - PassGuard/10 Push Image                 ]   | 488f54626717: Waiting
+[S17 DevSecOps - PassGuard/10 Push Image                 ]   | a2c5ac708d8b: Waiting
+[S17 DevSecOps - PassGuard/10 Push Image                 ]   | e41644b4b81a: Waiting
+[S17 DevSecOps - PassGuard/10 Push Image                 ]   | 1400433f1bd4: Waiting
+[S17 DevSecOps - PassGuard/10 Push Image                 ]   | 74202e18a58b: Waiting
+[S17 DevSecOps - PassGuard/10 Push Image                 ]   | 488f54626717: Waiting
+[S17 DevSecOps - PassGuard/10 Push Image                 ]   | bbeda6b4abb7: Waiting
+[S17 DevSecOps - PassGuard/10 Push Image                 ]   | a2c5ac708d8b: Waiting
+[S17 DevSecOps - PassGuard/10 Push Image                 ]   | e41644b4b81a: Waiting
+[S17 DevSecOps - PassGuard/10 Push Image                 ]   | 1400433f1bd4: Waiting
+[S17 DevSecOps - PassGuard/10 Push Image                 ]   | 74202e18a58b: Waiting
+[S17 DevSecOps - PassGuard/10 Push Image                 ]   | 488f54626717: Waiting
+[S17 DevSecOps - PassGuard/10 Push Image                 ]   | bbeda6b4abb7: Waiting
+[S17 DevSecOps - PassGuard/10 Push Image                 ]   | bbeda6b4abb7: Waiting
+[S17 DevSecOps - PassGuard/10 Push Image                 ]   | a2c5ac708d8b: Waiting
+[S17 DevSecOps - PassGuard/10 Push Image                 ]   | e41644b4b81a: Waiting
+[S17 DevSecOps - PassGuard/10 Push Image                 ]   | 1400433f1bd4: Waiting
+[S17 DevSecOps - PassGuard/10 Push Image                 ]   | 74202e18a58b: Waiting
+[S17 DevSecOps - PassGuard/10 Push Image                 ]   | 488f54626717: Waiting
+[S17 DevSecOps - PassGuard/10 Push Image                 ]   | 1400433f1bd4: Pushed
+[S17 DevSecOps - PassGuard/10 Push Image                 ]   | 74202e18a58b: Pushed
+[S17 DevSecOps - PassGuard/10 Push Image                 ]   | 488f54626717: Pushed
+[S17 DevSecOps - PassGuard/10 Push Image                 ]   | a2c5ac708d8b: Pushed
+[S17 DevSecOps - PassGuard/10 Push Image                 ]   | e41644b4b81a: Pushed
+[S17 DevSecOps - PassGuard/10 Push Image                 ]   | bbeda6b4abb7: Pushed
+[S17 DevSecOps - PassGuard/10 Push Image                 ]   | 888cd81: digest: sha256:fba32e34992fd3feb000db6c7ce508303b6cfbc3cdb154415510d8647d8c213f size: 1436
+[S17 DevSecOps - PassGuard/10 Push Image                 ]   | pushed localhost:5056/bypratyush/passguard@sha256:fba32e34992fd3feb000db6c7ce508303b6cfbc3cdb154415510d8647d8c213f
+[S17 DevSecOps - PassGuard/10 Push Image                 ]   ✅  Success - Main Push the scanned image [1.60348375s]
+[S17 DevSecOps - PassGuard/10 Push Image                 ]   ⚙  ::set-output:: ref=localhost:5056/bypratyush/passguard@sha256:fba32e34992fd3feb000db6c7ce508303b6cfbc3cdb154415510d8647d8c213f
+[S17 DevSecOps - PassGuard/10 Push Image                 ] ⭐ Run Complete job
+[S17 DevSecOps - PassGuard/10 Push Image                 ] Cleaning up container for job 10 Push Image
+[S17 DevSecOps - PassGuard/10 Push Image                 ]   ✅  Success - Complete job
+[S17 DevSecOps - PassGuard/10 Push Image                 ] 🏁  Job succeeded
+[S17 DevSecOps - PassGuard/11 Deploy to Kubernetes       ] ⭐ Run Set up job
+[S17 DevSecOps - PassGuard/11 Deploy to Kubernetes       ] 🚀  Start image=ghcr.io/catthehacker/ubuntu:act-latest
+[S17 DevSecOps - PassGuard/11 Deploy to Kubernetes       ]   🐳  docker pull image=ghcr.io/catthehacker/ubuntu:act-latest platform=linux/arm64 username= forcePull=false
+[S17 DevSecOps - PassGuard/11 Deploy to Kubernetes       ]   🐳  docker create image=ghcr.io/catthehacker/ubuntu:act-latest platform=linux/arm64 entrypoint=["tail" "-f" "/dev/null"] cmd=[] network="host"
+[S17 DevSecOps - PassGuard/11 Deploy to Kubernetes       ]   🐳  docker run image=ghcr.io/catthehacker/ubuntu:act-latest platform=linux/arm64 entrypoint=["tail" "-f" "/dev/null"] cmd=[] network="host"
+[S17 DevSecOps - PassGuard/11 Deploy to Kubernetes       ]   🐳  docker exec cmd=[node --no-warnings -e console.log(process.execPath)] user= workdir=
+[S17 DevSecOps - PassGuard/11 Deploy to Kubernetes       ]   ✅  Success - Set up job
+[S17 DevSecOps - PassGuard/11 Deploy to Kubernetes       ]   ☁  git clone 'https://github.com/docker/login-action' # ref=v4
+[S17 DevSecOps - PassGuard/11 Deploy to Kubernetes       ] ⭐ Run Main actions/checkout@v6
+[S17 DevSecOps - PassGuard/11 Deploy to Kubernetes       ]   🐳  docker cp src=/Users/pratyushmohanty/Devops-assignment/. dst=/Users/pratyushmohanty/Devops-assignment
+[S17 DevSecOps - PassGuard/11 Deploy to Kubernetes       ]   ✅  Success - Main actions/checkout@v6 [1.631739708s]
+[S17 DevSecOps - PassGuard/11 Deploy to Kubernetes       ] ⭐ Run Main Install kind and kubectl (pinned, checksum verified)
+[S17 DevSecOps - PassGuard/11 Deploy to Kubernetes       ]   🐳  docker exec cmd=[bash --noprofile --norc -e -o pipefail /var/run/act/workflow/1.sh] user= workdir=devsecops-pipeline
+[S17 DevSecOps - PassGuard/11 Deploy to Kubernetes       ]   | installed kind (arm64, sha256 verified) -> /root/.local/bin/kind
+[S17 DevSecOps - PassGuard/11 Deploy to Kubernetes       ]   | installed kubectl (arm64, sha256 verified) -> /root/.local/bin/kubectl
+[S17 DevSecOps - PassGuard/11 Deploy to Kubernetes       ]   ✅  Success - Main Install kind and kubectl (pinned, checksum verified) [11.8636225s]
+[S17 DevSecOps - PassGuard/11 Deploy to Kubernetes       ]   ⚙  ::add-path:: /root/.local/bin
+[S17 DevSecOps - PassGuard/11 Deploy to Kubernetes       ] ⭐ Run Main Pull the pushed image by digest
+[S17 DevSecOps - PassGuard/11 Deploy to Kubernetes       ]   🐳  docker exec cmd=[bash --noprofile --norc -e -o pipefail /var/run/act/workflow/3.sh] user= workdir=devsecops-pipeline
+[S17 DevSecOps - PassGuard/11 Deploy to Kubernetes       ]   | localhost:5056/bypratyush/passguard@sha256:fba32e34992fd3feb000db6c7ce508303b6cfbc3cdb154415510d8647d8c213f: Pulling from bypratyush/passguard
+[S17 DevSecOps - PassGuard/11 Deploy to Kubernetes       ]   | Digest: sha256:fba32e34992fd3feb000db6c7ce508303b6cfbc3cdb154415510d8647d8c213f
+[S17 DevSecOps - PassGuard/11 Deploy to Kubernetes       ]   | Status: Image is up to date for localhost:5056/bypratyush/passguard@sha256:fba32e34992fd3feb000db6c7ce508303b6cfbc3cdb154415510d8647d8c213f
+[S17 DevSecOps - PassGuard/11 Deploy to Kubernetes       ]   | localhost:5056/bypratyush/passguard@sha256:fba32e34992fd3feb000db6c7ce508303b6cfbc3cdb154415510d8647d8c213f
+[S17 DevSecOps - PassGuard/11 Deploy to Kubernetes       ]   ✅  Success - Main Pull the pushed image by digest [847.270167ms]
+[S17 DevSecOps - PassGuard/11 Deploy to Kubernetes       ] ⭐ Run Main Create an ephemeral kind cluster
+[S17 DevSecOps - PassGuard/11 Deploy to Kubernetes       ]   🐳  docker exec cmd=[bash --noprofile --norc -e -o pipefail /var/run/act/workflow/4.sh] user= workdir=devsecops-pipeline
+[S17 DevSecOps - PassGuard/11 Deploy to Kubernetes       ]   | Creating cluster "devsecops-ci" ...
+[S17 DevSecOps - PassGuard/11 Deploy to Kubernetes       ]   |  • Ensuring node image (kindest/node:v1.37.0) 🖼️  ...
+[S17 DevSecOps - PassGuard/11 Deploy to Kubernetes       ]   |  ✓ Ensuring node image (kindest/node:v1.37.0) 🖼️
+[S17 DevSecOps - PassGuard/11 Deploy to Kubernetes       ]   |  • Preparing nodes 📦   ...
+[S17 DevSecOps - PassGuard/11 Deploy to Kubernetes       ]   |  ✓ Preparing nodes 📦 
+[S17 DevSecOps - PassGuard/11 Deploy to Kubernetes       ]   |  • Writing configuration 📜  ...
+[S17 DevSecOps - PassGuard/11 Deploy to Kubernetes       ]   |  ✓ Writing configuration 📜
+[S17 DevSecOps - PassGuard/11 Deploy to Kubernetes       ]   |  • Starting control-plane 🕹️  ...
+[S17 DevSecOps - PassGuard/11 Deploy to Kubernetes       ]   |  ✓ Starting control-plane 🕹️
+[S17 DevSecOps - PassGuard/11 Deploy to Kubernetes       ]   |  • Installing CNI 🔌  ...
+[S17 DevSecOps - PassGuard/11 Deploy to Kubernetes       ]   |  ✓ Installing CNI 🔌
+[S17 DevSecOps - PassGuard/11 Deploy to Kubernetes       ]   |  • Installing StorageClass 💾  ...
+[S17 DevSecOps - PassGuard/11 Deploy to Kubernetes       ]   |  ✓ Installing StorageClass 💾
+[S17 DevSecOps - PassGuard/11 Deploy to Kubernetes       ]   |  • Waiting ≤ 2m0s for control-plane = Ready ⏳  ...
+[S17 DevSecOps - PassGuard/11 Deploy to Kubernetes       ]   |  ✓ Waiting ≤ 2m0s for control-plane = Ready ⏳
+[S17 DevSecOps - PassGuard/11 Deploy to Kubernetes       ]   |  • Ready after 18s 💚
+[S17 DevSecOps - PassGuard/11 Deploy to Kubernetes       ]   | Set kubectl context to "kind-devsecops-ci"
+[S17 DevSecOps - PassGuard/11 Deploy to Kubernetes       ]   | You can now use your cluster with:
+[S17 DevSecOps - PassGuard/11 Deploy to Kubernetes       ]   | 
+[S17 DevSecOps - PassGuard/11 Deploy to Kubernetes       ]   | kubectl cluster-info --context kind-devsecops-ci
+[S17 DevSecOps - PassGuard/11 Deploy to Kubernetes       ]   | 
+[S17 DevSecOps - PassGuard/11 Deploy to Kubernetes       ]   | Not sure what to do next? 😅  Check out https://kind.sigs.k8s.io/docs/user/quick-start/
+[S17 DevSecOps - PassGuard/11 Deploy to Kubernetes       ]   ✅  Success - Main Create an ephemeral kind cluster [28.9031095s]
+[S17 DevSecOps - PassGuard/11 Deploy to Kubernetes       ]   ⚙  ::set-env:: KUBECONFIG=/tmp/kubeconfig
+[S17 DevSecOps - PassGuard/11 Deploy to Kubernetes       ] ⭐ Run Main Load the image into the cluster nodes
+[S17 DevSecOps - PassGuard/11 Deploy to Kubernetes       ]   🐳  docker exec cmd=[bash --noprofile --norc -e -o pipefail /var/run/act/workflow/5.sh] user= workdir=devsecops-pipeline
+[S17 DevSecOps - PassGuard/11 Deploy to Kubernetes       ]   | Image: "passguard:deploy-888cd81" with ID "sha256:fba32e34992fd3feb000db6c7ce508303b6cfbc3cdb154415510d8647d8c213f" not yet present on node "devsecops-ci-control-plane", loading...
+[S17 DevSecOps - PassGuard/11 Deploy to Kubernetes       ]   ✅  Success - Main Load the image into the cluster nodes [6.397652917s]
+[S17 DevSecOps - PassGuard/11 Deploy to Kubernetes       ] ⭐ Run Main kubectl apply
+[S17 DevSecOps - PassGuard/11 Deploy to Kubernetes       ]   🐳  docker exec cmd=[bash --noprofile --norc -e -o pipefail /var/run/act/workflow/6.sh] user= workdir=devsecops-pipeline
+[S17 DevSecOps - PassGuard/11 Deploy to Kubernetes       ]   | Client Version: v1.37.1
+[S17 DevSecOps - PassGuard/11 Deploy to Kubernetes       ]   | Kustomize Version: v5.8.1
+[S17 DevSecOps - PassGuard/11 Deploy to Kubernetes       ]   | Server Version: v1.37.0
+[S17 DevSecOps - PassGuard/11 Deploy to Kubernetes       ]   | namespace/passguard created
+[S17 DevSecOps - PassGuard/11 Deploy to Kubernetes       ]   | service/passguard created
+[S17 DevSecOps - PassGuard/11 Deploy to Kubernetes       ]   | deployment.apps/passguard created
+[S17 DevSecOps - PassGuard/11 Deploy to Kubernetes       ]   | Waiting for deployment "passguard" rollout to finish: 0 of 2 updated replicas are available...
+[S17 DevSecOps - PassGuard/11 Deploy to Kubernetes       ]   | Waiting for deployment "passguard" rollout to finish: 1 of 2 updated replicas are available...
+[S17 DevSecOps - PassGuard/11 Deploy to Kubernetes       ]   | deployment "passguard" successfully rolled out
+[S17 DevSecOps - PassGuard/11 Deploy to Kubernetes       ]   | NAME                        READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS   IMAGES                     SELECTOR
+[S17 DevSecOps - PassGuard/11 Deploy to Kubernetes       ]   | deployment.apps/passguard   2/2     2            2           3s    passguard    passguard:deploy-888cd81   app=passguard
+[S17 DevSecOps - PassGuard/11 Deploy to Kubernetes       ]   | 
+[S17 DevSecOps - PassGuard/11 Deploy to Kubernetes       ]   | NAME                             READY   STATUS    RESTARTS   AGE   IP           NODE                         NOMINATED NODE   READINESS GATES
+[S17 DevSecOps - PassGuard/11 Deploy to Kubernetes       ]   | pod/passguard-54df84ffd9-glw9t   1/1     Running   0          3s    10.244.0.5   devsecops-ci-control-plane   <none>           <none>
+[S17 DevSecOps - PassGuard/11 Deploy to Kubernetes       ]   | pod/passguard-54df84ffd9-v28rs   1/1     Running   0          3s    10.244.0.6   devsecops-ci-control-plane   <none>           <none>
+[S17 DevSecOps - PassGuard/11 Deploy to Kubernetes       ]   | 
+[S17 DevSecOps - PassGuard/11 Deploy to Kubernetes       ]   | NAME                TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)   AGE   SELECTOR
+[S17 DevSecOps - PassGuard/11 Deploy to Kubernetes       ]   | service/passguard   ClusterIP   10.96.88.238   <none>        80/TCP    3s    app=passguard
+[S17 DevSecOps - PassGuard/11 Deploy to Kubernetes       ]   ✅  Success - Main kubectl apply [3.8248355s]
+[S17 DevSecOps - PassGuard/11 Deploy to Kubernetes       ] ⭐ Run Main Smoke test through the Service
+[S17 DevSecOps - PassGuard/11 Deploy to Kubernetes       ]   🐳  docker exec cmd=[bash --noprofile --norc -e -o pipefail /var/run/act/workflow/7.sh] user= workdir=devsecops-pipeline
+[S17 DevSecOps - PassGuard/11 Deploy to Kubernetes       ]   | {"commit":"888cd817ad3fcef35caa73374366c0af95030157","version":"1.0.0"}
+[S17 DevSecOps - PassGuard/11 Deploy to Kubernetes       ]   | 
+[S17 DevSecOps - PassGuard/11 Deploy to Kubernetes       ]   | {"entropy_bits":164.7,"feedback":["Mix upper case, lower case, digits and symbols."],"label":"very strong","length":28,"score":4}
+[S17 DevSecOps - PassGuard/11 Deploy to Kubernetes       ]   | 
+[S17 DevSecOps - PassGuard/11 Deploy to Kubernetes       ]   | GET / -> HTTP 200
+[S17 DevSecOps - PassGuard/11 Deploy to Kubernetes       ]   ✅  Success - Main Smoke test through the Service [1.190278958s]
+[S17 DevSecOps - PassGuard/11 Deploy to Kubernetes       ] ⭐ Run Main Prove the namespace refuses an insecure pod
+[S17 DevSecOps - PassGuard/11 Deploy to Kubernetes       ]   🐳  docker exec cmd=[bash --noprofile --norc -e -o pipefail /var/run/act/workflow/8.sh] user= workdir=devsecops-pipeline
+[S17 DevSecOps - PassGuard/11 Deploy to Kubernetes       ]   | rejected as expected:
+[S17 DevSecOps - PassGuard/11 Deploy to Kubernetes       ]   | Error from server (Forbidden): pods "root-shell" is forbidden: violates PodSecurity "restricted:latest": allowPrivilegeEscalation != false (container "root-shell" must set securityContext.allowPrivilegeEscalation=false), unrestricted capabilities (container "root-shell" must set securityContext.capabilities.drop=["ALL"]), runAsNonRoot != true (pod or container "root-shell" must set securityContext.runAsNonRoot=true), runAsUser=0 (pod must not set runAsUser=0), seccompProfile (pod or container "root-shell" must set securityContext.seccompProfile.type to "RuntimeDefault" or "Localhost")
+[S17 DevSecOps - PassGuard/11 Deploy to Kubernetes       ]   ✅  Success - Main Prove the namespace refuses an insecure pod [160.033291ms]
+[S17 DevSecOps - PassGuard/11 Deploy to Kubernetes       ] ⭐ Run Main Delete the cluster
+[S17 DevSecOps - PassGuard/11 Deploy to Kubernetes       ]   🐳  docker exec cmd=[bash --noprofile --norc -e -o pipefail /var/run/act/workflow/9.sh] user= workdir=devsecops-pipeline
+[S17 DevSecOps - PassGuard/11 Deploy to Kubernetes       ]   | Deleting cluster "devsecops-ci" ...
+[S17 DevSecOps - PassGuard/11 Deploy to Kubernetes       ]   | Deleted nodes: ["devsecops-ci-control-plane"]
+[S17 DevSecOps - PassGuard/11 Deploy to Kubernetes       ]   ✅  Success - Main Delete the cluster [1.569201416s]
+[S17 DevSecOps - PassGuard/11 Deploy to Kubernetes       ] ⭐ Run Complete job
+[S17 DevSecOps - PassGuard/11 Deploy to Kubernetes       ] Cleaning up container for job 11 Deploy to Kubernetes
+[S17 DevSecOps - PassGuard/11 Deploy to Kubernetes       ]   ✅  Success - Complete job
+[S17 DevSecOps - PassGuard/11 Deploy to Kubernetes       ] 🏁  Job succeeded

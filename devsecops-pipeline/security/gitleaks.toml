@@ -1,0 +1,13 @@
+# gitleaks configuration: the full default rule set (about 200 rules) plus one
+# project rule. Nothing is allow-listed.
+title = "devsecops-pipeline"
+
+[extend]
+useDefault = true
+
+[[rules]]
+id = "passguard-hardcoded-upstream-token"
+description = "Token assigned to an *_TOKEN constant in Python source"
+regex = '''(?i)\b[A-Z0-9_]*_TOKEN\s*=\s*["'][A-Za-z0-9_\-]{20,}["']'''
+path = '''\.py$'''
+keywords = ["_token"]

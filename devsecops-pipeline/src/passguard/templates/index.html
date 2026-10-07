@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PassGuard</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <main>
+    <h1>PassGuard</h1>
+    <p class="sub">How strong is your password? Checked in memory, never stored or logged.</p>
+    <form id="check">
+      <input id="password" type="password" autocomplete="off" placeholder="Type a password" maxlength="128">
+      <button type="submit">Check</button>
+      <button type="button" id="gen">Generate one</button>
+    </form>
+    <div id="meter"><div id="bar"></div></div>
+    <p id="label"></p>
+    <ul id="feedback"></ul>
+  </main>
+  <footer>v{{ version }} - Session 17 DevSecOps demo</footer>
+  <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>

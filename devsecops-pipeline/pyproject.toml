@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=80", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "passguard"
+version = "1.0.0"
+description = "Password strength API - the app shipped by the Session 17 DevSecOps pipeline"
+requires-python = ">=3.12"
+# Loose ranges here; the exact, audited versions live in requirements.txt
+dependencies = ["flask>=3.1", "gunicorn>=23"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+passguard = ["templates/*.html", "static/*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP"]
+
+[tool.bandit]
+# Bandit reads this with -c pyproject.toml. Tests use assert on purpose.
+exclude_dirs = ["tests"]
