@@ -1,0 +1,59 @@
+# hostPath: mount a directory of the NODE into the pod.
+# Pinned to devops-hw-worker so the demo knows which node to look at.
+# On kind a "node" is a Docker container, so the path lives inside that
+# container's filesystem, not on the Mac.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: hostpath-demo
+  namespace: s13-volumes
+spec:
+  terminationGracePeriodSeconds: 2
+  nodeSelector:
+    kubernetes.io/hostname: devops-hw-worker
+  containers:
+    - name: app
+      image: busybox:1.36
+      command: ["sh", "-c"]
+      args:
+        - |
+          echo "written by pod $(hostname) at $(date +%T)" >> /host-data/visits.log
+          sleep 3600
+      volumeMounts:
+        - name: host-storage
+          mountPath: /host-data
+      resources:
+        requests: { cpu: "10m", memory: "16Mi" }
+        limits:   { cpu: "50m", memory: "32Mi" }
+  volumes:
+    - name: host-storage
+      hostPath:
+        path: /tmp/s13-hostpath-data
+        type: DirectoryOrCreate
+---
+# Same hostPath, but on the OTHER worker. It gets a different, empty directory:
+# hostPath data is tied to one node.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: hostpath-other-node
+  namespace: s13-volumes
+spec:
+  terminationGracePeriodSeconds: 2
+  nodeSelector:
+    kubernetes.io/hostname: devops-hw-worker2
+  containers:
+    - name: app
+      image: busybox:1.36
+      command: ["sh", "-c", "sleep 3600"]
+      volumeMounts:
+        - name: host-storage
+          mountPath: /host-data
+      resources:
+        requests: { cpu: "10m", memory: "16Mi" }
+        limits:   { cpu: "50m", memory: "32Mi" }
+  volumes:
+    - name: host-storage
+      hostPath:
+        path: /tmp/s13-hostpath-data
+        type: DirectoryOrCreate

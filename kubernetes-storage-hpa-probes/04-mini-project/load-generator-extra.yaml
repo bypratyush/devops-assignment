@@ -1,0 +1,27 @@
+# Extra load: three more copies of the same busybox loop. Added because the
+# course's single load-generator pod kept nginx at 33-48% of its CPU request,
+# below the 50% target, so the HPA (correctly) never scaled.
+# Delete with:  kubectl delete -f load-generator-extra.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: load-generator-extra
+  namespace: production-webapp
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: load-generator-extra
+  template:
+    metadata:
+      labels:
+        app: load-generator-extra
+    spec:
+      terminationGracePeriodSeconds: 1
+      containers:
+        - name: load
+          image: busybox:1.36
+          command: ["/bin/sh", "-c", "while true; do wget -q -O- http://web-service >/dev/null; done"]
+          resources:
+            requests: { cpu: "50m", memory: "16Mi" }
+            limits:   { cpu: "200m", memory: "32Mi" }

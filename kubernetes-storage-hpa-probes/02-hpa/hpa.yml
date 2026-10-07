@@ -1,0 +1,33 @@
+# Keep the average CPU of cpu-app pods at 50% of their request (100m -> 50m),
+# with between 1 and 5 replicas.
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: cpu-app
+  namespace: s13-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: cpu-app
+  minReplicas: 1
+  maxReplicas: 5
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 50
+  behavior:
+    scaleDown:
+      # Default is 300s: the HPA scales down only to the HIGHEST recommendation
+      # it made in the last 5 minutes, so a brief dip never removes pods.
+      # Shortened to 60s here so the scale-down is visible in a short demo.
+      stabilizationWindowSeconds: 60
+      policies:
+        - type: Percent
+          value: 100
+          periodSeconds: 15
+    # scaleUp left at the defaults: no stabilisation window, and per 15s it may
+    # add 4 pods or double the count, whichever is more.

@@ -1,0 +1,31 @@
+# Liveness: "is this container still working, or should it be restarted?"
+# The app is healthy for 20 seconds after every start, then its health file
+# disappears (think: a deadlocked worker that still has a running PID).
+apiVersion: v1
+kind: Pod
+metadata:
+  name: liveness-demo
+  namespace: s13-probes
+spec:
+  terminationGracePeriodSeconds: 2
+  containers:
+    - name: app
+      image: busybox:1.36
+      command: ["sh", "-c"]
+      args:
+        - |
+          echo "$(date +%T) started, healthy"
+          touch /tmp/healthy
+          sleep 20
+          echo "$(date +%T) simulating a hang: health file removed"
+          rm -f /tmp/healthy
+          sleep 600
+      livenessProbe:
+        exec:
+          command: ["cat", "/tmp/healthy"]
+        initialDelaySeconds: 5
+        periodSeconds: 5
+        failureThreshold: 2          # 2 misses in a row -> restart
+      resources:
+        requests: { cpu: "10m", memory: "16Mi" }
+        limits:   { cpu: "50m", memory: "32Mi" }

@@ -1,0 +1,14 @@
+# The claim: "I need 500Mi, RWO, of class 'manual'". Kubernetes finds a PV that
+# satisfies it and binds the two 1:1.
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: s13-static-pvc
+  namespace: s13-volumes
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 500Mi

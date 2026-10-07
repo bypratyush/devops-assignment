@@ -1,0 +1,64 @@
+# A small HTTP app that burns CPU on every request, so load turns into CPU
+# utilisation the HPA can see. (registry.k8s.io/hpa-example is the usual choice,
+# but it is published for amd64 only and these kind nodes are arm64.)
+#
+# No 'replicas:' on purpose. Once an HPA owns the replica count, a replicas
+# field in the Deployment would reset it on every 'kubectl apply'.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cpu-app
+  namespace: s13-hpa
+  labels:
+    app: cpu-app
+spec:
+  selector:
+    matchLabels:
+      app: cpu-app
+  template:
+    metadata:
+      labels:
+        app: cpu-app
+    spec:
+      terminationGracePeriodSeconds: 5
+      containers:
+        - name: app
+          image: python:3.12-alpine
+          command: ["python3", "-u", "-c"]
+          args:
+            - |
+              import math, socket, http.server
+              HOST = socket.gethostname()
+              class H(http.server.BaseHTTPRequestHandler):
+                  def do_GET(self):
+                      if self.path == "/healthz":
+                          body = b"ok\n"
+                      else:
+                          x = 0.0
+                          for i in range(200000):      # ~20-30 ms of pure CPU
+                              x += math.sqrt(i)
+                          body = ("served by %s\n" % HOST).encode()
+                      self.send_response(200)
+                      self.send_header("Content-Length", str(len(body)))
+                      self.end_headers()
+                      self.wfile.write(body)
+                  def log_message(self, *args):
+                      pass
+              print("cpu-app listening on :8080", flush=True)
+              http.server.ThreadingHTTPServer(("", 8080), H).serve_forever()
+          ports:
+            - containerPort: 8080
+          # The HPA measures utilisation as a percentage of the REQUEST.
+          # No cpu request = no percentage = TARGETS <unknown>.
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "32Mi"
+            limits:
+              cpu: "200m"
+              memory: "64Mi"
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: 8080
+            periodSeconds: 5

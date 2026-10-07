@@ -1,0 +1,63 @@
+# Startup: "has the app finished starting yet?" While it has not, the
+# liveness and readiness probes are switched off.
+#
+# Both pods run the same slow starter: 30s of "warming up" before nginx listens.
+# Both have the same liveness probe (3 misses x 5s = 15s budget).
+# Only the second one has a startup probe (12 x 5s = 60s budget).
+apiVersion: v1
+kind: Pod
+metadata:
+  name: slow-no-startup
+  namespace: s13-probes
+  labels:
+    demo: startup
+spec:
+  terminationGracePeriodSeconds: 2
+  containers:
+    - name: web
+      image: nginx:1.25-alpine
+      command: ["sh", "-c"]
+      args:
+        - |
+          echo "$(date +%T) warming up (30s)..."
+          sleep 30
+          echo "$(date +%T) ready, starting nginx"
+          exec nginx -g 'daemon off;'
+      livenessProbe:
+        httpGet: { path: /, port: 80 }
+        periodSeconds: 5
+        failureThreshold: 3
+      resources:
+        requests: { cpu: "10m", memory: "16Mi" }
+        limits:   { cpu: "50m", memory: "64Mi" }
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: slow-with-startup
+  namespace: s13-probes
+  labels:
+    demo: startup
+spec:
+  terminationGracePeriodSeconds: 2
+  containers:
+    - name: web
+      image: nginx:1.25-alpine
+      command: ["sh", "-c"]
+      args:
+        - |
+          echo "$(date +%T) warming up (30s)..."
+          sleep 30
+          echo "$(date +%T) ready, starting nginx"
+          exec nginx -g 'daemon off;'
+      startupProbe:
+        httpGet: { path: /, port: 80 }
+        periodSeconds: 5
+        failureThreshold: 12         # up to 60s to start
+      livenessProbe:
+        httpGet: { path: /, port: 80 }
+        periodSeconds: 5
+        failureThreshold: 3
+      resources:
+        requests: { cpu: "10m", memory: "16Mi" }
+        limits:   { cpu: "50m", memory: "64Mi" }

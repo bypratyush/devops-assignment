@@ -1,0 +1,14 @@
+# Dynamic provisioning: name a StorageClass and the provisioner CREATES the PV.
+# 'standard' is kind's default class (rancher.io/local-path).
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: s13-dynamic-pvc
+  namespace: s13-volumes
+spec:
+  storageClassName: standard
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 200Mi

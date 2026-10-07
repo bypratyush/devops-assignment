@@ -1,0 +1,65 @@
+# Readiness: "should this pod receive traffic right now?"
+# Each nginx serves its own hostname, and is ready only while /ready exists.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: readiness-demo
+  namespace: s13-probes
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: readiness-demo
+  template:
+    metadata:
+      labels:
+        app: readiness-demo
+    spec:
+      terminationGracePeriodSeconds: 2
+      containers:
+        - name: web
+          image: nginx:1.25-alpine
+          command: ["sh", "-c"]
+          args:
+            - |
+              echo "$HOSTNAME" > /usr/share/nginx/html/index.html
+              echo ok > /usr/share/nginx/html/ready
+              exec nginx -g 'daemon off;'
+          ports:
+            - containerPort: 80
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: 80
+            periodSeconds: 3
+            failureThreshold: 1
+          resources:
+            requests: { cpu: "10m", memory: "16Mi" }
+            limits:   { cpu: "50m", memory: "64Mi" }
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: readiness-demo
+  namespace: s13-probes
+spec:
+  selector:
+    app: readiness-demo
+  ports:
+    - port: 80
+      targetPort: 80
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: client
+  namespace: s13-probes
+spec:
+  terminationGracePeriodSeconds: 1
+  containers:
+    - name: curl
+      image: curlimages/curl:8.5.0
+      command: ["sh", "-c", "sleep 3600"]
+      resources:
+        requests: { cpu: "10m", memory: "16Mi" }
+        limits:   { cpu: "100m", memory: "32Mi" }

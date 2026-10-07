@@ -1,0 +1,14 @@
+# 500Mi, ReadWriteOnce. No storageClassName, so the cluster's default class is
+# used: on kind that is 'standard' (rancher.io/local-path), a directory on the
+# node the first pod lands on. (The course README shows minikube-hostpath.)
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: web-data
+  namespace: production-webapp
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 500Mi

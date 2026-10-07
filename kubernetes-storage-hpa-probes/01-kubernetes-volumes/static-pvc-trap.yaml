@@ -1,0 +1,14 @@
+# The trap: the same claim WITHOUT storageClassName.
+# The DefaultStorageClass admission plugin fills in 'standard', so this claim
+# never looks at the hand-made PV - it waits for dynamic provisioning instead.
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: s13-trap-pvc
+  namespace: s13-volumes
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 500Mi

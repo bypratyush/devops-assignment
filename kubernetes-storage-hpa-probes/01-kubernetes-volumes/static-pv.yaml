@@ -1,0 +1,27 @@
+# A PersistentVolume created BY HAND (static provisioning).
+# The admin decides size, access mode, reclaim policy and where the data lives.
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: s13-static-pv
+  labels:
+    demo: s13-static
+spec:
+  storageClassName: manual            # just a matching key; no StorageClass object needed
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain   # keep the data when the claim is deleted
+  hostPath:
+    path: /tmp/s13-static-pv
+    type: DirectoryOrCreate
+  # A hostPath PV only exists on one node. Without this the scheduler could put
+  # the pod on another node, where the "same" PV is a different empty directory.
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: kubernetes.io/hostname
+              operator: In
+              values: ["devops-hw-worker"]
